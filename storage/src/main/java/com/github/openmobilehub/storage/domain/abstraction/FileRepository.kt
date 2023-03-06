@@ -1,7 +1,11 @@
 package com.github.openmobilehub.storage.domain.abstraction
 
 interface FileRepository {
-    fun create()
+    fun create(){
+        println("" +
+                "Hol"
+           )
+    }
     fun read()
     fun update()
     fun delete()
