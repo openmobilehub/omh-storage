@@ -6,6 +6,10 @@ plugins {
     id("maven-publish")
 }
 
+detekt {
+    autoCorrect = properties.get("autoCorrect")?.toString()?.toBoolean() ?: false
+}
+
 publishing {
     publications {
         register<MavenPublication>("release") {
