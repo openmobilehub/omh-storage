@@ -36,7 +36,6 @@ object Libs {
     // Testing
     val junit by lazy { "junit:junit:${Versions.junit}" }
     val androidJunit by lazy { "androidx.test.ext:junit:${Versions.androidJunit}" }
-    val esspreso by lazy { "androidx.test.espresso:espresso-core:${Versions.espresso}" }
     val mockk by lazy { "io.mockk:mockk:${Versions.mockk}"}
     val coroutineTesting by lazy { "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.coroutines}" }
 }
