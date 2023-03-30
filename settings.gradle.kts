@@ -16,7 +16,7 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "omh-storage"
-include(":storage")
-include(":storage-gms")
-include(":storage-non-gms")
-include(":omhstoragedemo")
+include(":storage-api")
+include(":storage-api-drive-gms")
+include(":storage-api-drive-nongms")
+include(":storage-sample")
