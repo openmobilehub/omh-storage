@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">omh storage demo</string>
+    <string name="app_name">OMH Storage demo</string>
+
+    <string name="login">Login</string>
+    <string name="loading">Loading…</string>
+    <string name="empty_folder">This folder is empty</string>
 </resources>
