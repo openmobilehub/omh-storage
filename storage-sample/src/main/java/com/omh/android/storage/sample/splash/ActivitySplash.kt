@@ -5,7 +5,6 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.omh.android.auth.api.OmhAuthClient
-import com.omh.android.auth.api.OmhCredentials
 import com.omh.android.storage.sample.databinding.ActivitySplashBinding
 import com.omh.android.storage.sample.drive.ActivityFilesAndFolders
 import dagger.hilt.android.AndroidEntryPoint
@@ -22,10 +21,10 @@ class ActivitySplash : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(ActivitySplashBinding.inflate(layoutInflater).root)
-        getToken()
+        checkUserThenNavigate()
     }
 
-    private fun getToken() = lifecycleScope.launch(Dispatchers.IO) {
+    private fun checkUserThenNavigate() = lifecycleScope.launch(Dispatchers.IO) {
         if (omhAuthClient.getUser() != null) {
             navigateToFilesAndFolders()
         }
