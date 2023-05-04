@@ -8,6 +8,14 @@ repositories {
     gradlePluginPortal()
 }
 
+configurations.all {
+    resolutionStrategy.eachDependency {
+        when (requested.name) {
+            "javapoet" -> useVersion("1.13.0")
+        }
+    }
+}
+
 dependencies {
     gradleApi()
     implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.20")
