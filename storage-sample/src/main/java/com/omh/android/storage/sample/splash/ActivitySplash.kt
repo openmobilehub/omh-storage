@@ -26,13 +26,7 @@ class ActivitySplash : AppCompatActivity() {
     }
 
     private fun getToken() = lifecycleScope.launch(Dispatchers.IO) {
-        val token = when (val credentials = omhAuthClient.getCredentials()) {
-            is OmhCredentials -> credentials.blockingRefreshToken()
-            null -> return@launch
-            else -> error("Unsupported credential type")
-        }
-
-        if (token != null) {
+        if (omhAuthClient.getUser() != null) {
             navigateToFilesAndFolders()
         }
     }
