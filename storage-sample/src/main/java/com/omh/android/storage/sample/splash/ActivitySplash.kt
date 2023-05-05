@@ -20,8 +20,7 @@ class ActivitySplash : AppCompatActivity() {
     @Inject
     lateinit var omhAuthClient: OmhAuthClient
 
-    @Inject
-    lateinit var omhStorageClient: OmhStorageClient
+    // @Inject lateinit var omhStorageClient: OmhStorageClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,10 +41,11 @@ class ActivitySplash : AppCompatActivity() {
             null -> return@launch
             else -> error("Unsupported credential type")
         }
-
+        /*
         if (token != null) {
             omhStorageClient.setupAccessToken(token)
         }
+        */
     }
 
     private fun navigateToFilesAndFolders() {
