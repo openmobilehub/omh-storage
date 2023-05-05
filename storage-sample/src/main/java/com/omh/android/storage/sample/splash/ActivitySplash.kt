@@ -5,6 +5,8 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.omh.android.auth.api.OmhAuthClient
+import com.omh.android.auth.api.OmhCredentials
+import com.omh.android.storage.api.OmhStorageClient
 import com.omh.android.storage.sample.databinding.ActivitySplashBinding
 import com.omh.android.storage.sample.drive.ActivityFilesAndFolders
 import dagger.hilt.android.AndroidEntryPoint
@@ -18,6 +20,9 @@ class ActivitySplash : AppCompatActivity() {
     @Inject
     lateinit var omhAuthClient: OmhAuthClient
 
+    @Inject
+    lateinit var omhStorageClient: OmhStorageClient
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(ActivitySplashBinding.inflate(layoutInflater).root)
@@ -26,7 +31,20 @@ class ActivitySplash : AppCompatActivity() {
 
     private fun checkUserThenNavigate() = lifecycleScope.launch(Dispatchers.IO) {
         if (omhAuthClient.getUser() != null) {
+            setupToken()
             navigateToFilesAndFolders()
+        }
+    }
+
+    private fun setupToken() = lifecycleScope.launch(Dispatchers.IO) {
+        val token = when (val credentials = omhAuthClient.getCredentials()) {
+            is OmhCredentials -> credentials.blockingRefreshToken()
+            null -> return@launch
+            else -> error("Unsupported credential type")
+        }
+
+        if (token != null) {
+            omhStorageClient.setupAccessToken(token)
         }
     }
 
