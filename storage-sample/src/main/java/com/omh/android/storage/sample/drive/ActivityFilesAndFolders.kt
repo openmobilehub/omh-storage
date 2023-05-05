@@ -1,6 +1,7 @@
 package com.omh.android.storage.sample.drive
 
 import android.os.Bundle
+import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
@@ -21,14 +22,17 @@ class ActivityFilesAndFolders : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         prepareViewBindings()
-        //binding.rvEmptyView.root.visibility = View.VISIBLE
+        binding.rvEmptyView.root.visibility = View.VISIBLE
+        binding.tvSortByName.visibility = View.GONE
     }
 
     private fun prepareViewBindings() {
         setContentView(binding.root)
+        /*
         tvSortByName = binding.tvSortByName
         rvFilesAndFolders = binding.rvFilesAndFolders
         prepareViews()
+        */
     }
 
     private fun prepareViews() {
