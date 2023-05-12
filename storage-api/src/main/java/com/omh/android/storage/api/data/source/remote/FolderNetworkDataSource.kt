@@ -1,6 +1,6 @@
-package com.omh.android.storage.api.data.datasource.network
+package com.omh.android.storage.api.data.source.remote
 
-interface FileNetworkDataSource {
+interface FolderNetworkDataSource {
     fun create()
     fun read()
     fun update()
