@@ -19,4 +19,5 @@ rootProject.name = "omh-storage"
 include(":storage-api")
 include(":storage-api-drive-gms")
 include(":storage-api-drive-nongms")
-// include(":storage-sample")
+// Sample app is currently broken. Removed temporally
+//include(":storage-sample")
