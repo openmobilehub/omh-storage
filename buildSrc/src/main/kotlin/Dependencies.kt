@@ -6,6 +6,8 @@ object BuildPlugins {
 }
 
 object Libs {
+    val reflection by lazy { "org.jetbrains.kotlin:kotlin-reflect:${Versions.kotlin}" }
+
     // KTX
     val coreKtx by lazy { "androidx.core:core-ktx:${Versions.coreKtx}" }
     val lifecycleKtx by lazy { "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.lifecycleKtx}" }
@@ -36,6 +38,6 @@ object Libs {
     // Testing
     val junit by lazy { "junit:junit:${Versions.junit}" }
     val androidJunit by lazy { "androidx.test.ext:junit:${Versions.androidJunit}" }
-    val mockk by lazy { "io.mockk:mockk:${Versions.mockk}"}
+    val mockk by lazy { "io.mockk:mockk:${Versions.mockk}" }
     val coroutineTesting by lazy { "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.coroutines}" }
 }
