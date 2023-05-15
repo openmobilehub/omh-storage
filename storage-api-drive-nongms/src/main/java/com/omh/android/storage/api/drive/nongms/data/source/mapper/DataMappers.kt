@@ -5,8 +5,8 @@ import com.omh.android.storage.api.drive.nongms.data.source.response.FileListRem
 import com.omh.android.storage.api.drive.nongms.data.source.response.FileRemoteResponse
 
 @SuppressWarnings("ComplexCondition")
-internal fun FileRemoteResponse.toFileResponse() =
-    if (mimeType == null || id == null || name == null || modifiedTime == null) {
+internal fun FileRemoteResponse.toFile(): File? {
+    return if (mimeType == null || id == null || name == null || modifiedTime == null) {
         null
     } else {
         File(
@@ -16,6 +16,7 @@ internal fun FileRemoteResponse.toFileResponse() =
             modifiedTime
         )
     }
+}
 
-internal fun FileListRemoteResponse.toFileResponseList() =
-    files?.mapNotNull { it?.toFileResponse() }.orEmpty()
+internal fun FileListRemoteResponse.toFileList(): List<File> =
+    files?.mapNotNull { remoteFileModel -> remoteFileModel?.toFile() }.orEmpty()

@@ -30,14 +30,14 @@ internal object GoogleRetrofitImpl {
     private fun createOkHttpClient(): OkHttpClient {
         val loggingInterceptor = setupLoggingInterceptor()
 
-        return OkHttpClient.Builder().apply {
-            addInterceptor(loggingInterceptor)
-            addInterceptor { chain ->
+        return OkHttpClient.Builder()
+            .addInterceptor(loggingInterceptor)
+            .addInterceptor { chain ->
                 val request = setupRequestInterceptor(chain)
                 chain.proceed(request)
             }
-            connectTimeout(TIMEOUT, TimeUnit.SECONDS)
-        }.build()
+            .connectTimeout(TIMEOUT, TimeUnit.SECONDS)
+            .build()
     }
 
     private fun setupLoggingInterceptor() = HttpLoggingInterceptor().apply {
