@@ -8,5 +8,6 @@ android {
 }
 
 dependencies {
+    implementation(Libs.reflection)
     testImplementation(Libs.junit)
 }
