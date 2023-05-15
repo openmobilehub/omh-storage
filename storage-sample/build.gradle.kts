@@ -54,6 +54,7 @@ dependencies {
 
     implementation(Libs.coreKtx)
     implementation(Libs.lifecycleKtx)
+    implementation(Libs.viewModelKtx)
     implementation(Libs.androidAppCompat)
     implementation(Libs.material)
     implementation(Libs.coroutinesAndroid)
