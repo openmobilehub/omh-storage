@@ -1,6 +1,6 @@
 package com.omh.android.storage.api.drive.nongms.data.repository
 
-import com.omh.android.storage.api.data.source.remote.FileRemoteDataSource
+import com.omh.android.storage.api.data.source.FileRemoteDataSource
 import com.omh.android.storage.api.domain.repository.FileRepository
 
 class NonGmsFileRepositoryImpl(
