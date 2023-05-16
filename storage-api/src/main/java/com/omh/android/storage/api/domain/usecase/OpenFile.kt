@@ -1,5 +1,5 @@
 package com.omh.android.storage.api.domain.usecase
 
-interface ReadFile {
+interface OpenFile {
     fun execute()
 }
