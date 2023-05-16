@@ -2,7 +2,7 @@ package com.omh.android.storage.api.domain.repository
 
 import com.omh.android.storage.api.domain.model.File
 
-interface FilesFoldersRepository {
+interface FileRepository {
 
     fun getRootFilesList(): List<File>
 

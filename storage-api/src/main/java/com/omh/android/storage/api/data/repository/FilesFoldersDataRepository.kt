@@ -1,11 +1,11 @@
 package com.omh.android.storage.api.data.repository
 
 import com.omh.android.storage.api.data.source.remote.FileRemoteDataSource
-import com.omh.android.storage.api.domain.repository.FilesFoldersRepository
+import com.omh.android.storage.api.domain.repository.FileRepository
 
 class FilesFoldersDataRepository(
     private val networkDataSource: FileRemoteDataSource
-) : FilesFoldersRepository {
+) : FileRepository {
 
     override fun getRootFilesList() = networkDataSource.getRootFilesList()
 
