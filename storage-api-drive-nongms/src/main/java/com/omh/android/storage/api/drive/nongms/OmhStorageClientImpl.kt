@@ -20,4 +20,7 @@ internal class OmhStorageClientImpl(
         override fun build(context: Context, authClient: OmhAuthClient) =
             OmhStorageClientImpl(context, authClient)
     }
+
+    // This will be implemented in a future PR
+    override fun getRepository() = Unit
 }

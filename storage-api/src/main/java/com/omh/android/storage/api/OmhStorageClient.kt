@@ -9,4 +9,6 @@ abstract class OmhStorageClient protected constructor(protected val authClient: 
 
         fun build(context: Context, authClient: OmhAuthClient): OmhStorageClient
     }
+
+    abstract fun getRepository()
 }
