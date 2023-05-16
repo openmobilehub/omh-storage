@@ -6,7 +6,7 @@ import com.omh.android.storage.api.domain.model.File
 import com.omh.android.storage.api.drive.nongms.data.GoogleRetrofitImpl
 import com.omh.android.storage.api.drive.nongms.data.source.mapper.toFileList
 
-internal class FileRemoteDataSource(private val authCredentials: OmhCredentials) : FileRemoteDataSource {
+internal class NonGmsFileRemoteDataSourceImpl(private val authCredentials: OmhCredentials) : FileRemoteDataSource {
 
     override fun getRootFilesList(): List<File> {
         val response = GoogleRetrofitImpl
