@@ -1,6 +1,12 @@
 package com.omh.android.storage.api.domain.model
 
 enum class FileType(val mimeType: String) {
+    /**
+     * Can find documentation about supported MIME types here:
+     *
+     * https://developers.google.com/drive/api/guides/mime-types
+     * https://developers.google.com/drive/api/guides/ref-export-formats
+     */
 
     // Specific MIME from Google Workspace and Drive
     AUDIO("application/vnd.google-apps.audio"),
@@ -22,9 +28,33 @@ enum class FileType(val mimeType: String) {
     UNKNOWN("application/vnd.google-apps.unknown"),
     VIDEO("application/vnd.google-apps.video"),
 
-    // External MIME
-    ZIP("application/zip"),
-    IMAGE_PNG("image/png"),
-    PDF("application/pdf"),
+    // Documents
+    MICROSOFT_WORD("application/vnd.openxmlformats-officedocument.wordprocessingml.document"), // .docx
+    OPEN_DOCUMENT_TEXT("application/vnd.oasis.opendocument.text"), // .odt
+    RICH_TEXT("application/rtf"), // RTF
+    PDF("application/pdf"), // .pdf
+    TEXT("text/plain"), // .txt
+    ZIP("application/zip"), // ZIP
+    EPUB("application/epub+zip"), // .epub
+
+    // Spreadsheets
+    MICROSOFT_EXCEL("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"), // .xlsx
+    OPEN_DOCUMENT_SPREADSHEET("application/x-vnd.oasis.opendocument.spreadsheet"), // .ods
+    CSV("text/csv"), // .csv
+    TSV("text/tab-separated-values"), // .tsv
+
+    // Presentations
+    MICROSOFT_POWERPOINT("application/vnd.openxmlformats-officedocument.presentationml.presentation"), // .pptx
+    OPEN_DOCUMENT_PRESENTATION("application/vnd.oasis.opendocument.presentation"), // .odp
+
+    // Drawings
+    JPEG("image/jpeg"), // .jpg
+    PNG("image/png"), // .png
+    SVG("image/svg+xml"), // .svg
+
+    // Apps Scripts
+    JSON("application/vnd.google-apps.script+json"), // .json
+
+    // Other MYME type
     OTHER("")
 }
