@@ -8,4 +8,16 @@ class FilesFoldersDataRepository(
 ) : FilesFoldersRepository {
 
     override fun getRootFilesList() = networkDataSource.getRootFilesList()
+
+    override fun create() = Unit
+
+    override fun open() = Unit
+
+    override fun update() = Unit
+
+    override fun delete() = Unit
+
+    override fun upload() = Unit
+
+    override fun download() = Unit
 }
