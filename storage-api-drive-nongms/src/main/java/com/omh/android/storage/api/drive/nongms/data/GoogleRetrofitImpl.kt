@@ -6,17 +6,29 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.jackson.JacksonConverterFactory
-import java.util.concurrent.TimeUnit
 
-internal object GoogleRetrofitImpl {
+internal class GoogleRetrofitImpl(private val bearerToken: String) {
 
-    private const val HEADER_AUTHORIZATION_NAME = "Authorization"
-    private const val TIMEOUT = 50L
+    companion object {
+        private const val HEADER_AUTHORIZATION_NAME = "Authorization"
+
+        private var instance: GoogleRetrofitImpl? = null
+
+        internal fun getInstance(bearerToken: String): GoogleRetrofitImpl {
+            if (instance == null) {
+                instance = GoogleRetrofitImpl(bearerToken)
+            }
+
+            return instance!!
+        }
+    }
 
     private var apiService: GoogleStorageApiService? = null
 
     fun getGoogleStorageApiService(): GoogleStorageApiService {
-        apiService?.let { return it }
+        if (apiService != null) {
+            return apiService!!
+        }
 
         val retrofit = Retrofit.Builder()
             .client(createOkHttpClient())
@@ -24,7 +36,8 @@ internal object GoogleRetrofitImpl {
             .baseUrl(BuildConfig.G_STORAGE_URL)
             .build()
 
-        return retrofit.create(GoogleStorageApiService::class.java).also { apiService = it }
+        apiService = retrofit.create(GoogleStorageApiService::class.java)
+        return apiService!!
     }
 
     private fun createOkHttpClient(): OkHttpClient {
@@ -36,7 +49,6 @@ internal object GoogleRetrofitImpl {
                 val request = setupRequestInterceptor(chain)
                 chain.proceed(request)
             }
-            .connectTimeout(TIMEOUT, TimeUnit.SECONDS)
             .build()
     }
 
@@ -55,8 +67,7 @@ internal object GoogleRetrofitImpl {
         .newBuilder()
         .addHeader(
             HEADER_AUTHORIZATION_NAME,
-            // Bearer must come from auth lib
-            "Bearer ya29.a0AWY7Ckl29g9Y7..."
+            bearerToken
         )
         .build()
 

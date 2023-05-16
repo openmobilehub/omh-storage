@@ -9,6 +9,7 @@ internal class FileRemoteDataSource : FileRemoteDataSource {
 
     override fun getRootFilesList(): List<File> {
         val response = GoogleRetrofitImpl
+            .getInstance("")
             .getGoogleStorageApiService()
             .getRootFilesList()
             .execute()

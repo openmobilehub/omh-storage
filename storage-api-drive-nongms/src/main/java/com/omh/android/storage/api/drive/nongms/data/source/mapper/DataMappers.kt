@@ -6,16 +6,16 @@ import com.omh.android.storage.api.drive.nongms.data.source.response.FileRemoteR
 
 @SuppressWarnings("ComplexCondition")
 internal fun FileRemoteResponse.toFile(): File? {
-    return if (mimeType == null || id == null || name == null || modifiedTime == null) {
-        null
-    } else {
-        File(
-            mimeType,
-            id,
-            name,
-            modifiedTime
-        )
+    if (mimeType == null || id == null || name == null || modifiedTime == null) {
+        return null
     }
+
+    return File(
+        mimeType,
+        id,
+        name,
+        modifiedTime
+    )
 }
 
 internal fun FileListRemoteResponse.toFileList(): List<File> =
