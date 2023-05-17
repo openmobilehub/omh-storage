@@ -1,16 +1,16 @@
 package com.omh.android.storage.api.drive.nongms.data.source.mapper
 
-import com.omh.android.storage.api.domain.model.File
+import com.omh.android.storage.api.domain.model.OmhFile
 import com.omh.android.storage.api.drive.nongms.data.source.response.FileListRemoteResponse
 import com.omh.android.storage.api.drive.nongms.data.source.response.FileRemoteResponse
 
 @SuppressWarnings("ComplexCondition")
-internal fun FileRemoteResponse.toFile(): File? {
+internal fun FileRemoteResponse.toFile(): OmhFile? {
     if (mimeType == null || id == null || name == null || modifiedTime == null) {
         return null
     }
 
-    return File(
+    return OmhFile(
         mimeType,
         id,
         name,
@@ -18,5 +18,5 @@ internal fun FileRemoteResponse.toFile(): File? {
     )
 }
 
-internal fun FileListRemoteResponse.toFileList(): List<File> =
+internal fun FileListRemoteResponse.toFileList(): List<OmhFile> =
     files?.mapNotNull { remoteFileModel -> remoteFileModel?.toFile() }.orEmpty()

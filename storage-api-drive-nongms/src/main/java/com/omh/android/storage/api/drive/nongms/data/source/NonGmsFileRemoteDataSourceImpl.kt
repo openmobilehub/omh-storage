@@ -1,16 +1,14 @@
 package com.omh.android.storage.api.drive.nongms.data.source
 
-import com.omh.android.auth.api.OmhCredentials
-import com.omh.android.storage.api.data.source.FileRemoteDataSource
-import com.omh.android.storage.api.domain.model.File
+import com.omh.android.storage.api.data.source.OmhFileRemoteDataSource
+import com.omh.android.storage.api.domain.model.OmhFile
 import com.omh.android.storage.api.drive.nongms.data.GoogleRetrofitImpl
 import com.omh.android.storage.api.drive.nongms.data.source.mapper.toFileList
 
-internal class NonGmsFileRemoteDataSourceImpl(private val authCredentials: OmhCredentials) : FileRemoteDataSource {
+internal class NonGmsFileRemoteDataSourceImpl(private val retrofitImpl: GoogleRetrofitImpl) : OmhFileRemoteDataSource {
 
-    override fun getRootFilesList(): List<File> {
-        val response = GoogleRetrofitImpl
-            .getInstance(authCredentials)
+    override fun getRootFilesList(): List<OmhFile> {
+        val response = retrofitImpl
             .getGoogleStorageApiService()
             .getRootFilesList()
             .execute()
