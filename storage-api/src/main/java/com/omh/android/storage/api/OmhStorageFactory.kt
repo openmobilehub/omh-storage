@@ -1,9 +1,8 @@
 package com.omh.android.storage.api
 
-import android.content.Context
 import com.omh.android.auth.api.OmhAuthClient
 
 interface OmhStorageFactory {
 
-    fun getStorageClient(context: Context, authClient: OmhAuthClient): OmhStorageClient
+    fun getStorageClient(authClient: OmhAuthClient): OmhStorageClient
 }
