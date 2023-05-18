@@ -1,12 +1,14 @@
 package com.omh.android.storage.api
 
 import android.content.Context
+import com.omh.android.auth.api.OmhAuthClient
 
-interface OmhStorageClient {
+abstract class OmhStorageClient protected constructor(protected val authClient: OmhAuthClient) {
 
     interface Builder {
-        fun build(context: Context): OmhStorageClient
+
+        fun build(context: Context, authClient: OmhAuthClient): OmhStorageClient
     }
 
-    fun setupAccessToken(token: String)
+    abstract fun getRepository()
 }

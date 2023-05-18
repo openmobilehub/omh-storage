@@ -40,4 +40,7 @@ object Libs {
     val androidJunit by lazy { "androidx.test.ext:junit:${Versions.androidJunit}" }
     val mockk by lazy { "io.mockk:mockk:${Versions.mockk}" }
     val coroutineTesting by lazy { "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.coroutines}" }
+
+    // Auth
+    val omhAuthLibrary by lazy { "com.openmobilehub.android:auth-api:${Versions.omhAuth}" }
 }

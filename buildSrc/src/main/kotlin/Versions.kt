@@ -32,4 +32,7 @@ object Versions {
     const val junit = "4.13.2"
     const val androidJunit = "1.1.5"
     const val mockk = "1.13.4"
+
+    // Auth
+    const val omhAuth = "1.0.1"
 }

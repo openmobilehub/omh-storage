@@ -10,4 +10,5 @@ android {
 dependencies {
     implementation(Libs.reflection)
     testImplementation(Libs.junit)
+    api(Libs.omhAuthLibrary)
 }

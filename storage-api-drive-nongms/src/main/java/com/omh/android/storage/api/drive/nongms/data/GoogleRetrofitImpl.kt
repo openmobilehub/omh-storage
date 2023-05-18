@@ -1,5 +1,6 @@
 package com.omh.android.storage.api.drive.nongms.data
 
+import com.omh.android.auth.api.OmhCredentials
 import com.omh.android.storage.api.drive.nongms.BuildConfig
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -7,16 +8,17 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.jackson.JacksonConverterFactory
 
-internal class GoogleRetrofitImpl(private val bearerToken: String) {
+internal class GoogleRetrofitImpl(private val omhCredentials: OmhCredentials) {
 
     companion object {
         private const val HEADER_AUTHORIZATION_NAME = "Authorization"
+        private const val BEARER = "Bearer %s"
 
         private var instance: GoogleRetrofitImpl? = null
 
-        internal fun getInstance(bearerToken: String): GoogleRetrofitImpl {
+        internal fun getInstance(omhCredentials: OmhCredentials): GoogleRetrofitImpl {
             if (instance == null) {
-                instance = GoogleRetrofitImpl(bearerToken)
+                instance = GoogleRetrofitImpl(omhCredentials)
             }
 
             return instance!!
@@ -67,7 +69,7 @@ internal class GoogleRetrofitImpl(private val bearerToken: String) {
         .newBuilder()
         .addHeader(
             HEADER_AUTHORIZATION_NAME,
-            bearerToken
+            BEARER.format(omhCredentials.accessToken.orEmpty())
         )
         .build()
 
