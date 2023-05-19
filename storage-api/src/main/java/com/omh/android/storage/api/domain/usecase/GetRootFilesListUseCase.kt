@@ -4,6 +4,6 @@ import com.omh.android.storage.api.domain.repository.FileRepository
 
 class GetRootFilesListUseCase(
     private val repository: FileRepository
-) : GetAllFilesAndFolders {
+) : OmhSuspendUseCase {
     override fun execute() = repository.getRootFilesList()
 }
