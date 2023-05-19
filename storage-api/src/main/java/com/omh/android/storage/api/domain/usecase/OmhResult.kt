@@ -3,8 +3,8 @@ package com.omh.android.storage.api.domain.usecase
 sealed class OmhResult<out R> {
 
     companion object {
-        internal const val TAG_SUCCESS = "[RESULT SUCCESS -> data: %s]"
-        internal const val TAG_ERROR = "[RESULT ERROR -> exception: %s]"
+        private const val TAG_SUCCESS = "[RESULT SUCCESS -> data: %s]"
+        private const val TAG_ERROR = "[RESULT ERROR -> exception: %s]"
     }
 
     data class OmhSuccess<out T>(val data: T) : OmhResult<T>()
