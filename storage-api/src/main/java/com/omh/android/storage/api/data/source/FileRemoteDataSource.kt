@@ -1,4 +1,4 @@
-package com.omh.android.storage.api.data.source.remote
+package com.omh.android.storage.api.data.source
 
 import com.omh.android.storage.api.domain.model.File
 
