@@ -5,4 +5,6 @@ import com.omh.android.storage.api.domain.model.OmhFile
 interface OmhFileRemoteDataSource {
 
     fun getRootFilesList(): List<OmhFile>
+
+    fun createFile(name: String, mimeType: String): OmhFile?
 }

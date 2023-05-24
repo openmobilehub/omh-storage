@@ -6,7 +6,7 @@ interface FileRepository {
 
     fun getRootFilesList(): List<OmhFile>
 
-    fun create()
+    fun createFile(name: String, mimeType: String): OmhFile?
 
     fun open()
 
