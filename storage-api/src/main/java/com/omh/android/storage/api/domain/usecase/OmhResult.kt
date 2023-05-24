@@ -11,9 +11,11 @@ sealed class OmhResult<out R> {
 
     data class OmhError(val exception: Exception) : OmhResult<Nothing>()
 
-    override fun toString() = when (this) {
-        is OmhSuccess<*> -> String.format(TAG_SUCCESS, data.toString())
-        is OmhError -> String.format(TAG_ERROR, exception.toString())
+    override fun toString(): String {
+        return when (this) {
+            is OmhSuccess<*> -> String.format(TAG_SUCCESS, data.toString())
+            is OmhError -> String.format(TAG_ERROR, exception.toString())
+        }
     }
 }
 
