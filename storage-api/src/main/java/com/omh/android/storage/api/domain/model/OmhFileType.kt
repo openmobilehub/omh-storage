@@ -1,6 +1,6 @@
 package com.omh.android.storage.api.domain.model
 
-enum class FileType(val mimeType: String) {
+enum class OmhFileType(val mimeType: String) {
     /**
      * Can find documentation about supported MIME types here:
      *

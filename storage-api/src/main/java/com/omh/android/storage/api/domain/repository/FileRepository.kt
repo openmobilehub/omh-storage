@@ -1,10 +1,10 @@
 package com.omh.android.storage.api.domain.repository
 
-import com.omh.android.storage.api.domain.model.File
+import com.omh.android.storage.api.domain.model.OmhFile
 
 interface FileRepository {
 
-    fun getRootFilesList(): List<File>
+    fun getRootFilesList(): List<OmhFile>
 
     fun create()
 

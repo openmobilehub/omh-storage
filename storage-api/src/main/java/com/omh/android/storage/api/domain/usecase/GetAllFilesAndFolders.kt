@@ -1,7 +1,7 @@
 package com.omh.android.storage.api.domain.usecase
 
-import com.omh.android.storage.api.domain.model.File
+import com.omh.android.storage.api.domain.model.OmhFile
 
 interface GetAllFilesAndFolders {
-    fun execute(): List<File>
+    fun execute(): List<OmhFile>
 }

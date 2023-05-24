@@ -1,26 +1,35 @@
 package com.omh.android.storage.api.drive.nongms
 
-import android.content.Context
 import com.omh.android.auth.api.OmhAuthClient
+import com.omh.android.auth.api.OmhCredentials
+import com.omh.android.auth.api.models.OmhAuthStatusCodes
 import com.omh.android.storage.api.OmhStorageClient
+import com.omh.android.storage.api.domain.model.OmhStorageException
+import com.omh.android.storage.api.domain.repository.FileRepository
+import com.omh.android.storage.api.drive.nongms.data.GoogleRetrofitImpl
+import com.omh.android.storage.api.drive.nongms.data.repository.NonGmsFileRepositoryImpl
+import com.omh.android.storage.api.drive.nongms.data.source.NonGmsFileRemoteDataSourceImpl
+import kotlin.jvm.Throws
 
-internal class OmhStorageClientImpl(
-    context: Context,
+internal class OmhStorageClientImpl private constructor(
     authClient: OmhAuthClient
 ) : OmhStorageClient(authClient) {
 
-    private val applicationContext: Context
-
-    init {
-        applicationContext = context.applicationContext
-    }
-
     internal class Builder : OmhStorageClient.Builder {
 
-        override fun build(context: Context, authClient: OmhAuthClient) =
-            OmhStorageClientImpl(context, authClient)
+        override fun build(authClient: OmhAuthClient): OmhStorageClient =
+            OmhStorageClientImpl(authClient)
     }
 
-    // This will be implemented in a future PR
-    override fun getRepository() = Unit
+    @Throws(OmhStorageException::class)
+    override fun getRepository(): FileRepository {
+        val omhCredentials = authClient.getCredentials() as? OmhCredentials
+            ?: throw OmhStorageException.InvalidCredentialsException(OmhAuthStatusCodes.SIGN_IN_FAILED)
+
+        val retrofitImpl = GoogleRetrofitImpl.getInstance(omhCredentials)
+
+        val dataSource = NonGmsFileRemoteDataSourceImpl(retrofitImpl)
+
+        return NonGmsFileRepositoryImpl(dataSource)
+    }
 }
