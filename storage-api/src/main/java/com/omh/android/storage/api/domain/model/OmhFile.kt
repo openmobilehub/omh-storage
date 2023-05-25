@@ -6,7 +6,8 @@ data class OmhFile(
     val mimeType: String,
     val id: String,
     val name: String,
-    val modifiedTime: String
+    val modifiedTime: String,
+    val parentId: String
 ) {
     val fileType by lazy { FileTypeMapper.getFileTypeWithMime(mimeType) }
 

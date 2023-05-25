@@ -10,11 +10,18 @@ internal fun FileRemoteResponse.toFile(): OmhFile? {
         return null
     }
 
+    val parentId = if (parents.isNullOrEmpty()) {
+        ""
+    } else {
+        parents[0]
+    }
+
     return OmhFile(
         mimeType,
         id,
         name,
-        modifiedTime
+        modifiedTime,
+        parentId
     )
 }
 
