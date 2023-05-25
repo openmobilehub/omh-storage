@@ -10,5 +10,11 @@ android {
 dependencies {
     implementation(Libs.reflection)
     testImplementation(Libs.junit)
+
+    // Omh Auth
     api(Libs.omhAuthLibrary)
+
+    // Coroutines
+    implementation(Libs.coroutinesCore)
+    implementation(Libs.coroutinesAndroid)
 }
