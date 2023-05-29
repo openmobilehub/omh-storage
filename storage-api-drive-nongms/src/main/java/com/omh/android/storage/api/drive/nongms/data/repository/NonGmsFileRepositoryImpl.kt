@@ -9,7 +9,7 @@ internal class NonGmsFileRepositoryImpl(
 
     override fun getRootFilesList() = dataSource.getRootFilesList()
 
-    override fun create() = Unit
+    override fun createFile(name: String, mimeType: String) = dataSource.createFile(name, mimeType)
 
     override fun open() = Unit
 
