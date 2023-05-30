@@ -34,5 +34,5 @@ object Versions {
     const val mockk = "1.13.4"
 
     // Auth
-    const val omhAuth = "1.0.1"
+    const val omhAuth = "1.0"
 }

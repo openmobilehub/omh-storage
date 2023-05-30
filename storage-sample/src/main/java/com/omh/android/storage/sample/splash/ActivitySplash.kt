@@ -20,7 +20,8 @@ class ActivitySplash : AppCompatActivity() {
     @Inject
     lateinit var omhAuthClient: OmhAuthClient
 
-    // @Inject lateinit var omhStorageClient: OmhStorageClient
+    @Inject
+    lateinit var omhStorageClient: OmhStorageClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
