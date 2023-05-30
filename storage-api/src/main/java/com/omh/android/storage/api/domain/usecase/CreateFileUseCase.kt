@@ -11,10 +11,10 @@ class CreateFileUseCase(
 ) : OmhSuspendUseCase<CreateFileUseCaseParams, CreateFileUseCaseResult>(dispatcher) {
 
     override suspend fun execute(parameters: CreateFileUseCaseParams) = CreateFileUseCaseResult(
-        repository.createFile(parameters.name, parameters.mimeType)
+        repository.createFile(parameters.name, parameters.mimeType, parameters.parentId)
     )
 }
 
-data class CreateFileUseCaseParams(val name: String, val mimeType: String)
+data class CreateFileUseCaseParams(val name: String, val mimeType: String, val parentId: String?)
 
 data class CreateFileUseCaseResult(val file: OmhFile?)
