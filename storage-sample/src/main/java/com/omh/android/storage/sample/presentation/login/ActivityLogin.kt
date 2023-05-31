@@ -1,4 +1,4 @@
-package com.omh.android.storage.sample.login
+package com.omh.android.storage.sample.presentation.login
 
 import android.content.Intent
 import android.os.Bundle

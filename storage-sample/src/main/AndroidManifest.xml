@@ -10,7 +10,7 @@
         android:theme="@style/Theme.OMHStorage">
 
         <activity
-            android:name=".login.ActivityLogin"
+            android:name=".presentation.login.ActivityLogin"
             android:exported="true"
             android:resizeableActivity="true">
             <intent-filter>
