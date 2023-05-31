@@ -27,7 +27,9 @@ class FilesAndFoldersViewModel(
                 is OmhResult.OmhSuccess -> {
                     _filesFoldersLiveData.postValue(result.data.files)
                 }
-                is OmhResult.OmhError -> {}
+                is OmhResult.OmhError -> {
+                    // TODO: handle exception
+                }
             }
         }
     }

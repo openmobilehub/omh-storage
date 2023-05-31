@@ -12,7 +12,7 @@ dependencies {
     testImplementation(Libs.junit)
 
     // Omh Auth
-    api(Libs.omhAuthLibrary)
+    api(Libs.omhNonGmsAuthLibrary)
 
     // Coroutines
     implementation(Libs.coroutinesCore)

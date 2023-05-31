@@ -49,9 +49,8 @@ val ngmsImplementation by configurations
 dependencies {
     implementation(project(":storage-api"))
 
-    //ngmsImplementation("com.omh.android:auth-non-gms:1.0-SNAPSHOT")
     // Omh Auth
-    api(Libs.omhAuthLibrary)
+    api(Libs.omhNonGmsAuthLibrary)
     ngmsImplementation(project(":storage-api-drive-nongms"))
 
     implementation(Libs.coreKtx)
