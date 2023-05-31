@@ -1,4 +1,4 @@
-package com.omh.android.storage.sample.drive.adapter.grid
+package com.omh.android.storage.sample.presentation.drive.adapter.grid
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

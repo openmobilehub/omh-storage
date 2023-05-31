@@ -8,7 +8,7 @@ import com.omh.android.auth.api.OmhAuthClient
 import com.omh.android.auth.api.OmhCredentials
 import com.omh.android.storage.api.OmhStorageClient
 import com.omh.android.storage.sample.databinding.ActivitySplashBinding
-import com.omh.android.storage.sample.drive.ActivityFilesAndFolders
+import com.omh.android.storage.sample.presentation.drive.ActivityFilesAndFolders
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
