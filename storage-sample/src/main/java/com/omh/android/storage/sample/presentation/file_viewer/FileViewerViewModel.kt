@@ -1,4 +1,4 @@
-package com.omh.android.storage.sample.presentation.drive
+package com.omh.android.storage.sample.presentation.file_viewer
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
