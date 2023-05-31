@@ -6,10 +6,11 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.omh.android.storage.api.domain.model.OmhFile
 import com.omh.android.storage.sample.databinding.ActivityFilesFoldersBinding
 import com.omh.android.storage.sample.presentation.file_viewer.adapter.FileGridAdapter
 
-class FileViewerActivity : AppCompatActivity() {
+class FileViewerActivity : AppCompatActivity(), FileGridAdapter.GridItemListener{
 
     private lateinit var tvSortByName: TextView
     private lateinit var rvFilesAndFolders: RecyclerView
@@ -39,10 +40,14 @@ class FileViewerActivity : AppCompatActivity() {
         tvSortByName.setOnClickListener {
             // viewModel.sortByName()
         }
-        rvGridAdapter = FileGridAdapter()
+        rvGridAdapter = FileGridAdapter(this)
         rvFilesAndFolders.setHasFixedSize(true)
         rvFilesAndFolders.layoutManager = GridLayoutManager(this, 2)
         rvFilesAndFolders.adapter = rvGridAdapter
+    }
+
+    override fun onFileClicked(file: OmhFile) {
+        // TODO: Implement click listener
     }
 
 }
