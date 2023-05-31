@@ -11,7 +11,7 @@ import com.omh.android.storage.api.domain.usecase.OmhResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class FilesAndFoldersViewModel(
+class FileViewerViewModel(
     private val getFilesListWithParentIdUseCase: GetFilesListWithParentIdUseCase
 ) : ViewModel() {
 

@@ -10,8 +10,8 @@ class FilesAndFoldersViewModelFactory(
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return if (modelClass.isAssignableFrom(FilesAndFoldersViewModel::class.java)) {
-            FilesAndFoldersViewModel(
+        return if (modelClass.isAssignableFrom(FileViewerViewModel::class.java)) {
+            FileViewerViewModel(
                 this.getFilesListWithParentIdUseCase
             ) as T
         } else {
