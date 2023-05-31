@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class ActivitySplash : AppCompatActivity() {
+class SplashActivity : AppCompatActivity() {
 
     @Inject
     lateinit var omhAuthClient: OmhAuthClient

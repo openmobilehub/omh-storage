@@ -8,7 +8,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.omh.android.auth.api.OmhAuthClient
 import com.omh.android.storage.sample.databinding.ActivityLoginBinding
-import com.omh.android.storage.sample.presentation.splash.ActivitySplash
+import com.omh.android.storage.sample.presentation.splash.SplashActivity
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -55,7 +55,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun navigateToSplash() {
-        val intent = Intent(this, ActivitySplash::class.java)
+        val intent = Intent(this, SplashActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK)
         startActivity(intent)
     }
