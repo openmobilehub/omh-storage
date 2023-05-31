@@ -1,4 +1,4 @@
-package com.omh.android.storage.sample.drive
+package com.omh.android.storage.sample.presentation.file_viewer
 
 import android.os.Bundle
 import android.view.View
@@ -7,9 +7,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.omh.android.storage.sample.databinding.ActivityFilesFoldersBinding
-import com.omh.android.storage.sample.drive.adapter.grid.FileGridAdapter
+import com.omh.android.storage.sample.presentation.file_viewer.adapter.FileGridAdapter
 
-class ActivityFilesAndFolders : AppCompatActivity() {
+class FileViewerActivity : AppCompatActivity() {
 
     private lateinit var tvSortByName: TextView
     private lateinit var rvFilesAndFolders: RecyclerView

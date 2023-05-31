@@ -5,7 +5,7 @@
     android:id="@+id/clFilesAndFolders"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".drive.ActivityFilesAndFolders">
+    tools:context=".presentation.file_viewer.FileViewerActivity">
 
     <LinearLayout
         android:id="@+id/llTopPanel"

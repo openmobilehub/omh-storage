@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".login.ActivityLogin">
+    tools:context=".presentation.login.LoginActivity">
 
     <com.google.android.material.button.MaterialButton
         android:layout_width="wrap_content"

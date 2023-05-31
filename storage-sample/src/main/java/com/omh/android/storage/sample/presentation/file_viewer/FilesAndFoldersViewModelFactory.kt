@@ -1,4 +1,4 @@
-package com.omh.android.storage.sample.drive
+package com.omh.android.storage.sample.presentation.file_viewer
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -10,8 +10,8 @@ class FilesAndFoldersViewModelFactory(
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return if (modelClass.isAssignableFrom(FilesAndFoldersViewModel::class.java)) {
-            FilesAndFoldersViewModel(
+        return if (modelClass.isAssignableFrom(FileViewerViewModel::class.java)) {
+            FileViewerViewModel(
                 this.getFilesListWithParentIdUseCase
             ) as T
         } else {

@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application
-        android:name=".DemoApp"
+        android:name=".AndroidApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -10,7 +10,7 @@
         android:theme="@style/Theme.OMHStorage">
 
         <activity
-            android:name=".login.ActivityLogin"
+            android:name=".presentation.login.LoginActivity"
             android:exported="true"
             android:resizeableActivity="true">
             <intent-filter>
@@ -20,12 +20,12 @@
         </activity>
 
         <activity
-            android:name=".splash.ActivitySplash"
+            android:name=".presentation.splash.SplashActivity"
             android:exported="false"
             android:label="Splash" />
 
         <activity
-            android:name=".drive.ActivityFilesAndFolders"
+            android:name=".presentation.file_viewer.FileViewerActivity"
             android:exported="false"
             android:label="Storage" />
 

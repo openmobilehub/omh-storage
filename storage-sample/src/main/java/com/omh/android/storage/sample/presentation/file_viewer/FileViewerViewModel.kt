@@ -1,4 +1,4 @@
-package com.omh.android.storage.sample.drive
+package com.omh.android.storage.sample.presentation.file_viewer
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -11,7 +11,7 @@ import com.omh.android.storage.api.domain.usecase.OmhResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class FilesAndFoldersViewModel(
+class FileViewerViewModel(
     private val getFilesListWithParentIdUseCase: GetFilesListWithParentIdUseCase
 ) : ViewModel() {
 
