@@ -13,6 +13,11 @@ import com.omh.android.storage.sample.databinding.RvItemFilefolderGridBinding
 
 class FileGridAdapter : RecyclerView.Adapter<FileGridAdapter.FileGridViewHolder>() {
 
+    interface GridItemListener {
+
+        fun onFileClicked(file: OmhFile)
+    }
+
     private val files = mutableListOf<OmhFile>()
 
     class FileGridViewHolder(
