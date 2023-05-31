@@ -82,9 +82,8 @@ class FileViewerActivity :
         if (adapter == null) {
             adapter = FileGridAdapter(this)
             with(binding.filesRecyclerView) {
-                setHasFixedSize(true)
                 layoutManager = GridLayoutManager(this@FileViewerActivity, 2)
-                adapter = adapter
+                adapter = this@FileViewerActivity.adapter
             }
         }
     }
