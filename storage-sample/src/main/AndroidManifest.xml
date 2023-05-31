@@ -20,7 +20,7 @@
         </activity>
 
         <activity
-            android:name=".splash.ActivitySplash"
+            android:name=".presentation.splash.ActivitySplash"
             android:exported="false"
             android:label="Splash" />
 

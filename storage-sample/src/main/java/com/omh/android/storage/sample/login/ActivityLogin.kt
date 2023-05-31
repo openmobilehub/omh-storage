@@ -8,7 +8,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.omh.android.auth.api.OmhAuthClient
 import com.omh.android.storage.sample.databinding.ActivityLoginBinding
-import com.omh.android.storage.sample.splash.ActivitySplash
+import com.omh.android.storage.sample.presentation.splash.ActivitySplash
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 

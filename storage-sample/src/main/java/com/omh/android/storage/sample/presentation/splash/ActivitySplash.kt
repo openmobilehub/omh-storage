@@ -1,4 +1,4 @@
-package com.omh.android.storage.sample.splash
+package com.omh.android.storage.sample.presentation.splash
 
 import android.content.Intent
 import android.os.Bundle
