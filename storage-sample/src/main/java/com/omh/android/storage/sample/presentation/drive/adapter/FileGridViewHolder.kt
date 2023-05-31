@@ -1,4 +1,4 @@
-package com.omh.android.storage.sample.presentation.drive.adapter.grid
+package com.omh.android.storage.sample.presentation.drive.adapter
 
 import android.widget.ImageView
 import android.widget.TextView

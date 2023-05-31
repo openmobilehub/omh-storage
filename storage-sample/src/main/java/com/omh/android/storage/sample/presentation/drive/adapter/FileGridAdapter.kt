@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.omh.android.storage.api.domain.model.OmhFile
 import com.omh.android.storage.sample.databinding.RvItemFilefolderGridBinding
-import com.omh.android.storage.sample.presentation.drive.adapter.grid.FileGridViewHolder
 
 class FileGridAdapter : RecyclerView.Adapter<FileGridViewHolder>() {
 
