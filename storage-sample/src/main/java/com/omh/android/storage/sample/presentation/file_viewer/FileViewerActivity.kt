@@ -26,7 +26,7 @@ class FileViewerActivity :
 
     override val viewModel: FileViewerViewModel by viewModels()
     private lateinit var binding: ActivityFileViewerBinding
-    private var adapter: FileGridAdapter? = null
+    private var filesAdapter: FileGridAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,15 +75,15 @@ class FileViewerActivity :
             filesRecyclerView.visibility = recyclerVisibility
         }
 
-        adapter?.submitList(files)
+        filesAdapter?.submitList(files)
     }
 
     private fun initializeAdapter() {
-        if (adapter == null) {
-            adapter = FileGridAdapter(this)
+        if (filesAdapter == null) {
+            filesAdapter = FileGridAdapter(this)
             with(binding.filesRecyclerView) {
                 layoutManager = GridLayoutManager(this@FileViewerActivity, 2)
-                adapter = this@FileViewerActivity.adapter
+                adapter = filesAdapter
             }
         }
     }
