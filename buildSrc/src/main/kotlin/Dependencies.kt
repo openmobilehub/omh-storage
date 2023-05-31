@@ -42,5 +42,5 @@ object Libs {
     val coroutineTesting by lazy { "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.coroutines}" }
 
     // Auth
-    val omhAuthLibrary by lazy { "com.openmobilehub.android:auth-api:${Versions.omhAuth}" }
+    val omhNonGmsAuthLibrary by lazy { "com.openmobilehub.android:auth-api-non-gms:${Versions.omhAuth}" }
 }

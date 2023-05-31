@@ -7,13 +7,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.omh.android.storage.sample.databinding.ActivityFilesFoldersBinding
-import com.omh.android.storage.sample.drive.adapter.grid.FilesFoldersGridAdapter
+import com.omh.android.storage.sample.drive.adapter.grid.FileGridAdapter
 
 class ActivityFilesAndFolders : AppCompatActivity() {
 
     private lateinit var tvSortByName: TextView
     private lateinit var rvFilesAndFolders: RecyclerView
-    private lateinit var rvGridAdapter: FilesFoldersGridAdapter
+    private lateinit var rvGridAdapter: FileGridAdapter
 
     private val binding: ActivityFilesFoldersBinding by lazy {
         ActivityFilesFoldersBinding.inflate(layoutInflater)
@@ -39,7 +39,7 @@ class ActivityFilesAndFolders : AppCompatActivity() {
         tvSortByName.setOnClickListener {
             // viewModel.sortByName()
         }
-        rvGridAdapter = FilesFoldersGridAdapter()
+        rvGridAdapter = FileGridAdapter()
         rvFilesAndFolders.setHasFixedSize(true)
         rvFilesAndFolders.layoutManager = GridLayoutManager(this, 2)
         rvFilesAndFolders.adapter = rvGridAdapter

@@ -15,22 +15,26 @@ import dagger.hilt.components.SingletonComponent
 @Module
 @InstallIn(SingletonComponent::class)
 class SingletonModule {
+
     @Provides
     fun providesOmhAuthClient(@ApplicationContext context: Context): OmhAuthClient {
-        return OmhAuthProvider.provideAuthClient(
-            scopes = listOf(
-                "openid",
-                "email",
-                "profile",
-                "https://www.googleapis.com/auth/drive.file"
-            ),
-            clientId = BuildConfig.CLIENT_ID,
-            context = context
-        )
+        return OmhAuthProvider.Builder()
+            .addNonGmsPath(OmhAuthProvider.NGMS_ADDRESS)
+            .build()
+            .provideAuthClient(
+                context = context,
+                scopes = listOf(
+                    "openid",
+                    "email",
+                    "profile",
+                    "https://www.googleapis.com/auth/drive.file"
+                ),
+                clientId = BuildConfig.CLIENT_ID
+            )
     }
 
     @Provides
-    fun providesOmhStorageClient(@ApplicationContext context: Context): OmhStorageClient {
-        return OmhStorageProvider.provideStorageClient(context)
+    fun providesOmhStorageClient(omhAuthClient: OmhAuthClient): OmhStorageClient {
+        return OmhStorageProvider.provideStorageClient(omhAuthClient)
     }
 }
