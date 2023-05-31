@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.omh.android.storage.sample.databinding.ActivityFilesFoldersBinding
-import com.omh.android.storage.sample.presentation.drive.adapter.grid.FileGridAdapter
+import com.omh.android.storage.sample.presentation.drive.adapter.FileGridAdapter
 
 class FileViewerActivity : AppCompatActivity() {
 
