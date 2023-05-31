@@ -9,7 +9,7 @@ sealed class FileViewerViewEvent : ViewEvent {
         override fun getName() = "FileViewerViewEvent.Initialize"
     }
 
-    class RefreshList(val parentId: String = "") : FileViewerViewEvent() {
+    class RefreshFileList(val parentId: String = "") : FileViewerViewEvent() {
 
         override fun getName() = "FileViewerViewEvent.RefreshList"
     }
