@@ -7,7 +7,8 @@ internal class NonGmsFileRepositoryImpl(
     private val dataSource: OmhFileRemoteDataSource
 ) : FileRepository {
 
-    override fun getRootFilesList() = dataSource.getRootFilesList()
+    override fun getFilesListWithParentId(parentId: String) =
+        dataSource.getFilesListWithParentId(parentId)
 
     override fun createFile(name: String, mimeType: String, parentId: String?) =
         dataSource.createFile(name, mimeType, parentId)
