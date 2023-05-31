@@ -74,6 +74,8 @@ class FileViewerActivity :
             topPanel.visibility = recyclerVisibility
             filesRecyclerView.visibility = recyclerVisibility
         }
+
+        adapter?.submitList(files)
     }
 
     private fun initializeAdapter() {
