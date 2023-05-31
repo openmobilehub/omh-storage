@@ -9,8 +9,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.omh.android.storage.api.domain.model.OmhFile
 import com.omh.android.storage.sample.databinding.ActivityFilesFoldersBinding
 import com.omh.android.storage.sample.presentation.file_viewer.adapter.FileGridAdapter
+import dagger.hilt.android.AndroidEntryPoint
 
-class FileViewerActivity : AppCompatActivity(), FileGridAdapter.GridItemListener{
+@AndroidEntryPoint
+class FileViewerActivity : AppCompatActivity(), FileGridAdapter.GridItemListener {
 
     private lateinit var tvSortByName: TextView
     private lateinit var rvFilesAndFolders: RecyclerView

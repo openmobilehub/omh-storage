@@ -8,10 +8,13 @@ import com.omh.android.storage.api.domain.model.OmhFile
 import com.omh.android.storage.api.domain.usecase.GetFilesListWithParentIdUseCase
 import com.omh.android.storage.api.domain.usecase.GetFilesListWithParentIdUseCaseParams
 import com.omh.android.storage.api.domain.usecase.OmhResult
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class FileViewerViewModel(
+@HiltViewModel
+class FileViewerViewModel @Inject constructor(
     private val getFilesListWithParentIdUseCase: GetFilesListWithParentIdUseCase
 ) : ViewModel() {
 
