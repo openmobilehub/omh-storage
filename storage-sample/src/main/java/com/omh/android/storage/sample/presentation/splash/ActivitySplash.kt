@@ -8,7 +8,7 @@ import com.omh.android.auth.api.OmhAuthClient
 import com.omh.android.auth.api.OmhCredentials
 import com.omh.android.storage.api.OmhStorageClient
 import com.omh.android.storage.sample.databinding.ActivitySplashBinding
-import com.omh.android.storage.sample.presentation.drive.ActivityFilesAndFolders
+import com.omh.android.storage.sample.presentation.drive.FileViewerActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -50,7 +50,7 @@ class ActivitySplash : AppCompatActivity() {
     }
 
     private fun navigateToFilesAndFolders() {
-        val intent = Intent(this, ActivityFilesAndFolders::class.java)
+        val intent = Intent(this, FileViewerActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK)
         startActivity(intent)
     }

@@ -25,7 +25,7 @@
             android:label="Splash" />
 
         <activity
-            android:name=".presentation.drive.ActivityFilesAndFolders"
+            android:name=".presentation.drive.FileViewerActivity"
             android:exported="false"
             android:label="Storage" />
 

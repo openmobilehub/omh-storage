@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.omh.android.storage.sample.databinding.ActivityFilesFoldersBinding
 import com.omh.android.storage.sample.presentation.drive.adapter.grid.FileGridAdapter
 
-class ActivityFilesAndFolders : AppCompatActivity() {
+class FileViewerActivity : AppCompatActivity() {
 
     private lateinit var tvSortByName: TextView
     private lateinit var rvFilesAndFolders: RecyclerView
