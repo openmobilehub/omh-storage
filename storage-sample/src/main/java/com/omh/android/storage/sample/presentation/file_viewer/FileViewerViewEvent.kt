@@ -13,4 +13,9 @@ sealed class FileViewerViewEvent : ViewEvent {
 
         override fun getName() = "FileViewerViewEvent.RefreshList"
     }
+
+    object SwapLayoutManager : FileViewerViewEvent() {
+
+        override fun getName() = "FileViewerViewEvent.SwapLayoutManager"
+    }
 }

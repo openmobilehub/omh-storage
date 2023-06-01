@@ -6,16 +6,17 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.omh.android.storage.api.domain.model.OmhFile
 import com.omh.android.storage.sample.databinding.ActivityFileViewerBinding
 import com.omh.android.storage.sample.presentation.BaseActivity
-import com.omh.android.storage.sample.presentation.file_viewer.adapter.FileGridAdapter
+import com.omh.android.storage.sample.presentation.file_viewer.adapter.FileAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class FileViewerActivity :
     BaseActivity<FileViewerViewModel, FileViewerViewState, FileViewerViewEvent>(),
-    FileGridAdapter.GridItemListener {
+    FileAdapter.GridItemListener {
 
     companion object {
 
@@ -26,7 +27,7 @@ class FileViewerActivity :
 
     override val viewModel: FileViewerViewModel by viewModels()
     private lateinit var binding: ActivityFileViewerBinding
-    private var filesAdapter: FileGridAdapter? = null
+    private var filesAdapter: FileAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,10 +36,16 @@ class FileViewerActivity :
         setContentView(view)
     }
 
+    override fun onResume() {
+        super.onResume()
+        binding.swapGridOrLinearLayoutManager.setOnClickListener { dispatchEvent(FileViewerViewEvent.SwapLayoutManager) }
+    }
+
     override fun buildState(state: FileViewerViewState) = when (state) {
         FileViewerViewState.Initial -> buildInitialState()
         FileViewerViewState.Loading -> buildLoadingState()
         is FileViewerViewState.Content -> buildContentState(state)
+        is FileViewerViewState.SwapLayoutManager -> buildSwapLayoutManagerState()
     }
 
     private fun buildInitialState() {
@@ -52,7 +59,6 @@ class FileViewerActivity :
         topPanel.visibility = View.GONE
         filesRecyclerView.visibility = View.GONE
     }
-
 
     private fun buildContentState(state: FileViewerViewState.Content) {
         val files = state.files
@@ -80,11 +86,21 @@ class FileViewerActivity :
             return
         }
 
-        filesAdapter = FileGridAdapter(this)
+        filesAdapter = FileAdapter(this, viewModel.isGridLayoutManager)
         with(binding.filesRecyclerView) {
-            layoutManager = GridLayoutManager(this@FileViewerActivity, 2)
+            layoutManager = if (viewModel.isGridLayoutManager) {
+                GridLayoutManager(this@FileViewerActivity, 2)
+            } else {
+                LinearLayoutManager(this@FileViewerActivity)
+            }
             adapter = filesAdapter
         }
+    }
+
+    private fun buildSwapLayoutManagerState() {
+        filesAdapter = null
+        initializeAdapter()
+        dispatchEvent(FileViewerViewEvent.Initialize)
     }
 
     override fun onFileClicked(file: OmhFile) {
