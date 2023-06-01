@@ -1,4 +1,4 @@
-package com.omh.android.storage.sample.presentation.file_viewer.adapter
+package com.omh.android.storage.sample.presentation.file_viewer
 
 import android.content.Context
 import android.view.LayoutInflater

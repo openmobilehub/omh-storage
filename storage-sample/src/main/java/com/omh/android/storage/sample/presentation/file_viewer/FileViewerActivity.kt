@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.omh.android.storage.api.domain.model.OmhFile
 import com.omh.android.storage.sample.databinding.ActivityFileViewerBinding
 import com.omh.android.storage.sample.presentation.BaseActivity
-import com.omh.android.storage.sample.presentation.file_viewer.adapter.FileAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
