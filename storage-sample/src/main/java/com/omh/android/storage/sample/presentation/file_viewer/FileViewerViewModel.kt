@@ -1,37 +1,46 @@
 package com.omh.android.storage.sample.presentation.file_viewer
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.omh.android.storage.api.domain.model.OmhFile
 import com.omh.android.storage.api.domain.usecase.GetFilesListWithParentIdUseCase
 import com.omh.android.storage.api.domain.usecase.GetFilesListWithParentIdUseCaseParams
 import com.omh.android.storage.api.domain.usecase.OmhResult
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import com.omh.android.storage.sample.di.DefaultDispatcher
+import com.omh.android.storage.sample.presentation.BaseViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
+import javax.inject.Inject
 
-class FileViewerViewModel(
-    private val getFilesListWithParentIdUseCase: GetFilesListWithParentIdUseCase
-) : ViewModel() {
+@HiltViewModel
+class FileViewerViewModel @Inject constructor(
+    private val getFilesListWithParentIdUseCase: GetFilesListWithParentIdUseCase,
+) : BaseViewModel<FileViewerViewState, FileViewerViewEvent>() {
 
-    private val _filesFoldersLiveData = MutableLiveData<List<OmhFile>>()
-    val filesFoldersLiveData: LiveData<List<OmhFile>> = _filesFoldersLiveData
-    private val _sortByNameAscendingLiveData = MutableLiveData<Boolean>()
-    val sortByNameAscendingLiveData: LiveData<Boolean> = _sortByNameAscendingLiveData
+    override fun getInitialState(): FileViewerViewState = FileViewerViewState.Initial
 
-    fun loadFilesFoldersFromRoot() {
-        viewModelScope.launch(Dispatchers.IO) {
-
-            when (val result = getFilesListWithParentIdUseCase(GetFilesListWithParentIdUseCaseParams())) {
-                is OmhResult.OmhSuccess -> {
-                    _filesFoldersLiveData.postValue(result.data.files)
-                }
-                is OmhResult.OmhError -> {
-                    // TODO: handle exception
-                }
-            }
+    override suspend fun processEvent(event: FileViewerViewEvent) {
+        when (event) {
+            FileViewerViewEvent.Initialize -> initializeEvent()
+            is FileViewerViewEvent.RefreshFileList -> refreshFileListEvent(event.parentId)
         }
     }
 
+    private suspend fun initializeEvent() {
+        refreshFileListEvent()
+    }
+
+    private suspend fun refreshFileListEvent(parentId: String = "root") {
+        setState(FileViewerViewState.Loading)
+
+        when (
+            val result = getFilesListWithParentIdUseCase(GetFilesListWithParentIdUseCaseParams(parentId))
+        ) {
+            is OmhResult.OmhSuccess -> {
+                setState(FileViewerViewState.Content(result.data.files))
+            }
+
+            is OmhResult.OmhError -> {
+                toastMessage.postValue(result.toString())
+                setState(FileViewerViewState.Content(emptyList()))
+            }
+        }
+    }
 }

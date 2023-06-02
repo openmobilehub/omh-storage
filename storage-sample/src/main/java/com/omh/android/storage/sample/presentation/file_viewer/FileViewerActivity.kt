@@ -1,49 +1,90 @@
 package com.omh.android.storage.sample.presentation.file_viewer
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.omh.android.storage.api.domain.model.OmhFile
-import com.omh.android.storage.sample.databinding.ActivityFilesFoldersBinding
+import com.omh.android.storage.sample.databinding.ActivityFileViewerBinding
+import com.omh.android.storage.sample.presentation.BaseActivity
 import com.omh.android.storage.sample.presentation.file_viewer.adapter.FileGridAdapter
+import dagger.hilt.android.AndroidEntryPoint
 
-class FileViewerActivity : AppCompatActivity(), FileGridAdapter.GridItemListener{
+@AndroidEntryPoint
+class FileViewerActivity :
+    BaseActivity<FileViewerViewModel, FileViewerViewState, FileViewerViewEvent>(),
+    FileGridAdapter.GridItemListener {
 
-    private lateinit var tvSortByName: TextView
-    private lateinit var rvFilesAndFolders: RecyclerView
-    private lateinit var rvGridAdapter: FileGridAdapter
+    companion object {
 
-    private val binding: ActivityFilesFoldersBinding by lazy {
-        ActivityFilesFoldersBinding.inflate(layoutInflater)
+        fun getIntent(context: Context) = Intent(context, FileViewerActivity::class.java).apply {
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        }
     }
+
+    override val viewModel: FileViewerViewModel by viewModels()
+    private lateinit var binding: ActivityFileViewerBinding
+    private var filesAdapter: FileGridAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        prepareViewBindings()
-        binding.rvEmptyView.root.visibility = View.VISIBLE
-        binding.tvSortByName.visibility = View.GONE
+        binding = ActivityFileViewerBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
     }
 
-    private fun prepareViewBindings() {
-        setContentView(binding.root)
-        /*
-        tvSortByName = binding.tvSortByName
-        rvFilesAndFolders = binding.rvFilesAndFolders
-        prepareViews()
-        */
+    override fun buildState(state: FileViewerViewState) = when (state) {
+        FileViewerViewState.Initial -> buildInitialState()
+        FileViewerViewState.Loading -> buildLoadingState()
+        is FileViewerViewState.Content -> buildContentState(state)
     }
 
-    private fun prepareViews() {
-        tvSortByName.setOnClickListener {
-            // viewModel.sortByName()
+    private fun buildInitialState() {
+        initializeAdapter()
+        dispatchEvent(FileViewerViewEvent.Initialize)
+    }
+
+    private fun buildLoadingState() = with(binding) {
+        progressBar.visibility = View.VISIBLE
+        noContentLayout.visibility = View.GONE
+        topPanel.visibility = View.GONE
+        filesRecyclerView.visibility = View.GONE
+    }
+
+
+    private fun buildContentState(state: FileViewerViewState.Content) {
+        val files = state.files
+
+        val (emptyFolderVisibility, recyclerVisibility) = if (files.isEmpty()) {
+            Pair(View.VISIBLE, View.GONE)
+        } else {
+            Pair(View.GONE, View.VISIBLE)
         }
-        rvGridAdapter = FileGridAdapter(this)
-        rvFilesAndFolders.setHasFixedSize(true)
-        rvFilesAndFolders.layoutManager = GridLayoutManager(this, 2)
-        rvFilesAndFolders.adapter = rvGridAdapter
+
+        initializeAdapter()
+
+        with(binding) {
+            progressBar.visibility = View.GONE
+            noContentLayout.visibility = emptyFolderVisibility
+            topPanel.visibility = recyclerVisibility
+            filesRecyclerView.visibility = recyclerVisibility
+        }
+
+        filesAdapter?.submitList(files)
+    }
+
+    private fun initializeAdapter() {
+        if (filesAdapter != null) {
+            return
+        }
+
+        filesAdapter = FileGridAdapter(this)
+        with(binding.filesRecyclerView) {
+            layoutManager = GridLayoutManager(this@FileViewerActivity, 2)
+            adapter = filesAdapter
+        }
     }
 
     override fun onFileClicked(file: OmhFile) {

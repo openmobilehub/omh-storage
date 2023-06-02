@@ -19,7 +19,7 @@ internal interface GoogleStorageApiService {
 
         private const val Q_VALUE = "'%s' in parents and trashed = false"
 
-        private fun getQueryValue(parentId: String) = String.format(Q_VALUE, parentId)
+        internal fun getQueryValue(parentId: String = "root") = String.format(Q_VALUE, parentId)
 
         private const val QUERY_REQUESTED_FIELDS = "id,name,mimeType,modifiedTime,parents"
         private const val FIELDS_VALUE = "files($QUERY_REQUESTED_FIELDS)"
@@ -27,8 +27,7 @@ internal interface GoogleStorageApiService {
 
     @GET(FILES_PARTICLE)
     fun getFilesListWithParentId(
-        parentId: String = "root",
-        @Query(QUERY_Q) query: String = getQueryValue(parentId),
+        @Query(QUERY_Q) query: String,
         @Query(QUERY_FIELDS) fields: String = FIELDS_VALUE
     ): Call<FileListRemoteResponse>
 
