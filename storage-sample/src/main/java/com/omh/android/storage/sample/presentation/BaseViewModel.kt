@@ -9,9 +9,7 @@ import com.omh.android.storage.sample.util.TAG_VIEW_UPDATE
 import com.omh.android.storage.sample.util.launchSafe
 import kotlinx.coroutines.CoroutineDispatcher
 
-abstract class BaseViewModel<State : ViewState, Event : ViewEvent>(
-    private val coroutineDispatcher: CoroutineDispatcher
-) : ViewModel() {
+abstract class BaseViewModel<State : ViewState, Event : ViewEvent> : ViewModel() {
 
     val state: MutableLiveData<State> = MutableLiveData()
     val toastMessage: MutableLiveData<String> = MutableLiveData()

@@ -35,12 +35,10 @@ class FileViewerActivity :
         setContentView(view)
     }
 
-    override fun buildState(state: FileViewerViewState) {
-        when (state) {
-            FileViewerViewState.Initial -> buildInitialState()
-            FileViewerViewState.Loading -> buildLoadingState()
-            is FileViewerViewState.Content -> buildContentState(state)
-        }
+    override fun buildState(state: FileViewerViewState) = when (state) {
+        FileViewerViewState.Initial -> buildInitialState()
+        FileViewerViewState.Loading -> buildLoadingState()
+        is FileViewerViewState.Content -> buildContentState(state)
     }
 
     private fun buildInitialState() {
@@ -48,14 +46,13 @@ class FileViewerActivity :
         dispatchEvent(FileViewerViewEvent.Initialize)
     }
 
-    private fun buildLoadingState() {
-        with(binding) {
-            progressBar.visibility = View.VISIBLE
-            noContentLayout.visibility = View.GONE
-            topPanel.visibility = View.GONE
-            filesRecyclerView.visibility = View.GONE
-        }
+    private fun buildLoadingState() = with(binding) {
+        progressBar.visibility = View.VISIBLE
+        noContentLayout.visibility = View.GONE
+        topPanel.visibility = View.GONE
+        filesRecyclerView.visibility = View.GONE
     }
+
 
     private fun buildContentState(state: FileViewerViewState.Content) {
         val files = state.files

@@ -12,8 +12,7 @@ import javax.inject.Inject
 @HiltViewModel
 class FileViewerViewModel @Inject constructor(
     private val getFilesListWithParentIdUseCase: GetFilesListWithParentIdUseCase,
-    @DefaultDispatcher coroutineDispatcher: CoroutineDispatcher
-) : BaseViewModel<FileViewerViewState, FileViewerViewEvent>(coroutineDispatcher) {
+) : BaseViewModel<FileViewerViewState, FileViewerViewEvent>() {
 
     override fun getInitialState(): FileViewerViewState = FileViewerViewState.Initial
 
