@@ -1,17 +1,15 @@
 package com.omh.android.storage.sample.presentation.file_viewer
 
-import com.omh.android.storage.api.domain.usecase.GetFilesListWithParentIdUseCase
+import com.omh.android.storage.api.OmhStorageClient
 import com.omh.android.storage.api.domain.usecase.GetFilesListWithParentIdUseCaseParams
 import com.omh.android.storage.api.domain.usecase.OmhResult
-import com.omh.android.storage.sample.di.DefaultDispatcher
 import com.omh.android.storage.sample.presentation.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
 
 @HiltViewModel
 class FileViewerViewModel @Inject constructor(
-    private val getFilesListWithParentIdUseCase: GetFilesListWithParentIdUseCase,
+    private val omhStorageClient: OmhStorageClient
 ) : BaseViewModel<FileViewerViewState, FileViewerViewEvent>() {
 
     var isGridLayoutManager = true
@@ -33,9 +31,10 @@ class FileViewerViewModel @Inject constructor(
     private suspend fun refreshFileListEvent(parentId: String = "root") {
         setState(FileViewerViewState.Loading)
 
+        val listFiles = omhStorageClient.listFiles()
+
         when (
-            val result =
-                getFilesListWithParentIdUseCase(GetFilesListWithParentIdUseCaseParams(parentId))
+            val result = listFiles(GetFilesListWithParentIdUseCaseParams(parentId))
         ) {
             is OmhResult.OmhSuccess -> {
                 setState(FileViewerViewState.Content(result.data.files))
