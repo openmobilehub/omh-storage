@@ -76,12 +76,14 @@ class FileViewerActivity :
     }
 
     private fun initializeAdapter() {
-        if (filesAdapter == null) {
-            filesAdapter = FileGridAdapter(this)
-            with(binding.filesRecyclerView) {
-                layoutManager = GridLayoutManager(this@FileViewerActivity, 2)
-                adapter = filesAdapter
-            }
+        if (filesAdapter != null) {
+            return
+        }
+
+        filesAdapter = FileGridAdapter(this)
+        with(binding.filesRecyclerView) {
+            layoutManager = GridLayoutManager(this@FileViewerActivity, 2)
+            adapter = filesAdapter
         }
     }
 
