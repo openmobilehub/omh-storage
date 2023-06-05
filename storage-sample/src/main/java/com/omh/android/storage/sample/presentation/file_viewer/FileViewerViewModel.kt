@@ -14,12 +14,15 @@ class FileViewerViewModel @Inject constructor(
     private val getFilesListWithParentIdUseCase: GetFilesListWithParentIdUseCase,
 ) : BaseViewModel<FileViewerViewState, FileViewerViewEvent>() {
 
+    var isGridLayoutManager = true
+
     override fun getInitialState(): FileViewerViewState = FileViewerViewState.Initial
 
     override suspend fun processEvent(event: FileViewerViewEvent) {
         when (event) {
             FileViewerViewEvent.Initialize -> initializeEvent()
             is FileViewerViewEvent.RefreshFileList -> refreshFileListEvent(event.parentId)
+            is FileViewerViewEvent.SwapLayoutManager -> swapLayoutManagerEvent()
         }
     }
 
@@ -31,7 +34,8 @@ class FileViewerViewModel @Inject constructor(
         setState(FileViewerViewState.Loading)
 
         when (
-            val result = getFilesListWithParentIdUseCase(GetFilesListWithParentIdUseCaseParams(parentId))
+            val result =
+                getFilesListWithParentIdUseCase(GetFilesListWithParentIdUseCaseParams(parentId))
         ) {
             is OmhResult.OmhSuccess -> {
                 setState(FileViewerViewState.Content(result.data.files))
@@ -42,5 +46,10 @@ class FileViewerViewModel @Inject constructor(
                 setState(FileViewerViewState.Content(emptyList()))
             }
         }
+    }
+
+    private fun swapLayoutManagerEvent() {
+        isGridLayoutManager = !isGridLayoutManager
+        setState(FileViewerViewState.SwapLayoutManager)
     }
 }
