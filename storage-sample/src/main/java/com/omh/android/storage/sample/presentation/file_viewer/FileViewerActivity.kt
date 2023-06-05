@@ -103,7 +103,7 @@ class FileViewerActivity :
     }
 
     override fun onFileClicked(file: OmhFile) {
-        // TODO: Implement click listener
+        dispatchEvent(FileViewerViewEvent.FileClicked(file))
     }
 
 }

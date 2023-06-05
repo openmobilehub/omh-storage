@@ -22,6 +22,8 @@ class FileAdapter(
 
     companion object {
 
+        private const val URL_FOLDER =
+            "https://drive-thirdparty.googleusercontent.com/32/type/application/vnd.google-apps.folder"
         private const val URL_DOCUMENT =
             "https://drive-thirdparty.googleusercontent.com/32/type/application/vnd.google-apps.document"
         private const val URL_SHEET =
@@ -35,6 +37,8 @@ class FileAdapter(
         private const val URL_OTHER = "https://static.thenounproject.com/png/3482632-200.png"
 
         private fun getFileIconUrl(fileType: OmhFileType) = when (fileType) {
+            OmhFileType.FOLDER -> URL_FOLDER
+
             OmhFileType.PDF -> URL_PDF
 
             OmhFileType.DOCUMENT,
