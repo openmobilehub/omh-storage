@@ -20,7 +20,7 @@ class SingletonModule {
     @Provides
     fun providesOmhAuthClient(@ApplicationContext context: Context): OmhAuthClient {
         return OmhAuthProvider.Builder()
-            .addNonGmsPath(OmhAuthProvider.NGMS_ADDRESS)
+            .addNonGmsPath()
             .build()
             .provideAuthClient(
                 context = context,
