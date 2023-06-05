@@ -5,6 +5,7 @@ import com.omh.android.storage.api.domain.usecase.GetFilesListWithParentIdUseCas
 import com.omh.android.storage.api.domain.usecase.OmhResult
 import com.omh.android.storage.sample.presentation.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.util.Stack
 import javax.inject.Inject
 
 @HiltViewModel
@@ -12,16 +13,22 @@ class FileViewerViewModel @Inject constructor(
     private val omhStorageClient: OmhStorageClient
 ) : BaseViewModel<FileViewerViewState, FileViewerViewEvent>() {
 
+    companion object {
+        private const val ID_ROOT = "root"
+    }
+
     var isGridLayoutManager = true
+    private val parentIdStack = Stack<String>().apply { push(ID_ROOT) }
 
     override fun getInitialState(): FileViewerViewState = FileViewerViewState.Initial
 
     override suspend fun processEvent(event: FileViewerViewEvent) {
         when (event) {
             FileViewerViewEvent.Initialize -> initializeEvent()
-            is FileViewerViewEvent.RefreshFileList -> refreshFileListEvent(event.parentId)
+            is FileViewerViewEvent.RefreshFileList -> refreshFileListEvent()
             is FileViewerViewEvent.SwapLayoutManager -> swapLayoutManagerEvent()
             is FileViewerViewEvent.FileClicked -> fileClickedEvent(event)
+            FileViewerViewEvent.BackPressed -> backPressedEvent()
         }
     }
 
@@ -29,8 +36,9 @@ class FileViewerViewModel @Inject constructor(
         refreshFileListEvent()
     }
 
-    private suspend fun refreshFileListEvent(parentId: String = "root") {
+    private suspend fun refreshFileListEvent() {
         setState(FileViewerViewState.Loading)
+        val parentId = parentIdStack.peek()
 
         val listFiles = omhStorageClient.listFiles()
 
@@ -57,9 +65,21 @@ class FileViewerViewModel @Inject constructor(
         val file = event.file
 
         if (file.isFolder()) {
-            refreshFileListEvent(file.id)
+            val fileId = file.id
+
+            parentIdStack.push(fileId)
+            refreshFileListEvent()
         } else {
             // TODO: Implement download file
+        }
+    }
+
+    private suspend fun backPressedEvent() {
+        if (parentIdStack.peek() == ID_ROOT) {
+            setState(FileViewerViewState.Finish)
+        } else {
+            parentIdStack.pop()
+            refreshFileListEvent()
         }
     }
 }

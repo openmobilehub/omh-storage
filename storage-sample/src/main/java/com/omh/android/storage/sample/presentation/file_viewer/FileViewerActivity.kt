@@ -45,6 +45,7 @@ class FileViewerActivity :
         FileViewerViewState.Loading -> buildLoadingState()
         is FileViewerViewState.Content -> buildContentState(state)
         is FileViewerViewState.SwapLayoutManager -> buildSwapLayoutManagerState()
+        FileViewerViewState.Finish -> buildFinishState()
     }
 
     private fun buildInitialState() {
@@ -106,4 +107,9 @@ class FileViewerActivity :
         dispatchEvent(FileViewerViewEvent.FileClicked(file))
     }
 
+    override fun onBackPressed() {
+        dispatchEvent(FileViewerViewEvent.BackPressed)
+    }
+
+    private fun buildFinishState() = finish().also { finishAffinity() }
 }

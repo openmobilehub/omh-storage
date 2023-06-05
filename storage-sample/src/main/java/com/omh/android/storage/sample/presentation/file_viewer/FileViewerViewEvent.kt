@@ -10,7 +10,7 @@ sealed class FileViewerViewEvent : ViewEvent {
         override fun getName() = "FileViewerViewEvent.Initialize"
     }
 
-    class RefreshFileList(val parentId: String = "") : FileViewerViewEvent() {
+    object RefreshFileList : FileViewerViewEvent() {
 
         override fun getName() = "FileViewerViewEvent.RefreshList"
     }
@@ -23,5 +23,10 @@ sealed class FileViewerViewEvent : ViewEvent {
     class FileClicked(val file: OmhFile) : FileViewerViewEvent() {
 
         override fun getName() = "FileViewerViewEvent.FileClicked"
+    }
+
+    object BackPressed : FileViewerViewEvent() {
+
+        override fun getName() = "FileViewerViewEvent.BackPressed"
     }
 }
