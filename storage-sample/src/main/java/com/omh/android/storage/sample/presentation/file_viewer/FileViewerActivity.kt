@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,17 +28,25 @@ class FileViewerActivity :
     override val viewModel: FileViewerViewModel by viewModels()
     private lateinit var binding: ActivityFileViewerBinding
     private var filesAdapter: FileAdapter? = null
+    private lateinit var onBackPressedCallback: OnBackPressedCallback
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityFileViewerBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+
+        onBackPressedCallback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                dispatchEvent(FileViewerViewEvent.BackPressed)
+            }
+        }
     }
 
     override fun onResume() {
         super.onResume()
         binding.swapGridOrLinearLayoutManager.setOnClickListener { dispatchEvent(FileViewerViewEvent.SwapLayoutManager) }
+        onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
     }
 
     override fun buildState(state: FileViewerViewState) = when (state) {
@@ -105,10 +114,6 @@ class FileViewerActivity :
 
     override fun onFileClicked(file: OmhFile) {
         dispatchEvent(FileViewerViewEvent.FileClicked(file))
-    }
-
-    override fun onBackPressed() {
-        dispatchEvent(FileViewerViewEvent.BackPressed)
     }
 
     private fun buildFinishState() = finish().also { finishAffinity() }
