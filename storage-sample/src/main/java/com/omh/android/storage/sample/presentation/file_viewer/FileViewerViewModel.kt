@@ -21,6 +21,7 @@ class FileViewerViewModel @Inject constructor(
             FileViewerViewEvent.Initialize -> initializeEvent()
             is FileViewerViewEvent.RefreshFileList -> refreshFileListEvent(event.parentId)
             is FileViewerViewEvent.SwapLayoutManager -> swapLayoutManagerEvent()
+            is FileViewerViewEvent.FileClicked -> fileClickedEvent(event)
         }
     }
 
@@ -50,5 +51,15 @@ class FileViewerViewModel @Inject constructor(
     private fun swapLayoutManagerEvent() {
         isGridLayoutManager = !isGridLayoutManager
         setState(FileViewerViewState.SwapLayoutManager)
+    }
+
+    private suspend fun fileClickedEvent(event: FileViewerViewEvent.FileClicked) {
+        val file = event.file
+
+        if (file.isFolder()) {
+            refreshFileListEvent(file.id)
+        } else {
+            // TODO: Implement download file
+        }
     }
 }

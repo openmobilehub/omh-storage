@@ -1,5 +1,6 @@
 package com.omh.android.storage.sample.presentation.file_viewer
 
+import com.omh.android.storage.api.domain.model.OmhFile
 import com.omh.android.storage.sample.presentation.ViewEvent
 
 sealed class FileViewerViewEvent : ViewEvent {
@@ -17,5 +18,10 @@ sealed class FileViewerViewEvent : ViewEvent {
     object SwapLayoutManager : FileViewerViewEvent() {
 
         override fun getName() = "FileViewerViewEvent.SwapLayoutManager"
+    }
+
+    class FileClicked(val file: OmhFile) : FileViewerViewEvent() {
+
+        override fun getName() = "FileViewerViewEvent.FileClicked"
     }
 }
