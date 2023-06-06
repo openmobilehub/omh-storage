@@ -1,8 +1,10 @@
 package com.omh.android.storage.sample.presentation.file_viewer
 
 import com.omh.android.storage.api.OmhStorageClient
+import com.omh.android.storage.api.domain.model.OmhFileType
 import com.omh.android.storage.api.domain.usecase.GetFilesListWithParentIdUseCaseParams
 import com.omh.android.storage.api.domain.usecase.OmhResult
+import com.omh.android.storage.sample.domain.model.FileType
 import com.omh.android.storage.sample.presentation.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.util.Stack
@@ -15,9 +17,17 @@ class FileViewerViewModel @Inject constructor(
 
     companion object {
         private const val ID_ROOT = "root"
+
+        val listOfFileTypes = listOf(
+            FileType("Folder", OmhFileType.FOLDER),
+            FileType("Document", OmhFileType.DOCUMENT),
+            FileType("Sheet", OmhFileType.SPREADSHEET),
+            FileType("Presentation", OmhFileType.PRESENTATION),
+        )
     }
 
     var isGridLayoutManager = true
+    var createFileSelectedType: OmhFileType? = null
     private val parentIdStack = Stack<String>().apply { push(ID_ROOT) }
 
     override fun getInitialState(): FileViewerViewState = FileViewerViewState.Initial
@@ -82,4 +92,6 @@ class FileViewerViewModel @Inject constructor(
             refreshFileListEvent()
         }
     }
+
+
 }

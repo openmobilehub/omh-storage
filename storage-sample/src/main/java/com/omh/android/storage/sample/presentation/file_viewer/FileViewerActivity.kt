@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
@@ -127,11 +129,17 @@ class FileViewerActivity :
     private fun showCreateFileDialog() {
         val dialogCreateFileView = DialogCreateFileBinding.inflate(layoutInflater)
 
+        configureCreateFileDialogSpinner(dialogCreateFileView)
+
         val createFileDialogBuilder = AlertDialog.Builder(this).apply {
             setTitle(getString(R.string.text_create_file_title))
 
             setPositiveButton("Create") { dialog, _ ->
+                val fileName = dialogCreateFileView.fileName.text
+                val fileType = viewModel.createFileSelectedType
+
                 // TODO: dispatch event create file
+
                 dialog.dismiss()
             }
 
@@ -146,5 +154,38 @@ class FileViewerActivity :
         }
 
         createFileAlertDialog.show()
+    }
+
+    private fun configureCreateFileDialogSpinner(view: DialogCreateFileBinding) {
+        val fileTypes = FileViewerViewModel.listOfFileTypes
+
+        val fileTypesSpinnerAdapter = ArrayAdapter(
+            this,
+            android.R.layout.simple_spinner_item,
+            fileTypes.map { fileType -> fileType.name }
+        ).apply {
+            setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        }
+
+        with(view.fileType) {
+            adapter = fileTypesSpinnerAdapter
+            onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    val fileType = fileTypes[position]
+                    viewModel.createFileSelectedType = fileType.omhFileType
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                    val fileType = fileTypes[0]
+                    viewModel.createFileSelectedType = fileType.omhFileType
+                }
+            }
+        }
     }
 }
