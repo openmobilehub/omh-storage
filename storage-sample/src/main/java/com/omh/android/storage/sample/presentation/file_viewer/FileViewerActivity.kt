@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.omh.android.storage.api.domain.model.OmhFile
 import com.omh.android.storage.sample.R
 import com.omh.android.storage.sample.databinding.ActivityFileViewerBinding
+import com.omh.android.storage.sample.databinding.DialogCreateFileBinding
 import com.omh.android.storage.sample.presentation.BaseActivity
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -124,8 +125,10 @@ class FileViewerActivity :
     private fun buildFinishState() = finish().also { finishAffinity() }
 
     private fun showCreateFileDialog() {
+        val dialogCreateFileView = DialogCreateFileBinding.inflate(layoutInflater)
+
         val createFileDialogBuilder = AlertDialog.Builder(this).apply {
-            title = getString(R.string.text_create_file_title)
+            setTitle(getString(R.string.text_create_file_title))
 
             setPositiveButton("Create") { dialog, _ ->
                 // TODO: dispatch event create file
@@ -139,6 +142,7 @@ class FileViewerActivity :
 
         val createFileAlertDialog = createFileDialogBuilder.create().apply {
             setCancelable(false)
+            setView(dialogCreateFileView.root)
         }
 
         createFileAlertDialog.show()
