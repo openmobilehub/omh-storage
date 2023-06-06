@@ -5,7 +5,6 @@ import com.omh.android.auth.api.OmhAuthClient
 import com.omh.android.auth.api.OmhAuthProvider
 import com.omh.android.storage.api.OmhStorageClient
 import com.omh.android.storage.api.OmhStorageProvider
-import com.omh.android.storage.api.domain.usecase.GetFilesListWithParentIdUseCase
 import com.omh.android.storage.sample.BuildConfig
 import dagger.Module
 import dagger.Provides
@@ -39,8 +38,4 @@ class SingletonModule {
     fun providesOmhStorageClient(omhAuthClient: OmhAuthClient): OmhStorageClient {
         return OmhStorageProvider.provideStorageClient(omhAuthClient)
     }
-
-    @Provides
-    fun providesGetFilesListWithParentIdUseCase(omhStorageClient: OmhStorageClient) =
-        GetFilesListWithParentIdUseCase(omhStorageClient.getRepository())
 }

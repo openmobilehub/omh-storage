@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.omh.android.storage.sample.util.LOG_MESSAGE_EVENT
 import com.omh.android.storage.sample.util.TAG_VIEW_UPDATE
 import com.omh.android.storage.sample.util.launchSafe
-import kotlinx.coroutines.CoroutineDispatcher
 
 abstract class BaseViewModel<State : ViewState, Event : ViewEvent> : ViewModel() {
 
