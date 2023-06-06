@@ -6,4 +6,7 @@
     <string name="empty_folder">This folder is empty</string>
     <string name="text_name">Name</string>
     <string name="text_swap_grid_linear">Swap Grid/Linear</string>
+    <string name="text_create_file_title">Create File</string>
+    <string name="text_file_name_label">File Name:</string>
+    <string name="text_file_type_label">File Type:</string>
 </resources>

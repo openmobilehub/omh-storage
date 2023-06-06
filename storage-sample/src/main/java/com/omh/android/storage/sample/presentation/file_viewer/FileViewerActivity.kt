@@ -6,9 +6,11 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.omh.android.storage.api.domain.model.OmhFile
+import com.omh.android.storage.sample.R
 import com.omh.android.storage.sample.databinding.ActivityFileViewerBinding
 import com.omh.android.storage.sample.presentation.BaseActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -45,7 +47,10 @@ class FileViewerActivity :
 
     override fun onResume() {
         super.onResume()
-        binding.swapGridOrLinearLayoutManager.setOnClickListener { dispatchEvent(FileViewerViewEvent.SwapLayoutManager) }
+        with(binding) {
+            swapGridOrLinearLayoutManager.setOnClickListener { dispatchEvent(FileViewerViewEvent.SwapLayoutManager) }
+            createFileButton.setOnClickListener { showCreateFileDialog() }
+        }
         onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
     }
 
@@ -117,4 +122,25 @@ class FileViewerActivity :
     }
 
     private fun buildFinishState() = finish().also { finishAffinity() }
+
+    private fun showCreateFileDialog() {
+        val createFileDialogBuilder = AlertDialog.Builder(this).apply {
+            title = getString(R.string.text_create_file_title)
+
+            setPositiveButton("Create") { dialog, _ ->
+                // TODO: dispatch event create file
+                dialog.dismiss()
+            }
+
+            setNegativeButton("Cancel") { dialog, _ ->
+                dialog.cancel()
+            }
+        }
+
+        val createFileAlertDialog = createFileDialogBuilder.create().apply {
+            setCancelable(false)
+        }
+
+        createFileAlertDialog.show()
+    }
 }
