@@ -27,6 +27,6 @@ sealed class FileViewerViewState : ViewState {
 
     object Finish : FileViewerViewState() {
 
-        override fun getName() = "FileViewerViewState.SwapLayoutManager"
+        override fun getName() = "Finish.SwapLayoutManager"
     }
 }
