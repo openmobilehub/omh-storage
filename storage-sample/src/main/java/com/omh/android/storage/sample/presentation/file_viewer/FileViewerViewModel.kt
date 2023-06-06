@@ -2,6 +2,9 @@ package com.omh.android.storage.sample.presentation.file_viewer
 
 import com.omh.android.storage.api.OmhStorageClient
 import com.omh.android.storage.api.domain.model.OmhFileType
+import com.omh.android.storage.api.domain.usecase.CreateFileUseCase
+import com.omh.android.storage.api.domain.usecase.CreateFileUseCaseParams
+import com.omh.android.storage.api.domain.usecase.GetFilesListWithParentIdUseCase
 import com.omh.android.storage.api.domain.usecase.GetFilesListWithParentIdUseCaseParams
 import com.omh.android.storage.api.domain.usecase.OmhResult
 import com.omh.android.storage.sample.domain.model.FileType
@@ -39,6 +42,7 @@ class FileViewerViewModel @Inject constructor(
             is FileViewerViewEvent.SwapLayoutManager -> swapLayoutManagerEvent()
             is FileViewerViewEvent.FileClicked -> fileClickedEvent(event)
             FileViewerViewEvent.BackPressed -> backPressedEvent()
+            is FileViewerViewEvent.CreateFile -> createFile(event)
         }
     }
 
@@ -50,10 +54,10 @@ class FileViewerViewModel @Inject constructor(
         setState(FileViewerViewState.Loading)
         val parentId = parentIdStack.peek()
 
-        val listFiles = omhStorageClient.listFiles()
+        val listFilesUseCase: GetFilesListWithParentIdUseCase = omhStorageClient.listFiles()
 
         when (
-            val result = listFiles(GetFilesListWithParentIdUseCaseParams(parentId))
+            val result = listFilesUseCase(GetFilesListWithParentIdUseCaseParams(parentId))
         ) {
             is OmhResult.OmhSuccess -> {
                 setState(FileViewerViewState.Content(result.data.files))
@@ -93,5 +97,24 @@ class FileViewerViewModel @Inject constructor(
         }
     }
 
+    private suspend fun createFile(event: FileViewerViewEvent.CreateFile) {
+        setState(FileViewerViewState.Loading)
+        val parentId = parentIdStack.peek()
 
+        val createFileUseCase: CreateFileUseCase = omhStorageClient.createFile()
+
+        when (
+            val result =
+                createFileUseCase(CreateFileUseCaseParams(event.name, event.mimeType, parentId))
+        ) {
+            is OmhResult.OmhSuccess -> {
+                refreshFileListEvent()
+            }
+
+            is OmhResult.OmhError -> {
+                toastMessage.postValue(result.toString())
+                refreshFileListEvent()
+            }
+        }
+    }
 }

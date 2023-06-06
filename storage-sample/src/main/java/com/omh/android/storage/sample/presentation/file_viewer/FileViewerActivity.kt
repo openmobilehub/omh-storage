@@ -135,10 +135,12 @@ class FileViewerActivity :
             setTitle(getString(R.string.text_create_file_title))
 
             setPositiveButton("Create") { dialog, _ ->
-                val fileName = dialogCreateFileView.fileName.text
-                val fileType = viewModel.createFileSelectedType
+                val fileName = dialogCreateFileView.fileName.text.toString()
+                val fileType = viewModel.createFileSelectedType?.mimeType
 
-                // TODO: dispatch event create file
+                if (fileName.isNotBlank() && !fileType.isNullOrEmpty()) {
+                    dispatchEvent(FileViewerViewEvent.CreateFile(fileName, fileType))
+                }
 
                 dialog.dismiss()
             }

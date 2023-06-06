@@ -27,7 +27,7 @@ abstract class BaseViewModel<State : ViewState, Event : ViewEvent> : ViewModel()
 
     fun dispatchEvent(event: Event) {
         viewModelScope.launchSafe {
-            Log.i(TAG_VIEW_UPDATE, "$LOG_MESSAGE_EVENT${event.getName()}")
+            Log.i(TAG_VIEW_UPDATE, "$LOG_MESSAGE_EVENT${event.getEventName()}")
             processEvent(event)
         }
     }

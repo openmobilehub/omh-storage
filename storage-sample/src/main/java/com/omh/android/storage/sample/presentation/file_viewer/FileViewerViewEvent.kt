@@ -7,26 +7,31 @@ sealed class FileViewerViewEvent : ViewEvent {
 
     object Initialize : FileViewerViewEvent() {
 
-        override fun getName() = "FileViewerViewEvent.Initialize"
+        override fun getEventName() = "FileViewerViewEvent.Initialize"
     }
 
     object RefreshFileList : FileViewerViewEvent() {
 
-        override fun getName() = "FileViewerViewEvent.RefreshList"
+        override fun getEventName() = "FileViewerViewEvent.RefreshList"
     }
 
     object SwapLayoutManager : FileViewerViewEvent() {
 
-        override fun getName() = "FileViewerViewEvent.SwapLayoutManager"
+        override fun getEventName() = "FileViewerViewEvent.SwapLayoutManager"
     }
 
     class FileClicked(val file: OmhFile) : FileViewerViewEvent() {
 
-        override fun getName() = "FileViewerViewEvent.FileClicked"
+        override fun getEventName() = "FileViewerViewEvent.FileClicked"
     }
 
     object BackPressed : FileViewerViewEvent() {
 
-        override fun getName() = "FileViewerViewEvent.BackPressed"
+        override fun getEventName() = "FileViewerViewEvent.BackPressed"
+    }
+
+    class CreateFile(val name: String, val mimeType: String) : FileViewerViewEvent() {
+
+        override fun getEventName() = "FileViewerViewEvent.CreateFile"
     }
 }
