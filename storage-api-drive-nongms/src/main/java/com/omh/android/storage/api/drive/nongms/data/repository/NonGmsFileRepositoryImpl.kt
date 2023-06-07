@@ -13,11 +13,11 @@ internal class NonGmsFileRepositoryImpl(
     override fun createFile(name: String, mimeType: String, parentId: String?) =
         dataSource.createFile(name, mimeType, parentId)
 
+    override fun delete(fileId: String) = dataSource.deleteFile(fileId)
+
     override fun open() = Unit
 
     override fun update() = Unit
-
-    override fun delete() = Unit
 
     override fun upload() = Unit
 
