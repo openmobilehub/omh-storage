@@ -126,7 +126,7 @@ class FileViewerActivity :
     }
 
     override fun onDeleteClicked(file: OmhFile) {
-
+        dispatchEvent(FileViewerViewEvent.DeleteFile(file))
     }
 
     private fun buildFinishState() = finish().also { finishAffinity() }
