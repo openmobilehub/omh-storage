@@ -1,6 +1,7 @@
 package com.omh.android.storage.sample.presentation.file_viewer
 
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -131,24 +132,14 @@ class FileViewerActivity :
 
         configureCreateFileDialogSpinner(dialogCreateFileView)
 
-        val createFileDialogBuilder = AlertDialog.Builder(this).apply {
-            setTitle(getString(R.string.text_create_file_title))
-
-            setPositiveButton("Create") { dialog, _ ->
-                val fileName = dialogCreateFileView.fileName.text.toString()
-                val fileType = viewModel.createFileSelectedType?.mimeType
-
-                if (fileName.isNotBlank() && !fileType.isNullOrEmpty()) {
-                    dispatchEvent(FileViewerViewEvent.CreateFile(fileName, fileType))
-                }
-
-                dialog.dismiss()
+        val createFileDialogBuilder = AlertDialog.Builder(this)
+            .setTitle(getString(R.string.text_create_file_title))
+            .setPositiveButton("Create") { dialog, _ ->
+                configureCreateFilePositiveButtonEvent(dialogCreateFileView, dialog)
             }
-
-            setNegativeButton("Cancel") { dialog, _ ->
+            .setNegativeButton("Cancel") { dialog, _ ->
                 dialog.cancel()
             }
-        }
 
         val createFileAlertDialog = createFileDialogBuilder.create().apply {
             setCancelable(false)
@@ -156,6 +147,20 @@ class FileViewerActivity :
         }
 
         createFileAlertDialog.show()
+    }
+
+    private fun configureCreateFilePositiveButtonEvent(
+        view: DialogCreateFileBinding,
+        dialog: DialogInterface
+    ) {
+        val fileName = view.fileName.text.toString()
+        val fileType = viewModel.createFileSelectedType?.mimeType
+
+        if (fileName.isNotBlank() && !fileType.isNullOrEmpty()) {
+            dispatchEvent(FileViewerViewEvent.CreateFile(fileName, fileType))
+        }
+
+        dialog.dismiss()
     }
 
     private fun configureCreateFileDialogSpinner(view: DialogCreateFileBinding) {
