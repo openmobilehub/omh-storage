@@ -44,4 +44,15 @@ internal class NonGmsFileRemoteDataSourceImpl(private val retrofitImpl: GoogleRe
             null
         }
     }
+
+    override fun deleteFile(fileId: String): Boolean {
+        val response = retrofitImpl
+            .getGoogleStorageApiService()
+            .deleteFile(
+                fileId = fileId
+            )
+            .execute()
+
+        return response.isSuccessful
+    }
 }

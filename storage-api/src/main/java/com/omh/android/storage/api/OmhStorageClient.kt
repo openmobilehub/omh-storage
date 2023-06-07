@@ -3,6 +3,7 @@ package com.omh.android.storage.api
 import com.omh.android.auth.api.OmhAuthClient
 import com.omh.android.storage.api.domain.repository.FileRepository
 import com.omh.android.storage.api.domain.usecase.CreateFileUseCase
+import com.omh.android.storage.api.domain.usecase.DeleteFileUseCase
 import com.omh.android.storage.api.domain.usecase.GetFilesListWithParentIdUseCase
 
 abstract class OmhStorageClient protected constructor(
@@ -25,4 +26,6 @@ abstract class OmhStorageClient protected constructor(
     fun listFiles() = GetFilesListWithParentIdUseCase(getRepository())
 
     fun createFile() = CreateFileUseCase(getRepository())
+
+    fun deleteFile() = DeleteFileUseCase(getRepository())
 }
