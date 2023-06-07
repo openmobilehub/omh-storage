@@ -44,5 +44,5 @@ internal interface GoogleStorageApiService {
     @DELETE("$FILES_PARTICLE/{$FILE_ID}")
     fun deleteFile(
         @Path(FILE_ID) fileId: String
-    )
+    ): Call<Nothing>
 }
