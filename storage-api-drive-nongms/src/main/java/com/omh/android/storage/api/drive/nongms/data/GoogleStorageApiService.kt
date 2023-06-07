@@ -5,8 +5,10 @@ import com.omh.android.storage.api.drive.nongms.data.source.response.FileListRem
 import com.omh.android.storage.api.drive.nongms.data.source.response.FileRemoteResponse
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 internal interface GoogleStorageApiService {
@@ -23,6 +25,8 @@ internal interface GoogleStorageApiService {
 
         private const val QUERY_REQUESTED_FIELDS = "id,name,mimeType,modifiedTime,parents"
         private const val FIELDS_VALUE = "files($QUERY_REQUESTED_FIELDS)"
+
+        private const val FILE_ID = "fileId"
     }
 
     @GET(FILES_PARTICLE)
@@ -36,4 +40,9 @@ internal interface GoogleStorageApiService {
         @Query(QUERY_FIELDS) query: String = QUERY_REQUESTED_FIELDS,
         @Body body: CreateFileRequestBody
     ): Call<FileRemoteResponse>
+
+    @DELETE("$FILES_PARTICLE/{$FILE_ID}")
+    fun deleteFile(
+        @Path(FILE_ID) fileId: String
+    )
 }
