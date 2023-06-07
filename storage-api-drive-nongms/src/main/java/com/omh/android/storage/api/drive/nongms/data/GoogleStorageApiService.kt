@@ -3,6 +3,7 @@ package com.omh.android.storage.api.drive.nongms.data
 import com.omh.android.storage.api.drive.nongms.data.source.body.CreateFileRequestBody
 import com.omh.android.storage.api.drive.nongms.data.source.response.FileListRemoteResponse
 import com.omh.android.storage.api.drive.nongms.data.source.response.FileRemoteResponse
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -44,5 +45,5 @@ internal interface GoogleStorageApiService {
     @DELETE("$FILES_PARTICLE/{$FILE_ID}")
     fun deleteFile(
         @Path(FILE_ID) fileId: String
-    ): Call<Nothing>
+    ): Call<ResponseBody>
 }
