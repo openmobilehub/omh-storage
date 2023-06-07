@@ -1,15 +1,21 @@
 package com.omh.android.storage.sample.presentation.file_viewer
 
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.omh.android.storage.api.domain.model.OmhFile
+import com.omh.android.storage.sample.R
 import com.omh.android.storage.sample.databinding.ActivityFileViewerBinding
+import com.omh.android.storage.sample.databinding.DialogCreateFileBinding
 import com.omh.android.storage.sample.presentation.BaseActivity
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -45,7 +51,10 @@ class FileViewerActivity :
 
     override fun onResume() {
         super.onResume()
-        binding.swapGridOrLinearLayoutManager.setOnClickListener { dispatchEvent(FileViewerViewEvent.SwapLayoutManager) }
+        with(binding) {
+            swapGridOrLinearLayoutManager.setOnClickListener { dispatchEvent(FileViewerViewEvent.SwapLayoutManager) }
+            createFileButton.setOnClickListener { showCreateFileDialog() }
+        }
         onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
     }
 
@@ -117,4 +126,73 @@ class FileViewerActivity :
     }
 
     private fun buildFinishState() = finish().also { finishAffinity() }
+
+    private fun showCreateFileDialog() {
+        val dialogCreateFileView = DialogCreateFileBinding.inflate(layoutInflater)
+
+        configureCreateFileDialogSpinner(dialogCreateFileView)
+
+        val createFileDialogBuilder = AlertDialog.Builder(this)
+            .setTitle(getString(R.string.text_create_file_title))
+            .setPositiveButton("Create") { dialog, _ ->
+                configureCreateFilePositiveButtonEvent(dialogCreateFileView, dialog)
+            }
+            .setNegativeButton("Cancel") { dialog, _ ->
+                dialog.cancel()
+            }
+
+        val createFileAlertDialog = createFileDialogBuilder.create().apply {
+            setCancelable(false)
+            setView(dialogCreateFileView.root)
+        }
+
+        createFileAlertDialog.show()
+    }
+
+    private fun configureCreateFilePositiveButtonEvent(
+        view: DialogCreateFileBinding,
+        dialog: DialogInterface
+    ) {
+        val fileName = view.fileName.text.toString()
+        val fileType = viewModel.createFileSelectedType?.mimeType
+
+        if (fileName.isNotBlank() && !fileType.isNullOrEmpty()) {
+            dispatchEvent(FileViewerViewEvent.CreateFile(fileName, fileType))
+        }
+
+        dialog.dismiss()
+    }
+
+    private fun configureCreateFileDialogSpinner(view: DialogCreateFileBinding) {
+        val fileTypes = FileViewerViewModel.listOfFileTypes
+
+        val fileTypesSpinnerAdapter = ArrayAdapter(
+            this,
+            android.R.layout.simple_spinner_item,
+            fileTypes.map { fileType -> fileType.name }
+        ).apply {
+            setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        }
+
+        with(view.fileType) {
+            adapter = fileTypesSpinnerAdapter
+            onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    val fileType = fileTypes[position]
+                    viewModel.createFileSelectedType = fileType.omhFileType
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                    val fileType = fileTypes[0]
+                    viewModel.createFileSelectedType = fileType.omhFileType
+                }
+            }
+        }
+    }
 }

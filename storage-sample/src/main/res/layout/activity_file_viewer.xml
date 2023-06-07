@@ -74,6 +74,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/text_swap_grid_linear" />
+
+        <ImageButton
+            android:id="@+id/createFileButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="5dp"
+            android:background="#00FFFFFF"
+            android:src="@android:drawable/ic_menu_add"
+            app:tint="@color/black" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
