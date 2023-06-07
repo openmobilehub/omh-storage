@@ -8,7 +8,7 @@ interface FileRepository {
 
     fun createFile(name: String, mimeType: String, parentId: String?): OmhFile?
 
-    fun delete(fileId: String): Boolean
+    fun deleteFile(fileId: String): Boolean
 
     fun open()
 
