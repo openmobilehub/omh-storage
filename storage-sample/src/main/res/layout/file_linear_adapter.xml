@@ -20,11 +20,24 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
+        android:ellipsize="end"
+        android:maxLines="1"
         app:layout_constraintBottom_toBottomOf="@+id/fileIcon"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/buttonDelete"
         app:layout_constraintStart_toEndOf="@+id/fileIcon"
         app:layout_constraintTop_toTopOf="@+id/fileIcon"
         tools:text="File Name" />
+
+    <ImageView
+        android:id="@+id/buttonDelete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="5dp"
+        android:src="@android:drawable/ic_menu_delete"
+        app:layout_constraintBottom_toBottomOf="@+id/fileName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/fileName"
+        app:tint="@color/black" />
 
     <View
         android:id="@+id/line"
