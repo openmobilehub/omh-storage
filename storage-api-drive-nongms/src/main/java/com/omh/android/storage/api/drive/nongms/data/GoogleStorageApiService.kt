@@ -30,7 +30,7 @@ internal interface GoogleStorageApiService {
     }
 
     @GET(FILES_PARTICLE)
-    fun getFilesListWithParentId(
+    fun getFilesList(
         @Query(QUERY_Q) query: String,
         @Query(QUERY_FIELDS) fields: String = FIELDS_VALUE
     ): Call<FileListRemoteResponse>
