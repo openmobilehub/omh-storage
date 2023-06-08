@@ -11,14 +11,14 @@ import com.omh.android.storage.api.drive.nongms.data.repository.NonGmsFileReposi
 import com.omh.android.storage.api.drive.nongms.data.source.NonGmsFileRemoteDataSourceImpl
 import kotlin.jvm.Throws
 
-internal class OmhStorageClientImpl private constructor(
+internal class OmhNonGmsStorageClientImpl private constructor(
     authClient: OmhAuthClient
 ) : OmhStorageClient(authClient) {
 
     internal class Builder : OmhStorageClient.Builder {
 
         override fun build(authClient: OmhAuthClient): OmhStorageClient =
-            OmhStorageClientImpl(authClient)
+            OmhNonGmsStorageClientImpl(authClient)
     }
 
     @Throws(OmhStorageException::class)
