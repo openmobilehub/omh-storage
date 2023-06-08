@@ -1,11 +1,13 @@
 package com.omh.android.storage.sample.presentation.file_viewer
 
 import com.omh.android.storage.api.OmhStorageClient
+import com.omh.android.storage.api.domain.model.OmhFile
 import com.omh.android.storage.api.domain.model.OmhFileType
 import com.omh.android.storage.api.domain.usecase.CreateFileUseCase
 import com.omh.android.storage.api.domain.usecase.CreateFileUseCaseParams
 import com.omh.android.storage.api.domain.usecase.DeleteFileUseCase
 import com.omh.android.storage.api.domain.usecase.DeleteFileUseCaseParams
+import com.omh.android.storage.api.domain.usecase.DeleteFileUseCaseResult
 import com.omh.android.storage.api.domain.usecase.GetFilesListUseCase
 import com.omh.android.storage.api.domain.usecase.GetFilesListUseCaseParams
 import com.omh.android.storage.api.domain.usecase.OmhResult
@@ -130,20 +132,27 @@ class FileViewerViewModel @Inject constructor(
 
         when (val result = deleteFileUseCase(DeleteFileUseCaseParams(file.id))) {
             is OmhResult.OmhSuccess -> {
-                toastMessage.postValue(
-                    if (result.data.isSuccess) {
-                        "${file.name} was successfully deleted"
-                    } else {
-                        "${file.name} was NOT deleted"
-                    }
-                )
-                refreshFileListEvent()
+                handleDeleteSuccess(result, file)
             }
 
             is OmhResult.OmhError -> {
                 toastMessage.postValue("ERROR: ${file.name} was NOT deleted")
-                refreshFileListEvent()
             }
         }
+
+        refreshFileListEvent()
+    }
+
+    private fun handleDeleteSuccess(
+        result: OmhResult.OmhSuccess<DeleteFileUseCaseResult>,
+        file: OmhFile
+    ) {
+        val toastText = if (result.data.isSuccess) {
+            "${file.name} was successfully deleted"
+        } else {
+            "${file.name} was NOT deleted"
+        }
+
+        toastMessage.postValue(toastText)
     }
 }
