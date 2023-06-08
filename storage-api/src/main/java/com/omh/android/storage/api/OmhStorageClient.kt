@@ -4,7 +4,7 @@ import com.omh.android.auth.api.OmhAuthClient
 import com.omh.android.storage.api.domain.repository.FileRepository
 import com.omh.android.storage.api.domain.usecase.CreateFileUseCase
 import com.omh.android.storage.api.domain.usecase.DeleteFileUseCase
-import com.omh.android.storage.api.domain.usecase.GetFilesListWithParentIdUseCase
+import com.omh.android.storage.api.domain.usecase.GetFilesListUseCase
 
 abstract class OmhStorageClient protected constructor(
     protected val authClient: OmhAuthClient
@@ -23,7 +23,7 @@ abstract class OmhStorageClient protected constructor(
      *  and will not return an use case
      */
     @SuppressWarnings("ForbiddenComment")
-    fun listFiles() = GetFilesListWithParentIdUseCase(getRepository())
+    fun listFiles() = GetFilesListUseCase(getRepository())
 
     fun createFile() = CreateFileUseCase(getRepository())
 

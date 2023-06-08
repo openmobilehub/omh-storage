@@ -4,8 +4,8 @@ import com.omh.android.storage.api.OmhStorageClient
 import com.omh.android.storage.api.domain.model.OmhFileType
 import com.omh.android.storage.api.domain.usecase.CreateFileUseCase
 import com.omh.android.storage.api.domain.usecase.CreateFileUseCaseParams
-import com.omh.android.storage.api.domain.usecase.GetFilesListWithParentIdUseCase
-import com.omh.android.storage.api.domain.usecase.GetFilesListWithParentIdUseCaseParams
+import com.omh.android.storage.api.domain.usecase.GetFilesListUseCase
+import com.omh.android.storage.api.domain.usecase.GetFilesListUseCaseParams
 import com.omh.android.storage.api.domain.usecase.OmhResult
 import com.omh.android.storage.sample.domain.model.FileType
 import com.omh.android.storage.sample.presentation.BaseViewModel
@@ -54,10 +54,10 @@ class FileViewerViewModel @Inject constructor(
         setState(FileViewerViewState.Loading)
         val parentId = parentIdStack.peek()
 
-        val listFilesUseCase: GetFilesListWithParentIdUseCase = omhStorageClient.listFiles()
+        val listFilesUseCase: GetFilesListUseCase = omhStorageClient.listFiles()
 
         when (
-            val result = listFilesUseCase(GetFilesListWithParentIdUseCaseParams(parentId))
+            val result = listFilesUseCase(GetFilesListUseCaseParams(parentId))
         ) {
             is OmhResult.OmhSuccess -> {
                 setState(FileViewerViewState.Content(result.data.files))

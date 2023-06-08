@@ -11,10 +11,10 @@ import com.omh.android.storage.api.drive.nongms.data.source.mapper.toFileList
 internal class NonGmsFileRemoteDataSourceImpl(private val retrofitImpl: GoogleRetrofitImpl) :
     OmhFileRemoteDataSource {
 
-    override fun getFilesListWithParentId(parentId: String): List<OmhFile> {
+    override fun getFilesList(parentId: String): List<OmhFile> {
         val response = retrofitImpl
             .getGoogleStorageApiService()
-            .getFilesListWithParentId(
+            .getFilesList(
                 query = GoogleStorageApiService.getQueryValue(parentId)
             )
             .execute()
