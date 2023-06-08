@@ -2,7 +2,7 @@ package com.omh.android.storage.api.domain.repository
 
 import com.omh.android.storage.api.domain.model.OmhFile
 
-interface FileRepository {
+interface OmhFileRepository {
 
     fun getFilesList(parentId: String = "root"): List<OmhFile>
 

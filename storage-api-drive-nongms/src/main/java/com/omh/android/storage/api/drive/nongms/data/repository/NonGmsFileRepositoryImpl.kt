@@ -1,11 +1,11 @@
 package com.omh.android.storage.api.drive.nongms.data.repository
 
 import com.omh.android.storage.api.data.source.OmhFileRemoteDataSource
-import com.omh.android.storage.api.domain.repository.FileRepository
+import com.omh.android.storage.api.domain.repository.OmhFileRepository
 
 internal class NonGmsFileRepositoryImpl(
     private val dataSource: OmhFileRemoteDataSource
-) : FileRepository {
+) : OmhFileRepository {
 
     override fun getFilesList(parentId: String) =
         dataSource.getFilesList(parentId)

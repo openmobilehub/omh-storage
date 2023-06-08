@@ -1,7 +1,7 @@
 package com.omh.android.storage.api
 
 import com.omh.android.auth.api.OmhAuthClient
-import com.omh.android.storage.api.domain.repository.FileRepository
+import com.omh.android.storage.api.domain.repository.OmhFileRepository
 import com.omh.android.storage.api.domain.usecase.CreateFileUseCase
 import com.omh.android.storage.api.domain.usecase.DeleteFileUseCase
 import com.omh.android.storage.api.domain.usecase.GetFilesListUseCase
@@ -15,7 +15,7 @@ abstract class OmhStorageClient protected constructor(
         fun build(authClient: OmhAuthClient): OmhStorageClient
     }
 
-    protected abstract fun getRepository(): FileRepository
+    protected abstract fun getRepository(): OmhFileRepository
 
     /*
      * TODO: This must return an asynchronous task that can be executed with any library
