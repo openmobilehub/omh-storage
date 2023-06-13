@@ -6,7 +6,7 @@ import kotlin.reflect.full.createInstance
 
 object OmhStorageProvider {
 
-    private const val NGMS_ADDRESS = "com.omh.android.storage.api.drive.nongms.OmhStorageFactoryImpl"
+    private const val NGMS_ADDRESS = "com.omh.android.storage.api.drive.nongms.OmhNonGmsStorageFactoryImpl"
 
     fun provideStorageClient(authClient: OmhAuthClient): OmhStorageClient {
         val clazz: Class<*> = Class.forName(NGMS_ADDRESS)
