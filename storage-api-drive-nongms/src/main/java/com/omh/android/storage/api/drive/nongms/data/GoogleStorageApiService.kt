@@ -15,7 +15,7 @@ import retrofit2.http.Query
 internal interface GoogleStorageApiService {
 
     companion object {
-        private const val FILES_PARTICLE = "files"
+        private const val FILES_PARTICLE = "drive/v3/files"
 
         private const val QUERY_Q = "q"
         private const val QUERY_FIELDS = "fields"
