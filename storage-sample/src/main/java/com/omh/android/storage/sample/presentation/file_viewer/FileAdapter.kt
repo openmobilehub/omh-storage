@@ -80,6 +80,8 @@ class FileAdapter(
     interface GridItemListener {
 
         fun onFileClicked(file: OmhFile)
+
+        fun onDeleteClicked(file: OmhFile)
     }
 
     abstract class FileViewHolder(binding: View) : RecyclerView.ViewHolder(binding) {
@@ -99,6 +101,7 @@ class FileAdapter(
                 fileName.text = file.name
                 loadFileIcon(context, iconLink, fileIcon)
                 root.setOnClickListener { listener.onFileClicked(file) }
+                buttonDelete.setOnClickListener { listener.onDeleteClicked(file) }
             }
         }
     }
@@ -115,6 +118,7 @@ class FileAdapter(
                 fileName.text = file.name
                 loadFileIcon(context, iconLink, fileIcon)
                 root.setOnClickListener { listener.onFileClicked(file) }
+                buttonDelete.setOnClickListener { listener.onDeleteClicked(file) }
             }
         }
     }

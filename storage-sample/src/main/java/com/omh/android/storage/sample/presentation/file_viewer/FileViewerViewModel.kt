@@ -1,9 +1,13 @@
 package com.omh.android.storage.sample.presentation.file_viewer
 
 import com.omh.android.storage.api.OmhStorageClient
+import com.omh.android.storage.api.domain.model.OmhFile
 import com.omh.android.storage.api.domain.model.OmhFileType
 import com.omh.android.storage.api.domain.usecase.CreateFileUseCase
 import com.omh.android.storage.api.domain.usecase.CreateFileUseCaseParams
+import com.omh.android.storage.api.domain.usecase.DeleteFileUseCase
+import com.omh.android.storage.api.domain.usecase.DeleteFileUseCaseParams
+import com.omh.android.storage.api.domain.usecase.DeleteFileUseCaseResult
 import com.omh.android.storage.api.domain.usecase.GetFilesListUseCase
 import com.omh.android.storage.api.domain.usecase.GetFilesListUseCaseParams
 import com.omh.android.storage.api.domain.usecase.OmhResult
@@ -42,7 +46,8 @@ class FileViewerViewModel @Inject constructor(
             is FileViewerViewEvent.SwapLayoutManager -> swapLayoutManagerEvent()
             is FileViewerViewEvent.FileClicked -> fileClickedEvent(event)
             FileViewerViewEvent.BackPressed -> backPressedEvent()
-            is FileViewerViewEvent.CreateFile -> createFile(event)
+            is FileViewerViewEvent.CreateFile -> createFileEvent(event)
+            is FileViewerViewEvent.DeleteFile -> deleteFileEvent(event)
         }
     }
 
@@ -97,7 +102,7 @@ class FileViewerViewModel @Inject constructor(
         }
     }
 
-    private suspend fun createFile(event: FileViewerViewEvent.CreateFile) {
+    private suspend fun createFileEvent(event: FileViewerViewEvent.CreateFile) {
         setState(FileViewerViewState.Loading)
         val parentId = parentIdStack.peek()
 
@@ -116,5 +121,38 @@ class FileViewerViewModel @Inject constructor(
                 refreshFileListEvent()
             }
         }
+    }
+
+    private suspend fun deleteFileEvent(event: FileViewerViewEvent.DeleteFile) {
+        setState(FileViewerViewState.Loading)
+
+        val file = event.file
+
+        val deleteFileUseCase: DeleteFileUseCase = omhStorageClient.deleteFile()
+
+        when (val result = deleteFileUseCase(DeleteFileUseCaseParams(file.id))) {
+            is OmhResult.OmhSuccess -> {
+                handleDeleteSuccess(result, file)
+            }
+
+            is OmhResult.OmhError -> {
+                toastMessage.postValue("ERROR: ${file.name} was NOT deleted")
+            }
+        }
+
+        refreshFileListEvent()
+    }
+
+    private fun handleDeleteSuccess(
+        result: OmhResult.OmhSuccess<DeleteFileUseCaseResult>,
+        file: OmhFile
+    ) {
+        val toastText = if (result.data.isSuccess) {
+            "${file.name} was successfully deleted"
+        } else {
+            "${file.name} was NOT deleted"
+        }
+
+        toastMessage.postValue(toastText)
     }
 }
