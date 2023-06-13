@@ -28,6 +28,8 @@ class FileAdapter(
             "https://drive-thirdparty.googleusercontent.com/32/type/application/vnd.google-apps.document"
         private const val URL_SHEET =
             "https://drive-thirdparty.googleusercontent.com/32/type/application/vnd.google-apps.spreadsheet"
+        private const val URL_PRESENTATION =
+            "https://drive-thirdparty.googleusercontent.com/32/type/application/vnd.google-apps.presentation"
         private const val URL_PDF =
             "https://drive-thirdparty.googleusercontent.com/32/type/application/pdf"
         private const val URL_PNG =
@@ -48,6 +50,10 @@ class FileAdapter(
             OmhFileType.SPREADSHEET,
             OmhFileType.MICROSOFT_EXCEL,
             OmhFileType.OPEN_DOCUMENT_SPREADSHEET -> URL_SHEET
+
+            OmhFileType.PRESENTATION,
+            OmhFileType.MICROSOFT_POWERPOINT,
+            OmhFileType.OPEN_DOCUMENT_PRESENTATION -> URL_PRESENTATION
 
             OmhFileType.PNG -> URL_PNG
 
