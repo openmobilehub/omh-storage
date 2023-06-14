@@ -14,4 +14,9 @@ internal class GoogleDriveApiService(private val apiProvider: GoogleDriveApiProv
         .googleDriveApiService
         .files()
         .create(file)
+
+    fun deleteFile(fileId: String): Drive.Files.Delete = apiProvider
+        .googleDriveApiService
+        .files()
+        .delete(fileId)
 }
