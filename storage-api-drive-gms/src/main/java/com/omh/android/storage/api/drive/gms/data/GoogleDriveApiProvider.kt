@@ -26,7 +26,7 @@ internal class GoogleDriveApiProvider private constructor(private val credential
     private val jsonFactory: JsonFactory = GsonFactory.getDefaultInstance()
     private val httpTransport: NetHttpTransport = GoogleNetHttpTransport.newTrustedTransport()
 
-    private val googleDriveApiService: Drive by lazy { initDriveService() }
+    val googleDriveApiService: Drive by lazy { initDriveService() }
 
     private fun initDriveService(): Drive = Drive
         .Builder(
@@ -35,6 +35,4 @@ internal class GoogleDriveApiProvider private constructor(private val credential
             credential
         ).setApplicationName(applicationName)
         .build()
-
-    fun getDriveApiService() = googleDriveApiService
 }
