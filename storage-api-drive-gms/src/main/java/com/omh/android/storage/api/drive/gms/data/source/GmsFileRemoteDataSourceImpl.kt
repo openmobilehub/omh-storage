@@ -2,8 +2,10 @@ package com.omh.android.storage.api.drive.gms.data.source
 
 import com.omh.android.storage.api.data.source.OmhFileRemoteDataSource
 import com.omh.android.storage.api.domain.model.OmhFile
+import com.omh.android.storage.api.drive.gms.data.GoogleDriveApiService
 
-internal class GmsFileRemoteDataSourceImpl : OmhFileRemoteDataSource {
+internal class GmsFileRemoteDataSourceImpl(val apiService: GoogleDriveApiService) :
+    OmhFileRemoteDataSource {
 
     override fun getFilesList(parentId: String): List<OmhFile> {
         return emptyList()
