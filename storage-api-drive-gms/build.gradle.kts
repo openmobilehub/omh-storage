@@ -35,6 +35,7 @@ dependencies {
     implementation(Libs.googleDrive) {
         exclude("org.apache.httpcomponents")
     }
+    implementation(Libs.retrofitJacksonConverter)
     implementation(Libs.avoidGuavaConflict)
 
     // Test dependencies
