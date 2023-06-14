@@ -36,5 +36,5 @@ internal class GoogleDriveApiProvider private constructor(private val credential
         ).setApplicationName(applicationName)
         .build()
 
-    fun getGoogleDriveApiService() = googleDriveApiService
+    fun getDriveApiService() = googleDriveApiService
 }

@@ -4,5 +4,5 @@ import com.google.api.services.drive.Drive
 
 internal class GoogleDriveApiService(private val apiProvider: GoogleDriveApiProvider) {
 
-    fun getFilesList(): Drive.Files.List = apiProvider.getGoogleDriveApiService().files().list()
+    fun getFilesList(): Drive.Files.List = apiProvider.getDriveApiService().files().list()
 }
