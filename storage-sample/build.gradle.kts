@@ -52,6 +52,7 @@ dependencies {
     // Omh Auth
     api(Libs.omhNonGmsAuthLibrary)
     ngmsImplementation(project(":storage-api-drive-nongms"))
+    ngmsImplementation(project(":storage-api-drive-gms"))
 
     implementation(Libs.coreKtx)
     implementation(Libs.lifecycleKtx)
