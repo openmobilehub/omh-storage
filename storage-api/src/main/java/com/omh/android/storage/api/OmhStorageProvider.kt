@@ -10,7 +10,7 @@ import kotlin.reflect.full.createInstance
 object OmhStorageProvider {
 
     private const val NON_GMS_ADDRESS = "com.omh.android.storage.api.drive.nongms.OmhNonGmsStorageFactoryImpl"
-    private const val GMS_ADDRESS = "com.omh.android.storage.api.drive.gms.OmhGmsStorageClientImpl"
+    private const val GMS_ADDRESS = "com.omh.android.storage.api.drive.gms.OmhGmsStorageFactoryImpl"
 
     fun provideStorageClient(authClient: OmhAuthClient, context: Context): OmhStorageClient {
         val isGms = hasGoogleServices(context)
