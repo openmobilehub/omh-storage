@@ -1,6 +1,7 @@
 package com.omh.android.storage.api.drive.gms.data
 
 import com.google.api.services.drive.Drive
+import com.google.api.services.drive.model.File
 
 internal class GoogleDriveApiService(private val apiProvider: GoogleDriveApiProvider) {
 
@@ -8,4 +9,9 @@ internal class GoogleDriveApiService(private val apiProvider: GoogleDriveApiProv
         .googleDriveApiService
         .files()
         .list()
+
+    fun createFile(file: File): Drive.Files.Create = apiProvider
+        .googleDriveApiService
+        .files()
+        .create(file)
 }

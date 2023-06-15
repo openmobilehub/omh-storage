@@ -17,7 +17,17 @@ internal class GmsFileRemoteDataSourceImpl(private val apiService: GoogleDriveAp
     }
 
     override fun createFile(name: String, mimeType: String, parentId: String?): OmhFile? {
-        return null
+        val fileToBeCreated = File().apply {
+            this.name = name
+            this.mimeType = mimeType
+            if (parentId != null) {
+                this.parents = listOf(parentId)
+            }
+        }
+
+        val responseFile: File = apiService.createFile(fileToBeCreated).execute()
+
+        return responseFile.toOmhFile()
     }
 
     override fun deleteFile(fileId: String): Boolean {
