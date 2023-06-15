@@ -35,7 +35,10 @@ class SingletonModule {
     }
 
     @Provides
-    fun providesOmhStorageClient(omhAuthClient: OmhAuthClient): OmhStorageClient {
-        return OmhStorageProvider.provideStorageClient(omhAuthClient)
+    fun providesOmhStorageClient(
+        omhAuthClient: OmhAuthClient,
+        @ApplicationContext context: Context
+    ): OmhStorageClient {
+        return OmhStorageProvider.provideStorageClient(omhAuthClient, context)
     }
 }

@@ -17,4 +17,7 @@ dependencies {
     // Coroutines
     implementation(Libs.coroutinesCore)
     implementation(Libs.coroutinesAndroid)
+
+    // Play services
+    implementation(Libs.googlePlayBase)
 }
