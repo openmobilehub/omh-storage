@@ -30,7 +30,13 @@ internal class GmsFileRemoteDataSourceImpl(private val apiService: GoogleDriveAp
         return responseFile.toOmhFile()
     }
 
+    @SuppressWarnings("TooGenericExceptionCaught", "SwallowedException")
     override fun deleteFile(fileId: String): Boolean {
-        return false
+        return try {
+            apiService.deleteFile(fileId).execute()
+            true
+        } catch (e: Exception) {
+            false
+        }
     }
 }
