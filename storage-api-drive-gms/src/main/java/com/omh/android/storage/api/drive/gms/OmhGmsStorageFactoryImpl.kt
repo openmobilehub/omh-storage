@@ -4,7 +4,7 @@ import com.omh.android.auth.api.OmhAuthClient
 import com.omh.android.storage.api.OmhStorageClient
 import com.omh.android.storage.api.OmhStorageFactory
 
-class OmhGmsStorageFactoryImpl : OmhStorageFactory {
+internal class OmhGmsStorageFactoryImpl : OmhStorageFactory {
 
     override fun getStorageClient(
         authClient: OmhAuthClient

@@ -11,7 +11,7 @@ import com.omh.android.storage.api.drive.gms.data.GoogleDriveApiService
 import com.omh.android.storage.api.drive.gms.data.repository.GmsFileRepositoryImpl
 import com.omh.android.storage.api.drive.gms.data.source.GmsFileRemoteDataSourceImpl
 
-class OmhGmsStorageClientImpl private constructor(
+internal class OmhGmsStorageClientImpl private constructor(
     authClient: OmhAuthClient
 ) : OmhStorageClient(authClient) {
 
