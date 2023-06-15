@@ -5,10 +5,14 @@ import com.google.api.services.drive.model.File
 
 internal class GoogleDriveApiService(private val apiProvider: GoogleDriveApiProvider) {
 
-    fun getFilesList(): Drive.Files.List = apiProvider
+    fun getFilesList(parentId: String): Drive.Files.List = apiProvider
         .googleDriveApiService
         .files()
-        .list()
+        .list().apply {
+            if (parentId.isNotEmpty()) {
+                q = "'$parentId' in parents"
+            }
+        }
 
     fun createFile(file: File): Drive.Files.Create = apiProvider
         .googleDriveApiService
