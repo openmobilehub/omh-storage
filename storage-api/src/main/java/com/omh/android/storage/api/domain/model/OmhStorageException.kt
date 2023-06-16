@@ -8,4 +8,6 @@ sealed class OmhStorageException(val statusCode: Int) : Exception() {
         get() = OmhAuthStatusCodes.getStatusCodeString(statusCode)
 
     class InvalidCredentialsException(statusCode: Int) : OmhStorageException(statusCode)
+
+    class ApiException(statusCode: Int) : OmhStorageException(statusCode)
 }

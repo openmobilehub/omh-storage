@@ -4,28 +4,75 @@ import android.content.Context
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.omh.android.auth.api.OmhAuthClient
+import com.omh.android.auth.api.models.OmhAuthStatusCodes
+import com.omh.android.storage.api.domain.model.OmhStorageException
 import kotlin.reflect.KClass
 import kotlin.reflect.full.createInstance
 
-object OmhStorageProvider {
+class OmhStorageProvider private constructor(
+    private val gmsPath: String?,
+    private val nonGsmPath: String?
+) {
 
-    private const val NON_GMS_ADDRESS = "com.omh.android.storage.api.drive.nongms.OmhNonGmsStorageFactoryImpl"
-    private const val GMS_ADDRESS = "com.omh.android.storage.api.drive.gms.OmhGmsStorageFactoryImpl"
+    class Builder {
 
+        companion object {
+
+            private const val NON_GMS_ADDRESS =
+                "com.omh.android.storage.api.drive.nongms.OmhNonGmsStorageFactoryImpl"
+
+            private const val GMS_ADDRESS =
+                "com.omh.android.storage.api.drive.gms.OmhGmsStorageFactoryImpl"
+        }
+
+        private var gmsPath: String? = null
+        private var nonGmsPath: String? = null
+
+        @JvmOverloads
+        fun addGmsPath(path: String? = GMS_ADDRESS): Builder {
+            gmsPath = path
+            return this
+        }
+
+        @JvmOverloads
+        fun addNonGmsPath(path: String? = NON_GMS_ADDRESS): Builder {
+            nonGmsPath = path
+            return this
+        }
+
+        fun build(): OmhStorageProvider = OmhStorageProvider(gmsPath, nonGmsPath)
+    }
+
+    private val isSingleBuild = gmsPath != null && nonGsmPath != null
+
+    @SuppressWarnings("SwallowedException")
     fun provideStorageClient(authClient: OmhAuthClient, context: Context): OmhStorageClient {
-        val isGms = hasGoogleServices(context)
-        val storageFactory = getFactoryImplementation(isGms)
+        val storageFactory: OmhStorageFactory = try {
+            getOmhStorageFactory(context)
+        } catch (exception: ClassNotFoundException) {
+            throw OmhStorageException.ApiException(OmhAuthStatusCodes.DEVELOPER_ERROR)
+        }
+
         return storageFactory.getStorageClient(authClient)
     }
 
-    private fun getFactoryImplementation(isGms: Boolean): OmhStorageFactory {
-        val address = if (isGms) {
-            GMS_ADDRESS
-        } else {
-            NON_GMS_ADDRESS
-        }
+    private fun getOmhStorageFactory(context: Context): OmhStorageFactory = when {
+        isSingleBuild -> reflectSingleBuild(context)
+        gmsPath != null -> getFactoryImplementation(gmsPath)
+        nonGsmPath != null -> getFactoryImplementation(nonGsmPath)
+        else -> throw OmhStorageException.ApiException(OmhAuthStatusCodes.DEVELOPER_ERROR)
+    }
 
-        val clazz: Class<*> = Class.forName(address)
+    private fun reflectSingleBuild(context: Context): OmhStorageFactory = getFactoryImplementation(
+        if (hasGoogleServices(context)) {
+            gmsPath!!
+        } else {
+            nonGsmPath!!
+        }
+    )
+
+    private fun getFactoryImplementation(path: String): OmhStorageFactory {
+        val clazz: Class<*> = Class.forName(path)
         val kClass: KClass<*> = clazz.kotlin
         val instance: Any = kClass.createInstance()
 
@@ -34,7 +81,8 @@ object OmhStorageProvider {
 
     private fun hasGoogleServices(context: Context): Boolean {
         val googleApiAvailability = GoogleApiAvailability.getInstance()
-        val playServicesAvailable: Int = googleApiAvailability.isGooglePlayServicesAvailable(context)
+        val playServicesAvailable: Int = googleApiAvailability
+            .isGooglePlayServicesAvailable(context)
         return playServicesAvailable == ConnectionResult.SUCCESS
     }
 }
