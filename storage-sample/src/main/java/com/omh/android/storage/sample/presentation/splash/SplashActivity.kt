@@ -20,33 +20,17 @@ class SplashActivity : AppCompatActivity() {
     @Inject
     lateinit var omhAuthClient: OmhAuthClient
 
-    @Inject
-    lateinit var omhStorageClient: OmhStorageClient
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(ActivitySplashBinding.inflate(layoutInflater).root)
         checkUserThenNavigate()
     }
 
-    private fun checkUserThenNavigate() = lifecycleScope.launch(Dispatchers.IO) {
-        if (omhAuthClient.getUser() != null) {
-            setupToken()
-            navigateToFilesAndFolders()
+    private fun checkUserThenNavigate() {
+        if (omhAuthClient.getUser() == null) {
+            return
         }
-    }
-
-    private fun setupToken() = lifecycleScope.launch(Dispatchers.IO) {
-        val token = when (val credentials = omhAuthClient.getCredentials()) {
-            is OmhCredentials -> credentials.blockingRefreshToken()
-            null -> return@launch
-            else -> error("Unsupported credential type")
-        }
-        /*
-        if (token != null) {
-            omhStorageClient.setupAccessToken(token)
-        }
-        */
+        navigateToFilesAndFolders()
     }
 
     private fun navigateToFilesAndFolders() {

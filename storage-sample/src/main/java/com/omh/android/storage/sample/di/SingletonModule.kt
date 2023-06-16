@@ -20,6 +20,7 @@ class SingletonModule {
     fun providesOmhAuthClient(@ApplicationContext context: Context): OmhAuthClient {
         return OmhAuthProvider.Builder()
             .addNonGmsPath()
+            .addGmsPath()
             .build()
             .provideAuthClient(
                 context = context,
@@ -35,7 +36,10 @@ class SingletonModule {
     }
 
     @Provides
-    fun providesOmhStorageClient(omhAuthClient: OmhAuthClient): OmhStorageClient {
-        return OmhStorageProvider.provideStorageClient(omhAuthClient)
+    fun providesOmhStorageClient(
+        omhAuthClient: OmhAuthClient,
+        @ApplicationContext context: Context
+    ): OmhStorageClient {
+        return OmhStorageProvider.provideStorageClient(omhAuthClient, context)
     }
 }

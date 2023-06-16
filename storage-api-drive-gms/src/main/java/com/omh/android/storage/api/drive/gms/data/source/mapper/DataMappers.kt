@@ -5,9 +5,9 @@ import com.omh.android.storage.api.domain.model.OmhFile
 
 @SuppressWarnings("ComplexCondition")
 fun File.toOmhFile(): OmhFile? {
-    val formattedModifiedTime = modifiedTime.toStringRfc3339()
+    val formattedModifiedTime = modifiedTime?.toStringRfc3339().orEmpty()
 
-    if (mimeType == null || id == null || name == null || formattedModifiedTime == null) {
+    if (mimeType == null || id == null || name == null) {
         return null
     }
 

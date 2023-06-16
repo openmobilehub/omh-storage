@@ -35,4 +35,7 @@ object Versions {
 
     // Auth
     const val omhAuth = "1.0"
+
+    // Play services
+    const val googlePlayBase = "18.2.0"
 }
