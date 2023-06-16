@@ -8,7 +8,8 @@ internal class GoogleDriveApiService(private val apiProvider: GoogleDriveApiProv
     fun getFilesList(parentId: String): Drive.Files.List = apiProvider
         .googleDriveApiService
         .files()
-        .list().apply {
+        .list()
+        .apply {
             if (parentId.isNotEmpty()) {
                 q = "'$parentId' in parents"
             }
