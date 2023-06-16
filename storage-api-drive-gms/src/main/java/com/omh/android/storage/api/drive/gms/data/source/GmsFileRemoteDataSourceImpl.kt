@@ -11,7 +11,7 @@ internal class GmsFileRemoteDataSourceImpl(private val apiService: GoogleDriveAp
     OmhFileRemoteDataSource {
 
     override fun getFilesList(parentId: String): List<OmhFile> {
-        val googleJsonFileList: FileList = apiService.getFilesList().execute()
+        val googleJsonFileList: FileList = apiService.getFilesList(parentId).execute()
         val googleFileList: List<File> = googleJsonFileList.files.toList()
         return googleFileList.mapNotNull { googleFile -> googleFile.toOmhFile() }
     }
