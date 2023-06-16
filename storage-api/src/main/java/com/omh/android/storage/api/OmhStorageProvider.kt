@@ -63,13 +63,14 @@ class OmhStorageProvider private constructor(
         else -> throw OmhStorageException.ApiException(OmhAuthStatusCodes.DEVELOPER_ERROR)
     }
 
-    private fun reflectSingleBuild(context: Context): OmhStorageFactory = getFactoryImplementation(
-        if (hasGoogleServices(context)) {
+    private fun reflectSingleBuild(context: Context): OmhStorageFactory {
+        val path = if (hasGoogleServices(context)) {
             gmsPath!!
         } else {
             nonGsmPath!!
         }
-    )
+        return getFactoryImplementation(path)
+    }
 
     private fun getFactoryImplementation(path: String): OmhStorageFactory {
         val clazz: Class<*> = Class.forName(path)
