@@ -40,6 +40,10 @@ class SingletonModule {
         omhAuthClient: OmhAuthClient,
         @ApplicationContext context: Context
     ): OmhStorageClient {
-        return OmhStorageProvider.provideStorageClient(omhAuthClient, context)
+        return OmhStorageProvider.Builder()
+            .addGmsPath()
+            .addNonGmsPath()
+            .build()
+            .provideStorageClient(omhAuthClient, context)
     }
 }
