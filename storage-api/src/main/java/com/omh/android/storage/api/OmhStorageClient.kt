@@ -14,6 +14,7 @@ import com.omh.android.storage.api.domain.usecase.GetFilesListUseCase
 import com.omh.android.storage.api.domain.usecase.GetFilesListUseCaseParams
 import com.omh.android.storage.api.domain.usecase.GetFilesListUseCaseResult
 import com.omh.android.storage.api.domain.usecase.OmhResult
+import com.omh.android.storage.api.domain.usecase.UploadFileUseCase
 
 abstract class OmhStorageClient protected constructor(
     protected val authClient: OmhAuthClient
@@ -56,4 +57,8 @@ abstract class OmhStorageClient protected constructor(
             result
         }
     }
+
+    fun deleteFile() = DeleteFileUseCase(getRepository())
+
+    fun uploadFile() = UploadFileUseCase(getRepository())
 }

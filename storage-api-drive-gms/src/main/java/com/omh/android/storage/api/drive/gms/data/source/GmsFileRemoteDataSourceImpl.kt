@@ -39,4 +39,8 @@ internal class GmsFileRemoteDataSourceImpl(private val apiService: GoogleDriveAp
             false
         }
     }
+
+    override fun uploadFile(filePath: java.io.File, fileName: String, parentId: String?): OmhFile? {
+        return null
+    }
 }

@@ -3,12 +3,16 @@ package com.omh.android.storage.api.drive.nongms.data
 import com.omh.android.storage.api.drive.nongms.data.source.body.CreateFileRequestBody
 import com.omh.android.storage.api.drive.nongms.data.source.response.FileListRemoteResponse
 import com.omh.android.storage.api.drive.nongms.data.source.response.FileRemoteResponse
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -16,6 +20,7 @@ internal interface GoogleStorageApiService {
 
     companion object {
         private const val FILES_PARTICLE = "drive/v3/files"
+        private const val UPLOAD_FILES_PARTICLE = "upload/drive/v3/files"
 
         private const val QUERY_Q = "q"
         private const val QUERY_FIELDS = "fields"
@@ -46,4 +51,11 @@ internal interface GoogleStorageApiService {
     fun deleteFile(
         @Path(FILE_ID) fileId: String
     ): Call<ResponseBody>
+
+    @Multipart
+    @POST(UPLOAD_FILES_PARTICLE)
+    fun uploadFile(
+        @Part("metadata") metadata: RequestBody,
+        @Part filePart: MultipartBody.Part
+    ): Call<FileRemoteResponse>
 }

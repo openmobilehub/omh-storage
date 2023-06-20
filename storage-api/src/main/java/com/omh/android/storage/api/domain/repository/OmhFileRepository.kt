@@ -1,6 +1,7 @@
 package com.omh.android.storage.api.domain.repository
 
 import com.omh.android.storage.api.domain.model.OmhFile
+import java.io.File
 
 interface OmhFileRepository {
 
@@ -10,11 +11,11 @@ interface OmhFileRepository {
 
     fun deleteFile(fileId: String): Boolean
 
+    fun uploadFile(filePath: File, fileName: String, parentId: String?): OmhFile?
+
     fun open()
 
     fun update()
-
-    fun upload()
 
     fun download()
 }

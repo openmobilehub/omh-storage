@@ -4,7 +4,6 @@ import com.omh.android.auth.api.OmhCredentials
 import com.omh.android.storage.api.drive.nongms.BuildConfig
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.jackson.JacksonConverterFactory
 
@@ -43,25 +42,12 @@ internal class GoogleRetrofitImpl(private val omhCredentials: OmhCredentials) {
     }
 
     private fun createOkHttpClient(): OkHttpClient {
-        val loggingInterceptor = setupLoggingInterceptor()
-
         return OkHttpClient.Builder()
-            .addInterceptor(loggingInterceptor)
             .addInterceptor { chain ->
                 val request = setupRequestInterceptor(chain)
                 chain.proceed(request)
             }
             .build()
-    }
-
-    private fun setupLoggingInterceptor() = HttpLoggingInterceptor().apply {
-        setLevel(
-            if (BuildConfig.DEBUG) {
-                HttpLoggingInterceptor.Level.BODY
-            } else {
-                HttpLoggingInterceptor.Level.NONE
-            }
-        )
     }
 
     private fun setupRequestInterceptor(chain: Interceptor.Chain) = chain
