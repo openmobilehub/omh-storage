@@ -19,6 +19,13 @@ import java.io.File
 internal class NonGmsFileRemoteDataSourceImpl(private val retrofitImpl: GoogleRetrofitImpl) :
     OmhFileRemoteDataSource {
 
+    companion object {
+        const val FILE_NAME_KEY = "name"
+        const val FILE_PARENTS_KEY = "parents"
+        const val JSON_MIME_TYPE = "application/json"
+        const val ANY_MIME_TYPE = "*/*"
+    }
+
     override fun getFilesList(parentId: String): List<OmhFile> {
         val response = retrofitImpl
             .getGoogleStorageApiService()
@@ -65,20 +72,20 @@ internal class NonGmsFileRemoteDataSourceImpl(private val retrofitImpl: GoogleRe
     }
 
     override fun uploadFile(filePath: File, fileName: String, parentId: String?): OmhFile? {
-        val mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(filePath.extension)!!
+        val mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(filePath.extension) ?: ANY_MIME_TYPE
         val requestFile = filePath.asRequestBody(mimeType.toMediaTypeOrNull())
         val parents = if (parentId.isNullOrBlank()) {
             emptyList()
         } else {
             listOf(parentId)
         }
-        val jsonArray = JSONArray(parents)
-        val jsonObject = JSONObject().apply {
-            put("name", fileName)
-            put("parents", jsonArray)
+        val parentsArray = JSONArray(parents)
+        val metaData = JSONObject().apply {
+            put(FILE_NAME_KEY, fileName)
+            put(FILE_PARENTS_KEY, parentsArray)
         }
-        val jsonBody = jsonObject.toString().toRequestBody("application/json".toMediaTypeOrNull())
-        val filePart = MultipartBody.Part.createFormData("name", fileName, requestFile)
+        val jsonBody = metaData.toString().toRequestBody(JSON_MIME_TYPE.toMediaTypeOrNull())
+        val filePart = MultipartBody.Part.createFormData(FILE_NAME_KEY, fileName, requestFile)
 
         val response = retrofitImpl
             .getGoogleStorageApiService()

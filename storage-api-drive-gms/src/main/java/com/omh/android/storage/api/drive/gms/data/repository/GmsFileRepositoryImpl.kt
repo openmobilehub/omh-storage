@@ -13,6 +13,7 @@ internal class GmsFileRepositoryImpl(private val dataSource: OmhFileRemoteDataSo
         dataSource.createFile(name, mimeType, parentId)
 
     override fun deleteFile(fileId: String) = dataSource.deleteFile(fileId)
+
     override fun uploadFile(filePath: File, fileName: String, parentId: String?): OmhFile? =
         dataSource.uploadFile(filePath, fileName, parentId)
 

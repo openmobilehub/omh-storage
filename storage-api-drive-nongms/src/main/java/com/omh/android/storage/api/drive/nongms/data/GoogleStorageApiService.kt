@@ -33,6 +33,7 @@ internal interface GoogleStorageApiService {
         private const val FIELDS_VALUE = "files($QUERY_REQUESTED_FIELDS)"
 
         private const val FILE_ID = "fileId"
+        private const val META_DATA = "metadata"
     }
 
     @GET(FILES_PARTICLE)
@@ -55,7 +56,7 @@ internal interface GoogleStorageApiService {
     @Multipart
     @POST(UPLOAD_FILES_PARTICLE)
     fun uploadFile(
-        @Part("metadata") metadata: RequestBody,
+        @Part(META_DATA) metadata: RequestBody,
         @Part filePart: MultipartBody.Part
     ): Call<FileRemoteResponse>
 }
