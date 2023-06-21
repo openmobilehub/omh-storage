@@ -11,7 +11,7 @@ interface OmhFileRepository {
 
     fun deleteFile(fileId: String): Boolean
 
-    fun uploadFile(localFileToUpload: File, fileName: String, parentId: String?): OmhFile?
+    fun uploadFile(localFileToUpload: File, parentId: String?): OmhFile?
 
     fun open()
 
