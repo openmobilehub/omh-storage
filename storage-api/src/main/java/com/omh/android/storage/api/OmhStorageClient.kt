@@ -26,12 +26,6 @@ abstract class OmhStorageClient protected constructor(
 
     protected abstract fun getRepository(): OmhFileRepository
 
-    /*
-     * TODO: This must return an asynchronous task that can be executed with any library
-     *  capable to manage this. In the future, this task must be implemented from auth
-     *  and will not return an use case
-     */
-    @SuppressWarnings("ForbiddenComment")
     fun listFiles(parentId: String): OmhTask<GetFilesListUseCaseResult> {
         val getFilesListUseCase = GetFilesListUseCase(getRepository())
         return OmhStorageTaskImpl {
