@@ -1,6 +1,7 @@
 package com.omh.android.storage.api.data.source
 
 import com.omh.android.storage.api.domain.model.OmhFile
+import java.io.File
 
 interface OmhFileRemoteDataSource {
 
@@ -12,4 +13,6 @@ interface OmhFileRemoteDataSource {
      * @return true if the file was deleted, false otherwise
      */
     fun deleteFile(fileId: String): Boolean
+
+    fun uploadFile(localFileToUpload: File, fileName: String, parentId: String?): OmhFile?
 }
