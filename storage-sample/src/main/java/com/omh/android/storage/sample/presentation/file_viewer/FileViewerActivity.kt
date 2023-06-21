@@ -53,10 +53,6 @@ class FileViewerActivity :
 
     override fun onResume() {
         super.onResume()
-        with(binding) {
-            swapGridOrLinearLayoutManager.setOnClickListener { dispatchEvent(FileViewerViewEvent.SwapLayoutManager) }
-            createFileButton.setOnClickListener { showCreateFileDialog() }
-        }
         onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
     }
 
