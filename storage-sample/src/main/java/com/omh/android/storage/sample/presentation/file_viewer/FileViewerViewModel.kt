@@ -8,8 +8,6 @@ import com.omh.android.storage.api.domain.usecase.CreateFileUseCaseParams
 import com.omh.android.storage.api.domain.usecase.DeleteFileUseCase
 import com.omh.android.storage.api.domain.usecase.DeleteFileUseCaseParams
 import com.omh.android.storage.api.domain.usecase.DeleteFileUseCaseResult
-import com.omh.android.storage.api.domain.usecase.GetFilesListUseCase
-import com.omh.android.storage.api.domain.usecase.GetFilesListUseCaseParams
 import com.omh.android.storage.api.domain.usecase.OmhResult
 import com.omh.android.storage.sample.domain.model.FileType
 import com.omh.android.storage.sample.presentation.BaseViewModel
@@ -51,28 +49,25 @@ class FileViewerViewModel @Inject constructor(
         }
     }
 
-    private suspend fun initializeEvent() {
+    private fun initializeEvent() {
         refreshFileListEvent()
     }
 
-    private suspend fun refreshFileListEvent() {
+    private fun refreshFileListEvent() {
         setState(FileViewerViewState.Loading)
         val parentId = parentIdStack.peek()
 
-        val listFilesUseCase: GetFilesListUseCase = omhStorageClient.listFiles()
-
-        when (
-            val result = listFilesUseCase(GetFilesListUseCaseParams(parentId))
-        ) {
-            is OmhResult.OmhSuccess -> {
-                setState(FileViewerViewState.Content(result.data.files))
+        val cancellable = omhStorageClient.listFiles(parentId)
+            .addOnSuccess { data ->
+                val files: List<OmhFile> = data.files
+                setState(FileViewerViewState.Content(files))
             }
-
-            is OmhResult.OmhError -> {
-                toastMessage.postValue(result.toString())
+            .addOnFailure { e ->
+                toastMessage.postValue(e.message)
                 setState(FileViewerViewState.Content(emptyList()))
             }
-        }
+            .execute()
+        cancellableCollector.addCancellable(cancellable)
     }
 
     private fun swapLayoutManagerEvent() {

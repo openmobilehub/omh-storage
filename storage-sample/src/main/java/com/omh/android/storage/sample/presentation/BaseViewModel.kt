@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.omh.android.auth.api.async.CancellableCollector
 import com.omh.android.storage.sample.util.LOG_MESSAGE_EVENT
 import com.omh.android.storage.sample.util.TAG_VIEW_UPDATE
 import com.omh.android.storage.sample.util.launchSafe
@@ -12,6 +13,7 @@ abstract class BaseViewModel<State : ViewState, Event : ViewEvent> : ViewModel()
 
     val state: MutableLiveData<State> = MutableLiveData()
     val toastMessage: MutableLiveData<String> = MutableLiveData()
+    protected val cancellableCollector = CancellableCollector()
 
     init {
         setInitialState()
@@ -36,5 +38,10 @@ abstract class BaseViewModel<State : ViewState, Event : ViewEvent> : ViewModel()
 
     protected fun setState(state: State) {
         this.state.postValue(state)
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        cancellableCollector.clear()
     }
 }
