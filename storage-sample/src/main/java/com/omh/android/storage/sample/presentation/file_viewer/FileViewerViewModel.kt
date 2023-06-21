@@ -3,8 +3,6 @@ package com.omh.android.storage.sample.presentation.file_viewer
 import com.omh.android.storage.api.OmhStorageClient
 import com.omh.android.storage.api.domain.model.OmhFile
 import com.omh.android.storage.api.domain.model.OmhFileType
-import com.omh.android.storage.api.domain.usecase.CreateFileUseCase
-import com.omh.android.storage.api.domain.usecase.CreateFileUseCaseParams
 import com.omh.android.storage.api.domain.usecase.DeleteFileUseCase
 import com.omh.android.storage.api.domain.usecase.DeleteFileUseCaseParams
 import com.omh.android.storage.api.domain.usecase.DeleteFileUseCaseResult
@@ -75,7 +73,7 @@ class FileViewerViewModel @Inject constructor(
         setState(FileViewerViewState.SwapLayoutManager)
     }
 
-    private suspend fun fileClickedEvent(event: FileViewerViewEvent.FileClicked) {
+    private fun fileClickedEvent(event: FileViewerViewEvent.FileClicked) {
         val file = event.file
 
         if (file.isFolder()) {
@@ -88,7 +86,7 @@ class FileViewerViewModel @Inject constructor(
         }
     }
 
-    private suspend fun backPressedEvent() {
+    private fun backPressedEvent() {
         if (parentIdStack.peek() == ID_ROOT) {
             setState(FileViewerViewState.Finish)
         } else {
@@ -97,25 +95,20 @@ class FileViewerViewModel @Inject constructor(
         }
     }
 
-    private suspend fun createFileEvent(event: FileViewerViewEvent.CreateFile) {
+    private fun createFileEvent(event: FileViewerViewEvent.CreateFile) {
         setState(FileViewerViewState.Loading)
         val parentId = parentIdStack.peek()
 
-        val createFileUseCase: CreateFileUseCase = omhStorageClient.createFile()
-
-        when (
-            val result =
-                createFileUseCase(CreateFileUseCaseParams(event.name, event.mimeType, parentId))
-        ) {
-            is OmhResult.OmhSuccess -> {
+        val cancellable = omhStorageClient.createFile(event.name, event.mimeType, parentId)
+            .addOnSuccess {
                 refreshFileListEvent()
             }
-
-            is OmhResult.OmhError -> {
-                toastMessage.postValue(result.toString())
+            .addOnFailure { e ->
+                toastMessage.postValue(e.message)
                 refreshFileListEvent()
             }
-        }
+            .execute()
+        cancellableCollector.addCancellable(cancellable)
     }
 
     private suspend fun deleteFileEvent(event: FileViewerViewEvent.DeleteFile) {

@@ -5,6 +5,8 @@ import com.omh.android.auth.api.async.OmhTask
 import com.omh.android.storage.api.async.OmhStorageTaskImpl
 import com.omh.android.storage.api.domain.repository.OmhFileRepository
 import com.omh.android.storage.api.domain.usecase.CreateFileUseCase
+import com.omh.android.storage.api.domain.usecase.CreateFileUseCaseParams
+import com.omh.android.storage.api.domain.usecase.CreateFileUseCaseResult
 import com.omh.android.storage.api.domain.usecase.DeleteFileUseCase
 import com.omh.android.storage.api.domain.usecase.GetFilesListUseCase
 import com.omh.android.storage.api.domain.usecase.GetFilesListUseCaseParams
@@ -37,7 +39,18 @@ abstract class OmhStorageClient protected constructor(
         }
     }
 
-    fun createFile() = CreateFileUseCase(getRepository())
+    fun createFile(
+        name: String,
+        mimeType: String,
+        parentId: String
+    ): OmhTask<CreateFileUseCaseResult> {
+        val createFileUseCase = CreateFileUseCase(getRepository())
+        return OmhStorageTaskImpl {
+            val parameters = CreateFileUseCaseParams(name, mimeType, parentId)
+            val result: OmhResult<CreateFileUseCaseResult> = createFileUseCase(parameters)
+            result
+        }
+    }
 
     fun deleteFile() = DeleteFileUseCase(getRepository())
 }
