@@ -1,23 +1,24 @@
 package com.omh.android.storage.api.drive.gms.data.source
 
-import com.google.api.services.drive.model.File
 import com.google.api.services.drive.model.FileList
 import com.omh.android.storage.api.data.source.OmhFileRemoteDataSource
 import com.omh.android.storage.api.domain.model.OmhFile
 import com.omh.android.storage.api.drive.gms.data.GoogleDriveApiService
 import com.omh.android.storage.api.drive.gms.data.source.mapper.toOmhFile
+import java.io.File
+import com.google.api.services.drive.model.File as GoogleApiFile
 
 internal class GmsFileRemoteDataSourceImpl(private val apiService: GoogleDriveApiService) :
     OmhFileRemoteDataSource {
 
     override fun getFilesList(parentId: String): List<OmhFile> {
         val googleJsonFileList: FileList = apiService.getFilesList(parentId).execute()
-        val googleFileList: List<File> = googleJsonFileList.files.toList()
+        val googleFileList: List<GoogleApiFile> = googleJsonFileList.files.toList()
         return googleFileList.mapNotNull { googleFile -> googleFile.toOmhFile() }
     }
 
     override fun createFile(name: String, mimeType: String, parentId: String?): OmhFile? {
-        val fileToBeCreated = File().apply {
+        val fileToBeCreated = GoogleApiFile().apply {
             this.name = name
             this.mimeType = mimeType
             if (parentId != null) {
@@ -25,7 +26,7 @@ internal class GmsFileRemoteDataSourceImpl(private val apiService: GoogleDriveAp
             }
         }
 
-        val responseFile: File = apiService.createFile(fileToBeCreated).execute()
+        val responseFile: GoogleApiFile = apiService.createFile(fileToBeCreated).execute()
 
         return responseFile.toOmhFile()
     }
@@ -40,5 +41,5 @@ internal class GmsFileRemoteDataSourceImpl(private val apiService: GoogleDriveAp
         }
     }
 
-    override fun uploadFile(filePath: java.io.File, fileName: String, parentId: String?): OmhFile? = null
+    override fun uploadFile(localFileToUpload: File, fileName: String, parentId: String?) = null
 }

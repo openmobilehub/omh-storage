@@ -14,5 +14,5 @@ interface OmhFileRemoteDataSource {
      */
     fun deleteFile(fileId: String): Boolean
 
-    fun uploadFile(filePath: File, fileName: String, parentId: String?): OmhFile?
+    fun uploadFile(localFileToUpload: File, fileName: String, parentId: String?): OmhFile?
 }

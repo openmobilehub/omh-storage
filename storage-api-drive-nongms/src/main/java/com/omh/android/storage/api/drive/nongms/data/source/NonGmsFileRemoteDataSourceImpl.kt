@@ -22,8 +22,9 @@ internal class NonGmsFileRemoteDataSourceImpl(private val retrofitImpl: GoogleRe
     companion object {
         private const val FILE_NAME_KEY = "name"
         private const val FILE_PARENTS_KEY = "parents"
-        private val JSON_MIME_TYPE = "application/json".toMediaTypeOrNull()
         private const val ANY_MIME_TYPE = "*/*"
+
+        private val JSON_MIME_TYPE = "application/json".toMediaTypeOrNull()
     }
 
     override fun getFilesList(parentId: String): List<OmhFile> {
@@ -71,25 +72,36 @@ internal class NonGmsFileRemoteDataSourceImpl(private val retrofitImpl: GoogleRe
         return response.isSuccessful
     }
 
-    override fun uploadFile(filePath: File, fileName: String, parentId: String?): OmhFile? {
-        val mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(filePath.extension) ?: ANY_MIME_TYPE
-        val requestFile = filePath.asRequestBody(mimeType.toMediaTypeOrNull())
-        val parents = if (parentId.isNullOrBlank()) {
+    override fun uploadFile(
+        localFileToUpload: File,
+        fileName: String,
+        parentId: String?
+    ): OmhFile? {
+        val stringMimeType = MimeTypeMap
+            .getSingleton()
+            .getMimeTypeFromExtension(localFileToUpload.extension)
+            ?: ANY_MIME_TYPE
+
+        val mimeType = stringMimeType.toMediaTypeOrNull()
+        val requestFile = localFileToUpload.asRequestBody(mimeType)
+        val parentsList = if (parentId.isNullOrBlank()) {
             emptyList()
         } else {
             listOf(parentId)
         }
-        val parentsArray = JSONArray(parents)
-        val metaData = JSONObject().apply {
+
+        val parentsListAsJson = JSONArray(parentsList)
+        val jsonMetaData = JSONObject().apply {
             put(FILE_NAME_KEY, fileName)
-            put(FILE_PARENTS_KEY, parentsArray)
+            put(FILE_PARENTS_KEY, parentsListAsJson)
         }
-        val jsonBody = metaData.toString().toRequestBody(JSON_MIME_TYPE)
+
+        val jsonRequestBody = jsonMetaData.toString().toRequestBody(JSON_MIME_TYPE)
         val filePart = MultipartBody.Part.createFormData(FILE_NAME_KEY, fileName, requestFile)
 
         val response = retrofitImpl
             .getGoogleStorageApiService()
-            .uploadFile(jsonBody, filePart)
+            .uploadFile(jsonRequestBody, filePart)
             .execute()
 
         return if (response.isSuccessful) {
