@@ -3,10 +3,6 @@ package com.omh.android.storage.sample.presentation.file_viewer
 import com.omh.android.storage.api.OmhStorageClient
 import com.omh.android.storage.api.domain.model.OmhFile
 import com.omh.android.storage.api.domain.model.OmhFileType
-import com.omh.android.storage.api.domain.usecase.DeleteFileUseCase
-import com.omh.android.storage.api.domain.usecase.DeleteFileUseCaseParams
-import com.omh.android.storage.api.domain.usecase.DeleteFileUseCaseResult
-import com.omh.android.storage.api.domain.usecase.OmhResult
 import com.omh.android.storage.sample.domain.model.FileType
 import com.omh.android.storage.sample.presentation.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -111,31 +107,25 @@ class FileViewerViewModel @Inject constructor(
         cancellableCollector.addCancellable(cancellable)
     }
 
-    private suspend fun deleteFileEvent(event: FileViewerViewEvent.DeleteFile) {
+    private fun deleteFileEvent(event: FileViewerViewEvent.DeleteFile) {
         setState(FileViewerViewState.Loading)
 
         val file = event.file
 
-        val deleteFileUseCase: DeleteFileUseCase = omhStorageClient.deleteFile()
-
-        when (val result = deleteFileUseCase(DeleteFileUseCaseParams(file.id))) {
-            is OmhResult.OmhSuccess -> {
-                handleDeleteSuccess(result, file)
+        val cancellable = omhStorageClient.deleteFile(file.id)
+            .addOnSuccess { data ->
+                handleDeleteSuccess(data.isSuccess, file)
             }
-
-            is OmhResult.OmhError -> {
+            .addOnFailure {
                 toastMessage.postValue("ERROR: ${file.name} was NOT deleted")
             }
-        }
-
+            .execute()
+        cancellableCollector.addCancellable(cancellable)
         refreshFileListEvent()
     }
 
-    private fun handleDeleteSuccess(
-        result: OmhResult.OmhSuccess<DeleteFileUseCaseResult>,
-        file: OmhFile
-    ) {
-        val toastText = if (result.data.isSuccess) {
+    private fun handleDeleteSuccess(isSuccessful: Boolean, file: OmhFile) {
+        val toastText = if (isSuccessful) {
             "${file.name} was successfully deleted"
         } else {
             "${file.name} was NOT deleted"

@@ -8,6 +8,8 @@ import com.omh.android.storage.api.domain.usecase.CreateFileUseCase
 import com.omh.android.storage.api.domain.usecase.CreateFileUseCaseParams
 import com.omh.android.storage.api.domain.usecase.CreateFileUseCaseResult
 import com.omh.android.storage.api.domain.usecase.DeleteFileUseCase
+import com.omh.android.storage.api.domain.usecase.DeleteFileUseCaseParams
+import com.omh.android.storage.api.domain.usecase.DeleteFileUseCaseResult
 import com.omh.android.storage.api.domain.usecase.GetFilesListUseCase
 import com.omh.android.storage.api.domain.usecase.GetFilesListUseCaseParams
 import com.omh.android.storage.api.domain.usecase.GetFilesListUseCaseResult
@@ -52,5 +54,12 @@ abstract class OmhStorageClient protected constructor(
         }
     }
 
-    fun deleteFile() = DeleteFileUseCase(getRepository())
+    fun deleteFile(id: String): OmhTask<DeleteFileUseCaseResult> {
+        val deleteFileUseCase = DeleteFileUseCase(getRepository())
+        return OmhStorageTaskImpl {
+            val parameters = DeleteFileUseCaseParams(id)
+            val result = deleteFileUseCase(parameters)
+            result
+        }
+    }
 }
