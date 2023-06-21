@@ -5,6 +5,7 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -62,6 +63,21 @@ class FileViewerActivity :
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.file_viewer_menu, menu)
         return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.swapGridOrLinear -> {
+                dispatchEvent(FileViewerViewEvent.SwapLayoutManager)
+            }
+
+            R.id.createFile -> {
+                showCreateFileDialog()
+            }
+
+            R.id.uploadFile -> {}
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun buildState(state: FileViewerViewState) = when (state) {
