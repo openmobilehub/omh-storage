@@ -20,10 +20,10 @@ internal class NonGmsFileRemoteDataSourceImpl(private val retrofitImpl: GoogleRe
     OmhFileRemoteDataSource {
 
     companion object {
-        const val FILE_NAME_KEY = "name"
-        const val FILE_PARENTS_KEY = "parents"
-        const val JSON_MIME_TYPE = "application/json"
-        const val ANY_MIME_TYPE = "*/*"
+        private const val FILE_NAME_KEY = "name"
+        private const val FILE_PARENTS_KEY = "parents"
+        private val JSON_MIME_TYPE = "application/json".toMediaTypeOrNull()
+        private const val ANY_MIME_TYPE = "*/*"
     }
 
     override fun getFilesList(parentId: String): List<OmhFile> {
@@ -84,7 +84,7 @@ internal class NonGmsFileRemoteDataSourceImpl(private val retrofitImpl: GoogleRe
             put(FILE_NAME_KEY, fileName)
             put(FILE_PARENTS_KEY, parentsArray)
         }
-        val jsonBody = metaData.toString().toRequestBody(JSON_MIME_TYPE.toMediaTypeOrNull())
+        val jsonBody = metaData.toString().toRequestBody(JSON_MIME_TYPE)
         val filePart = MultipartBody.Part.createFormData(FILE_NAME_KEY, fileName, requestFile)
 
         val response = retrofitImpl
