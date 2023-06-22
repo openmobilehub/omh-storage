@@ -121,8 +121,14 @@ class FileViewerViewModel @Inject constructor(
         val filePath = getFile(event.context, event.uri, event.fileName)
 
         val cancellable = omhStorageClient.uploadFile(filePath, parentId)
-            .addOnSuccess {
-                toastMessage.postValue("${event.fileName} was successfully uploaded")
+            .addOnSuccess { result ->
+                val resultMessage = if (result.file == null) {
+                    "${event.fileName} was NOT uploaded"
+                } else {
+                    "${event.fileName} was successfully uploaded"
+                }
+
+                toastMessage.postValue(resultMessage)
 
                 refreshFileListEvent()
             }
