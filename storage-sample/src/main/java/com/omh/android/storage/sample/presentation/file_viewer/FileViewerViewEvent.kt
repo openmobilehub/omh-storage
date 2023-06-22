@@ -1,5 +1,7 @@
 package com.omh.android.storage.sample.presentation.file_viewer
 
+import android.content.Context
+import android.net.Uri
 import com.omh.android.storage.api.domain.model.OmhFile
 import com.omh.android.storage.sample.presentation.ViewEvent
 
@@ -38,5 +40,10 @@ sealed class FileViewerViewEvent : ViewEvent {
     class DeleteFile(val file: OmhFile) : FileViewerViewEvent() {
 
         override fun getEventName() = "FileViewerViewEvent.CreateFile"
+    }
+
+    class UploadFile(val context: Context, val uri: Uri, val fileName: String) : FileViewerViewEvent() {
+
+        override fun getEventName() = "FileViewerViewEvent.UploadFile"
     }
 }
