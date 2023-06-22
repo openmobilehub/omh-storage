@@ -57,12 +57,13 @@ class FileAdapter(
             OmhFileType.MICROSOFT_POWERPOINT,
             OmhFileType.OPEN_DOCUMENT_PRESENTATION -> URL_PRESENTATION
 
-            OmhFileType.PNG -> URL_PNG
+            OmhFileType.PNG,
+            OmhFileType.JPEG -> URL_PNG
 
             OmhFileType.ZIP -> URL_ZIP
 
             OmhFileType.VIDEO,
-            OmhFileType.MP4-> URL_VIDEO
+            OmhFileType.MP4 -> URL_VIDEO
 
             else -> URL_OTHER
         }
