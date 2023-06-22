@@ -1,11 +1,14 @@
 package com.omh.android.storage.sample.presentation.file_viewer
 
+import android.content.Context
+import android.net.Uri
 import com.omh.android.storage.api.OmhStorageClient
 import com.omh.android.storage.api.domain.model.OmhFile
 import com.omh.android.storage.api.domain.model.OmhFileType
 import com.omh.android.storage.sample.domain.model.FileType
 import com.omh.android.storage.sample.presentation.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.io.File
 import java.util.Stack
 import javax.inject.Inject
 
@@ -40,6 +43,7 @@ class FileViewerViewModel @Inject constructor(
             FileViewerViewEvent.BackPressed -> backPressedEvent()
             is FileViewerViewEvent.CreateFile -> createFileEvent(event)
             is FileViewerViewEvent.DeleteFile -> deleteFileEvent(event)
+            is FileViewerViewEvent.UploadFile -> uploadFile(event)
         }
     }
 
@@ -105,6 +109,37 @@ class FileViewerViewModel @Inject constructor(
             }
             .execute()
         cancellableCollector.addCancellable(cancellable)
+    }
+
+    private fun uploadFile(event: FileViewerViewEvent.UploadFile) {
+        setState(FileViewerViewState.Loading)
+
+        val parentId = parentIdStack.peek()
+        val filePath = getFile(event.context, event.uri, event.fileName) ?: return
+        val cancellable = omhStorageClient.uploadFile(filePath, parentId)
+            .addOnSuccess {
+                toastMessage.postValue("Was successfully uploaded")
+                refreshFileListEvent()
+            }
+            .addOnFailure { e ->
+                toastMessage.postValue(e.message)
+                refreshFileListEvent()
+            }
+            .execute()
+
+        cancellableCollector.addCancellable(cancellable)
+    }
+
+    private fun getFile(context: Context, uri: Uri, fileName: String): File? {
+        val tempFile = File(context.cacheDir, fileName)
+
+        context.contentResolver.openInputStream(uri)?.use { inputStream ->
+            tempFile.outputStream().use { output ->
+                inputStream.copyTo(output)
+            }
+        }
+
+        return tempFile
     }
 
     private fun deleteFileEvent(event: FileViewerViewEvent.DeleteFile) {
