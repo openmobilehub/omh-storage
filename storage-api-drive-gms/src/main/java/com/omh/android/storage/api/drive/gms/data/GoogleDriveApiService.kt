@@ -1,5 +1,6 @@
 package com.omh.android.storage.api.drive.gms.data
 
+import com.google.api.client.http.FileContent
 import com.google.api.services.drive.Drive
 import com.google.api.services.drive.model.File
 
@@ -24,4 +25,9 @@ internal class GoogleDriveApiService(private val apiProvider: GoogleDriveApiProv
         .googleDriveApiService
         .files()
         .delete(fileId)
+
+    fun uploadFile(file: File, mediaContent: FileContent): Drive.Files.Create = apiProvider
+        .googleDriveApiService
+        .files()
+        .create(file, mediaContent)
 }

@@ -74,7 +74,6 @@ internal class NonGmsFileRemoteDataSourceImpl(private val retrofitImpl: GoogleRe
 
     override fun uploadFile(
         localFileToUpload: File,
-        fileName: String,
         parentId: String?
     ): OmhFile? {
         val stringMimeType = MimeTypeMap
@@ -92,12 +91,12 @@ internal class NonGmsFileRemoteDataSourceImpl(private val retrofitImpl: GoogleRe
 
         val parentsListAsJson = JSONArray(parentsList)
         val jsonMetaData = JSONObject().apply {
-            put(FILE_NAME_KEY, fileName)
+            put(FILE_NAME_KEY, localFileToUpload.name)
             put(FILE_PARENTS_KEY, parentsListAsJson)
         }
 
         val jsonRequestBody = jsonMetaData.toString().toRequestBody(JSON_MIME_TYPE)
-        val filePart = MultipartBody.Part.createFormData(FILE_NAME_KEY, fileName, requestFile)
+        val filePart = MultipartBody.Part.createFormData(FILE_NAME_KEY, localFileToUpload.name, requestFile)
 
         val response = retrofitImpl
             .getGoogleStorageApiService()

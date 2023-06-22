@@ -13,8 +13,8 @@ internal class GmsFileRepositoryImpl(private val dataSource: OmhFileRemoteDataSo
 
     override fun deleteFile(fileId: String) = dataSource.deleteFile(fileId)
 
-    override fun uploadFile(localFileToUpload: File, fileName: String, parentId: String?) =
-        dataSource.uploadFile(localFileToUpload, fileName, parentId)
+    override fun uploadFile(localFileToUpload: File, parentId: String?) =
+        dataSource.uploadFile(localFileToUpload, parentId)
 
     override fun open() = Unit
 

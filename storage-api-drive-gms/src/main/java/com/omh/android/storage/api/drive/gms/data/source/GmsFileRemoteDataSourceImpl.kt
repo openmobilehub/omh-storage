@@ -1,5 +1,7 @@
 package com.omh.android.storage.api.drive.gms.data.source
 
+import android.webkit.MimeTypeMap
+import com.google.api.client.http.FileContent
 import com.google.api.services.drive.model.FileList
 import com.omh.android.storage.api.data.source.OmhFileRemoteDataSource
 import com.omh.android.storage.api.domain.model.OmhFile
@@ -10,6 +12,10 @@ import com.google.api.services.drive.model.File as GoogleApiFile
 
 internal class GmsFileRemoteDataSourceImpl(private val apiService: GoogleDriveApiService) :
     OmhFileRemoteDataSource {
+
+    companion object {
+        private const val ANY_MIME_TYPE = "*/*"
+    }
 
     override fun getFilesList(parentId: String): List<OmhFile> {
         val googleJsonFileList: FileList = apiService.getFilesList(parentId).execute()
@@ -41,5 +47,28 @@ internal class GmsFileRemoteDataSourceImpl(private val apiService: GoogleDriveAp
         }
     }
 
-    override fun uploadFile(localFileToUpload: File, fileName: String, parentId: String?) = null
+    override fun uploadFile(localFileToUpload: File, parentId: String?): OmhFile? {
+        val localMimeType = getStringMimeTypeFromLocalFile(localFileToUpload)
+
+        val file = GoogleApiFile().apply {
+            name = localFileToUpload.name
+            mimeType = localMimeType
+            parents = if (parentId.isNullOrBlank()) {
+                emptyList()
+            } else {
+                listOf(parentId)
+            }
+        }
+
+        val mediaContent = FileContent(localMimeType, localFileToUpload)
+
+        val response: GoogleApiFile = apiService.uploadFile(file, mediaContent).execute()
+
+        return response.toOmhFile()
+    }
+
+    private fun getStringMimeTypeFromLocalFile(file: File) = MimeTypeMap
+        .getSingleton()
+        .getMimeTypeFromExtension(file.extension)
+        ?: ANY_MIME_TYPE
 }

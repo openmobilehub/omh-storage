@@ -63,12 +63,11 @@ abstract class OmhStorageClient protected constructor(
 
     fun uploadFile(
         localFileToUpload: File,
-        fileName: String,
         parentId: String?
     ): OmhTask<UploadFileUseCaseResult> {
         val uploadFileUseCase = UploadFileUseCase(getRepository())
         return OmhStorageTaskImpl {
-            val parameters = UploadFileUseCaseParams(localFileToUpload, fileName, parentId)
+            val parameters = UploadFileUseCaseParams(localFileToUpload, parentId)
             val result = uploadFileUseCase(parameters)
             result
         }
