@@ -26,6 +26,9 @@ class FileViewerViewModel @Inject constructor(
             FileType("Sheet", OmhFileType.SPREADSHEET),
             FileType("Presentation", OmhFileType.PRESENTATION),
         )
+
+        const val ANY_MIME_TYPE = "*/*"
+        const val DEFAULT_FILE_NAME = "Untitled"
     }
 
     var isGridLayoutManager = true
@@ -115,14 +118,18 @@ class FileViewerViewModel @Inject constructor(
         setState(FileViewerViewState.Loading)
 
         val parentId = parentIdStack.peek()
-        val filePath = getFile(event.context, event.uri, event.fileName) ?: return
+        val filePath = getFile(event.context, event.uri, event.fileName)
+
         val cancellable = omhStorageClient.uploadFile(filePath, parentId)
             .addOnSuccess {
-                toastMessage.postValue("Was successfully uploaded")
+                toastMessage.postValue("${event.fileName} was successfully uploaded")
+
                 refreshFileListEvent()
             }
             .addOnFailure { e ->
-                toastMessage.postValue(e.message)
+                toastMessage.postValue("ERROR: ${event.fileName} was NOT uploaded")
+                e.printStackTrace()
+
                 refreshFileListEvent()
             }
             .execute()
@@ -130,7 +137,7 @@ class FileViewerViewModel @Inject constructor(
         cancellableCollector.addCancellable(cancellable)
     }
 
-    private fun getFile(context: Context, uri: Uri, fileName: String): File? {
+    private fun getFile(context: Context, uri: Uri, fileName: String): File {
         val tempFile = File(context.cacheDir, fileName)
 
         context.contentResolver.openInputStream(uri)?.use { inputStream ->
@@ -150,13 +157,16 @@ class FileViewerViewModel @Inject constructor(
         val cancellable = omhStorageClient.deleteFile(file.id)
             .addOnSuccess { data ->
                 handleDeleteSuccess(data.isSuccess, file)
+
+                refreshFileListEvent()
             }
             .addOnFailure {
                 toastMessage.postValue("ERROR: ${file.name} was NOT deleted")
+
+                refreshFileListEvent()
             }
             .execute()
         cancellableCollector.addCancellable(cancellable)
-        refreshFileListEvent()
     }
 
     private fun handleDeleteSuccess(isSuccessful: Boolean, file: OmhFile) {

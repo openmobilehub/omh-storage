@@ -11,6 +11,7 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
@@ -41,11 +42,7 @@ class FileViewerActivity :
     private lateinit var binding: ActivityFileViewerBinding
     private var filesAdapter: FileAdapter? = null
     private lateinit var onBackPressedCallback: OnBackPressedCallback
-    private val filePicker = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-        uri?.let { validUri ->
-            showUploadFileDialog(validUri)
-        }
-    }
+    private lateinit var filePicker: ActivityResultLauncher<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,6 +53,14 @@ class FileViewerActivity :
         onBackPressedCallback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 dispatchEvent(FileViewerViewEvent.BackPressed)
+            }
+        }
+
+        filePicker = registerForActivityResult(
+            ActivityResultContracts.GetContent()
+        ) { uri: Uri? ->
+            uri?.let { validUri ->
+                showUploadFileDialog(validUri)
             }
         }
     }
@@ -81,7 +86,9 @@ class FileViewerActivity :
             }
 
             R.id.uploadFile -> {
-                filePicker.launch("*/*")
+                filePicker.launch(
+                    FileViewerViewModel.ANY_MIME_TYPE
+                )
             }
         }
         return super.onOptionsItemSelected(item)
@@ -230,16 +237,19 @@ class FileViewerActivity :
     }
 
     private fun showUploadFileDialog(uri: Uri) {
-        val dialogUploadFileView = DialogUploadFileBinding.inflate(layoutInflater)
+        val fileName: String = DocumentFile
+            .fromSingleUri(this, uri)?.name
+            ?: FileViewerViewModel.DEFAULT_FILE_NAME
 
-        dialogUploadFileView.fileName.text = DocumentFile.fromSingleUri(this, uri)?.name ?: "Untitled"
+        val dialogUploadFileView = DialogUploadFileBinding.inflate(layoutInflater)
+        dialogUploadFileView.fileName.text = fileName
 
         val uploadFileDialogBuilder = AlertDialog.Builder(this)
             .setTitle(getString(R.string.text_upload_file_title))
-            .setPositiveButton("Upload") { dialog, _ ->
-                configureUploadFilePositiveButtonEvent(dialogUploadFileView, dialog, uri)
+            .setPositiveButton(getString(R.string.text_upload)) { dialog, _ ->
+                configureUploadFilePositiveButtonEvent(dialog, fileName, uri)
             }
-            .setNegativeButton("Cancel") { dialog, _ ->
+            .setNegativeButton(getString(R.string.text_cancel)) { dialog, _ ->
                 dialog.cancel()
             }
 
@@ -252,12 +262,10 @@ class FileViewerActivity :
     }
 
     private fun configureUploadFilePositiveButtonEvent(
-        view: DialogUploadFileBinding,
         dialog: DialogInterface,
+        fileName: String,
         uri: Uri
     ) {
-        val fileName = view.fileName.text.toString()
-
         if (fileName.isNotBlank()) {
             dispatchEvent(FileViewerViewEvent.UploadFile(this, uri, fileName))
         }
