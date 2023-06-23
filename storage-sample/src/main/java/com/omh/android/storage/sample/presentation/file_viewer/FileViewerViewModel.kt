@@ -1,11 +1,14 @@
 package com.omh.android.storage.sample.presentation.file_viewer
 
+import android.content.Context
+import android.net.Uri
 import com.omh.android.storage.api.OmhStorageClient
 import com.omh.android.storage.api.domain.model.OmhFile
 import com.omh.android.storage.api.domain.model.OmhFileType
 import com.omh.android.storage.sample.domain.model.FileType
 import com.omh.android.storage.sample.presentation.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.io.File
 import java.util.Stack
 import javax.inject.Inject
 
@@ -23,6 +26,9 @@ class FileViewerViewModel @Inject constructor(
             FileType("Sheet", OmhFileType.SPREADSHEET),
             FileType("Presentation", OmhFileType.PRESENTATION),
         )
+
+        const val ANY_MIME_TYPE = "*/*"
+        const val DEFAULT_FILE_NAME = "Untitled"
     }
 
     var isGridLayoutManager = true
@@ -40,6 +46,7 @@ class FileViewerViewModel @Inject constructor(
             FileViewerViewEvent.BackPressed -> backPressedEvent()
             is FileViewerViewEvent.CreateFile -> createFileEvent(event)
             is FileViewerViewEvent.DeleteFile -> deleteFileEvent(event)
+            is FileViewerViewEvent.UploadFile -> uploadFile(event)
         }
     }
 
@@ -107,6 +114,47 @@ class FileViewerViewModel @Inject constructor(
         cancellableCollector.addCancellable(cancellable)
     }
 
+    private fun uploadFile(event: FileViewerViewEvent.UploadFile) {
+        setState(FileViewerViewState.Loading)
+
+        val parentId = parentIdStack.peek()
+        val filePath = getFile(event.context, event.uri, event.fileName)
+
+        val cancellable = omhStorageClient.uploadFile(filePath, parentId)
+            .addOnSuccess { result ->
+                val resultMessage = if (result.file == null) {
+                    "${event.fileName} was NOT uploaded"
+                } else {
+                    "${event.fileName} was successfully uploaded"
+                }
+
+                toastMessage.postValue(resultMessage)
+
+                refreshFileListEvent()
+            }
+            .addOnFailure { e ->
+                toastMessage.postValue("ERROR: ${event.fileName} was NOT uploaded")
+                e.printStackTrace()
+
+                refreshFileListEvent()
+            }
+            .execute()
+
+        cancellableCollector.addCancellable(cancellable)
+    }
+
+    private fun getFile(context: Context, uri: Uri, fileName: String): File {
+        val tempFile = File(context.cacheDir, fileName)
+
+        context.contentResolver.openInputStream(uri)?.use { inputStream ->
+            tempFile.outputStream().use { output ->
+                inputStream.copyTo(output)
+            }
+        }
+
+        return tempFile
+    }
+
     private fun deleteFileEvent(event: FileViewerViewEvent.DeleteFile) {
         setState(FileViewerViewState.Loading)
 
@@ -115,13 +163,16 @@ class FileViewerViewModel @Inject constructor(
         val cancellable = omhStorageClient.deleteFile(file.id)
             .addOnSuccess { data ->
                 handleDeleteSuccess(data.isSuccess, file)
+
+                refreshFileListEvent()
             }
             .addOnFailure {
                 toastMessage.postValue("ERROR: ${file.name} was NOT deleted")
+
+                refreshFileListEvent()
             }
             .execute()
         cancellableCollector.addCancellable(cancellable)
-        refreshFileListEvent()
     }
 
     private fun handleDeleteSuccess(isSuccessful: Boolean, file: OmhFile) {

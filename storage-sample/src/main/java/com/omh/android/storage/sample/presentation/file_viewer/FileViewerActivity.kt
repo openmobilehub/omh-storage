@@ -3,6 +3,7 @@ package com.omh.android.storage.sample.presentation.file_viewer
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -10,14 +11,18 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
+import androidx.documentfile.provider.DocumentFile
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.omh.android.storage.api.domain.model.OmhFile
 import com.omh.android.storage.sample.R
 import com.omh.android.storage.sample.databinding.ActivityFileViewerBinding
 import com.omh.android.storage.sample.databinding.DialogCreateFileBinding
+import com.omh.android.storage.sample.databinding.DialogUploadFileBinding
 import com.omh.android.storage.sample.presentation.BaseActivity
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -37,6 +42,7 @@ class FileViewerActivity :
     private lateinit var binding: ActivityFileViewerBinding
     private var filesAdapter: FileAdapter? = null
     private lateinit var onBackPressedCallback: OnBackPressedCallback
+    private lateinit var filePicker: ActivityResultLauncher<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,6 +53,14 @@ class FileViewerActivity :
         onBackPressedCallback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 dispatchEvent(FileViewerViewEvent.BackPressed)
+            }
+        }
+
+        filePicker = registerForActivityResult(
+            ActivityResultContracts.GetContent()
+        ) { uri: Uri? ->
+            uri?.let { validUri ->
+                showUploadFileDialog(validUri)
             }
         }
     }
@@ -71,7 +85,11 @@ class FileViewerActivity :
                 showCreateFileDialog()
             }
 
-            R.id.uploadFile -> {}
+            R.id.uploadFile -> {
+                filePicker.launch(
+                    FileViewerViewModel.ANY_MIME_TYPE
+                )
+            }
         }
         return super.onOptionsItemSelected(item)
     }
@@ -216,5 +234,42 @@ class FileViewerActivity :
                 }
             }
         }
+    }
+
+    private fun showUploadFileDialog(uri: Uri) {
+        val fileName: String = DocumentFile
+            .fromSingleUri(this, uri)?.name
+            ?: FileViewerViewModel.DEFAULT_FILE_NAME
+
+        val dialogUploadFileView = DialogUploadFileBinding.inflate(layoutInflater)
+        dialogUploadFileView.fileName.text = fileName
+
+        val uploadFileDialogBuilder = AlertDialog.Builder(this)
+            .setTitle(getString(R.string.text_upload_file_title))
+            .setPositiveButton(getString(R.string.text_upload)) { dialog, _ ->
+                configureUploadFilePositiveButtonEvent(dialog, fileName, uri)
+            }
+            .setNegativeButton(getString(R.string.text_cancel)) { dialog, _ ->
+                dialog.cancel()
+            }
+
+        val createFileAlertDialog = uploadFileDialogBuilder.create().apply {
+            setCancelable(false)
+            setView(dialogUploadFileView.root)
+        }
+
+        createFileAlertDialog.show()
+    }
+
+    private fun configureUploadFilePositiveButtonEvent(
+        dialog: DialogInterface,
+        fileName: String,
+        uri: Uri
+    ) {
+        if (fileName.isNotBlank()) {
+            dispatchEvent(FileViewerViewEvent.UploadFile(this, uri, fileName))
+        }
+
+        dialog.dismiss()
     }
 }

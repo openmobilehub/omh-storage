@@ -36,6 +36,8 @@ class FileAdapter(
             "https://drive-thirdparty.googleusercontent.com/32/type/image/png"
         private const val URL_ZIP =
             "https://drive-thirdparty.googleusercontent.com/32/type/application/zip"
+        private const val URL_VIDEO =
+            "https://drive-thirdparty.googleusercontent.com/32/type/video/mp4"
         private const val URL_OTHER = "https://static.thenounproject.com/png/3482632-200.png"
 
         private fun getFileIconUrl(fileType: OmhFileType) = when (fileType) {
@@ -55,9 +57,13 @@ class FileAdapter(
             OmhFileType.MICROSOFT_POWERPOINT,
             OmhFileType.OPEN_DOCUMENT_PRESENTATION -> URL_PRESENTATION
 
-            OmhFileType.PNG -> URL_PNG
+            OmhFileType.PNG,
+            OmhFileType.JPEG -> URL_PNG
 
             OmhFileType.ZIP -> URL_ZIP
+
+            OmhFileType.VIDEO,
+            OmhFileType.MP4 -> URL_VIDEO
 
             else -> URL_OTHER
         }

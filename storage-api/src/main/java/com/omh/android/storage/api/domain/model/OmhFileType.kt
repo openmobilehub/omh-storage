@@ -55,6 +55,9 @@ enum class OmhFileType(val mimeType: String) {
     // Apps Scripts
     JSON("application/vnd.google-apps.script+json"), // .json
 
+    // Video
+    MP4("video/mp4"),
+
     // Other MYME type
     OTHER("")
 }
