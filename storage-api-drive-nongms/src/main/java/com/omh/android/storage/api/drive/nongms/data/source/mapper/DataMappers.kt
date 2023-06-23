@@ -6,7 +6,7 @@ import com.omh.android.storage.api.drive.nongms.data.source.response.FileRemoteR
 
 @SuppressWarnings("ComplexCondition")
 internal fun FileRemoteResponse.toFile(): OmhFile? {
-    if (mimeType == null || id == null || name == null || modifiedTime == null) {
+    if (mimeType == null || id == null || name == null) {
         return null
     }
 
@@ -20,7 +20,7 @@ internal fun FileRemoteResponse.toFile(): OmhFile? {
         mimeType,
         id,
         name,
-        modifiedTime,
+        modifiedTime.orEmpty(),
         parentId
     )
 }
