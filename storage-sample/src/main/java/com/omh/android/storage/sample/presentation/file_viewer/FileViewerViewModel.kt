@@ -3,13 +3,16 @@ package com.omh.android.storage.sample.presentation.file_viewer
 import android.content.Context
 import android.net.Uri
 import com.omh.android.auth.api.OmhAuthClient
+import android.os.Environment
 import com.omh.android.storage.api.OmhStorageClient
 import com.omh.android.storage.api.domain.model.OmhFile
 import com.omh.android.storage.api.domain.model.OmhFileType
+import com.omh.android.storage.api.domain.usecase.DownloadFileUseCaseResult
 import com.omh.android.storage.sample.domain.model.FileType
 import com.omh.android.storage.sample.presentation.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.io.File
+import java.io.FileOutputStream
 import java.util.Stack
 import javax.inject.Inject
 
@@ -88,7 +91,7 @@ class FileViewerViewModel @Inject constructor(
             parentIdStack.push(fileId)
             refreshFileListEvent()
         } else {
-            // TODO: Implement download file
+            downloadFileEvent(event)
         }
     }
 
@@ -99,6 +102,24 @@ class FileViewerViewModel @Inject constructor(
             parentIdStack.pop()
             refreshFileListEvent()
         }
+    }
+
+    private fun downloadFileEvent(event: FileViewerViewEvent.FileClicked) {
+        setState(FileViewerViewState.Loading)
+
+        val file = event.file
+
+        val cancellable = omhStorageClient.downloadFile(file.id)
+            .addOnSuccess { data ->
+                handleDownloadSuccess(data, file)
+                refreshFileListEvent()
+            }
+            .addOnFailure {
+                toastMessage.postValue("ERROR: ${file.name} was NOT downloaded")
+                refreshFileListEvent()
+            }
+            .execute()
+        cancellableCollector.addCancellable(cancellable)
     }
 
     private fun createFileEvent(event: FileViewerViewEvent.CreateFile) {
@@ -195,5 +216,17 @@ class FileViewerViewModel @Inject constructor(
             .execute()
 
         cancellableCollector.addCancellable(cancellable)
+    }
+
+    private fun handleDownloadSuccess(
+        result: DownloadFileUseCaseResult,
+        file: OmhFile
+    ) {
+        val bytes = result.outputStream
+        val downloadFolder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+        val fileToSave = File(downloadFolder, file.name)
+        val fileOutputStream = FileOutputStream(fileToSave)
+
+        bytes.writeTo(fileOutputStream)
     }
 }
