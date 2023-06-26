@@ -1,6 +1,7 @@
 package com.omh.android.storage.api.domain.repository
 
 import com.omh.android.storage.api.domain.model.OmhFile
+import java.io.ByteArrayOutputStream
 import java.io.File
 
 interface OmhFileRepository {
@@ -13,9 +14,9 @@ interface OmhFileRepository {
 
     fun uploadFile(localFileToUpload: File, parentId: String?): OmhFile?
 
+    fun downloadFile(fileId: String): ByteArrayOutputStream
+
     fun open()
 
     fun update()
-
-    fun download()
 }

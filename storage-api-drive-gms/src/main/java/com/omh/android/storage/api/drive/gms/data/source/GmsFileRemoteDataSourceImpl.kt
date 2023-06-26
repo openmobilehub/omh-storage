@@ -7,6 +7,7 @@ import com.omh.android.storage.api.data.source.OmhFileRemoteDataSource
 import com.omh.android.storage.api.domain.model.OmhFile
 import com.omh.android.storage.api.drive.gms.data.GoogleDriveApiService
 import com.omh.android.storage.api.drive.gms.data.source.mapper.toOmhFile
+import java.io.ByteArrayOutputStream
 import java.io.File
 import com.google.api.services.drive.model.File as GoogleApiFile
 
@@ -71,4 +72,12 @@ internal class GmsFileRemoteDataSourceImpl(private val apiService: GoogleDriveAp
         .getSingleton()
         .getMimeTypeFromExtension(file.extension)
         ?: ANY_MIME_TYPE
+
+    override fun downloadFile(fileId: String): ByteArrayOutputStream {
+        val outputStream = ByteArrayOutputStream()
+
+        apiService.downloadFile(fileId).executeAndDownloadTo(outputStream)
+
+        return outputStream
+    }
 }
