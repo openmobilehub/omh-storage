@@ -91,7 +91,8 @@ class FileViewerViewModel @Inject constructor(
             parentIdStack.push(fileId)
             refreshFileListEvent()
         } else {
-            downloadFileEvent(event)
+            setState(FileViewerViewState.CheckReadExternalStoragePermissions)
+            //downloadFileEvent(event)
         }
     }
 
