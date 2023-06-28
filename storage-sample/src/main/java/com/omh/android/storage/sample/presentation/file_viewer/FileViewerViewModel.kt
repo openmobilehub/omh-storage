@@ -37,6 +37,7 @@ class FileViewerViewModel @Inject constructor(
     var isGridLayoutManager = true
     var createFileSelectedType: OmhFileType? = null
     private val parentIdStack = Stack<String>().apply { push(ID_ROOT) }
+    private var lastFileClicked: OmhFile? = null
 
     override fun getInitialState(): FileViewerViewState = FileViewerViewState.Initial
 
@@ -50,6 +51,7 @@ class FileViewerViewModel @Inject constructor(
             is FileViewerViewEvent.CreateFile -> createFileEvent(event)
             is FileViewerViewEvent.DeleteFile -> deleteFileEvent(event)
             is FileViewerViewEvent.UploadFile -> uploadFile(event)
+            FileViewerViewEvent.DownloadFile -> downloadFileEvent()
         }
     }
 
@@ -88,8 +90,8 @@ class FileViewerViewModel @Inject constructor(
             parentIdStack.push(fileId)
             refreshFileListEvent()
         } else {
+            lastFileClicked = file
             setState(FileViewerViewState.CheckReadExternalStoragePermissions)
-            //downloadFileEvent(event)
         }
     }
 
@@ -102,22 +104,26 @@ class FileViewerViewModel @Inject constructor(
         }
     }
 
-    private fun downloadFileEvent(event: FileViewerViewEvent.FileClicked) {
+    private fun downloadFileEvent() {
         setState(FileViewerViewState.Loading)
 
-        val file = event.file
-
-        val cancellable = omhStorageClient.downloadFile(file.id)
-            .addOnSuccess { data ->
-                handleDownloadSuccess(data, file)
-                refreshFileListEvent()
-            }
-            .addOnFailure {
-                toastMessage.postValue("ERROR: ${file.name} was NOT downloaded")
-                refreshFileListEvent()
-            }
-            .execute()
-        cancellableCollector.addCancellable(cancellable)
+        lastFileClicked?.let { file ->
+            val cancellable = omhStorageClient.downloadFile(file.id)
+                .addOnSuccess { data ->
+                    handleDownloadSuccess(data, file)
+                    toastMessage.postValue("${file.name} was successfully downloaded")
+                    refreshFileListEvent()
+                }
+                .addOnFailure {
+                    toastMessage.postValue("ERROR: ${file.name} was NOT downloaded")
+                    refreshFileListEvent()
+                }
+                .execute()
+            cancellableCollector.addCancellable(cancellable)
+        } ?: run {
+            toastMessage.postValue("The file was NOT downloaded")
+            refreshFileListEvent()
+        }
     }
 
     private fun createFileEvent(event: FileViewerViewEvent.CreateFile) {
@@ -212,7 +218,10 @@ class FileViewerViewModel @Inject constructor(
         file: OmhFile
     ) {
         val bytes = result.outputStream
-        val downloadFolder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+        val downloadFolder = Environment
+            .getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_DOWNLOADS
+            )
         val fileToSave = File(downloadFolder, file.name)
         val fileOutputStream = FileOutputStream(fileToSave)
 
