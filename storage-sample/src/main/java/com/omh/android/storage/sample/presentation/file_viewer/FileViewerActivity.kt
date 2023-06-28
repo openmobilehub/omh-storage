@@ -84,9 +84,7 @@ class FileViewerActivity :
                 }
             }
 
-            if (deniedPermissions.isEmpty()) {
-                // TODO: All permissions granted. Download file
-            } else {
+            if (deniedPermissions.isNotEmpty()) {
                 requestPermissions()
             }
         }
@@ -317,6 +315,8 @@ class FileViewerActivity :
 
         if (permissionsToAsk.isNotEmpty()) {
             requestPermissionLauncher.launch(permissionsToAsk)
+        } else {
+            dispatchEvent(FileViewerViewEvent.DownloadFile)
         }
     }
 }
