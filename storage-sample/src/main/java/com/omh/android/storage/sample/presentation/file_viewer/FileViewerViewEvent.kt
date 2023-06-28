@@ -46,4 +46,9 @@ sealed class FileViewerViewEvent : ViewEvent {
 
         override fun getEventName() = "FileViewerViewEvent.UploadFile"
     }
+
+    object SignOut : FileViewerViewEvent() {
+
+        override fun getEventName() = "FileViewerViewEvent.SignOut"
+    }
 }

@@ -90,6 +90,10 @@ class FileViewerActivity :
                     FileViewerViewModel.ANY_MIME_TYPE
                 )
             }
+
+            R.id.signOut -> {
+                dispatchEvent(FileViewerViewEvent.SignOut)
+            }
         }
         return super.onOptionsItemSelected(item)
     }
