@@ -1,8 +1,10 @@
 package com.omh.android.storage.sample.presentation.file_viewer
 
+import android.Manifest
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
@@ -15,6 +17,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import androidx.documentfile.provider.DocumentFile
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -36,6 +39,8 @@ class FileViewerActivity :
         fun getIntent(context: Context) = Intent(context, FileViewerActivity::class.java).apply {
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK)
         }
+
+        private const val REQUEST_PERMISSIONS_CODE = 1
     }
 
     override val viewModel: FileViewerViewModel by viewModels()
@@ -43,6 +48,7 @@ class FileViewerActivity :
     private var filesAdapter: FileAdapter? = null
     private lateinit var onBackPressedCallback: OnBackPressedCallback
     private lateinit var filePicker: ActivityResultLauncher<String>
+    private lateinit var requestPermissionLauncher: ActivityResultLauncher<Array<String>>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,6 +67,27 @@ class FileViewerActivity :
         ) { uri: Uri? ->
             uri?.let { validUri ->
                 showUploadFileDialog(validUri)
+            }
+        }
+
+        requestPermissionLauncher = registerForActivityResult(
+            ActivityResultContracts.RequestMultiplePermissions()
+        ) { permissions: Map<String, Boolean> ->
+            val deniedPermissions = mutableListOf<String>()
+
+            permissions.entries.forEach { entry: Map.Entry<String, Boolean> ->
+                val permission = entry.key
+                val isGranted = entry.value
+
+                if (!isGranted) {
+                    deniedPermissions.add(permission)
+                }
+            }
+
+            if (deniedPermissions.isEmpty()) {
+                // TODO: All permissions granted. Download file
+            } else {
+                requestPermissions()
             }
         }
     }
@@ -100,6 +127,7 @@ class FileViewerActivity :
         is FileViewerViewState.Content -> buildContentState(state)
         is FileViewerViewState.SwapLayoutManager -> buildSwapLayoutManagerState()
         FileViewerViewState.Finish -> buildFinishState()
+        FileViewerViewState.CheckReadExternalStoragePermissions -> requestPermissions()
     }
 
     private fun buildInitialState() {
@@ -271,5 +299,20 @@ class FileViewerActivity :
         }
 
         dialog.dismiss()
+    }
+
+    private fun requestPermissions() {
+        val permissionsToRequest: Array<String> = arrayOf(
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+        )
+
+        val permissionsToAsk: Array<String> = permissionsToRequest.filter { permission: String ->
+            ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED
+        }.toTypedArray()
+
+        if (permissionsToAsk.isNotEmpty()) {
+            requestPermissionLauncher.launch(permissionsToAsk)
+        }
     }
 }

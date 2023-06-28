@@ -29,4 +29,9 @@ sealed class FileViewerViewState : ViewState {
 
         override fun getName() = "Finish.SwapLayoutManager"
     }
+
+    object CheckReadExternalStoragePermissions : FileViewerViewState() {
+
+        override fun getName() = "Finish.CheckStoragePermissions"
+    }
 }
