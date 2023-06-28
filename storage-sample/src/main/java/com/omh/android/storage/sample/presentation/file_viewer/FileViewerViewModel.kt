@@ -2,6 +2,7 @@ package com.omh.android.storage.sample.presentation.file_viewer
 
 import android.content.Context
 import android.net.Uri
+import com.omh.android.auth.api.OmhAuthClient
 import com.omh.android.storage.api.OmhStorageClient
 import com.omh.android.storage.api.domain.model.OmhFile
 import com.omh.android.storage.api.domain.model.OmhFileType
@@ -14,7 +15,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FileViewerViewModel @Inject constructor(
-    private val omhStorageClient: OmhStorageClient
+    private val omhStorageClient: OmhStorageClient,
+    private val authClient: OmhAuthClient
 ) : BaseViewModel<FileViewerViewState, FileViewerViewEvent>() {
 
     companion object {
@@ -47,6 +49,7 @@ class FileViewerViewModel @Inject constructor(
             is FileViewerViewEvent.CreateFile -> createFileEvent(event)
             is FileViewerViewEvent.DeleteFile -> deleteFileEvent(event)
             is FileViewerViewEvent.UploadFile -> uploadFile(event)
+            FileViewerViewEvent.SignOut -> signOut()
         }
     }
 
@@ -183,5 +186,14 @@ class FileViewerViewModel @Inject constructor(
         }
 
         toastMessage.postValue(toastText)
+    }
+
+    private fun signOut() {
+        val cancellable = authClient.signOut()
+            .addOnSuccess { setState(FileViewerViewState.Finish) }
+            .addOnFailure { setState(FileViewerViewState.Finish) }
+            .execute()
+
+        cancellableCollector.addCancellable(cancellable)
     }
 }
