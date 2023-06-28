@@ -73,7 +73,7 @@ internal class GmsFileRemoteDataSourceImpl(private val apiService: GoogleDriveAp
         .getMimeTypeFromExtension(file.extension)
         ?: ANY_MIME_TYPE
 
-    override fun downloadFile(fileId: String): ByteArrayOutputStream {
+    override fun downloadFile(fileId: String, mimeType: String?): ByteArrayOutputStream {
         val outputStream = ByteArrayOutputStream()
 
         apiService.downloadFile(fileId).executeAndDownloadTo(outputStream)

@@ -20,7 +20,7 @@ internal class NonGmsFileRepositoryImpl(
     override fun uploadFile(localFileToUpload: File, parentId: String?) =
         dataSource.uploadFile(localFileToUpload, parentId)
 
-    override fun downloadFile(fileId: String) = ByteArrayOutputStream()
+    override fun downloadFile(fileId: String, mimeType: String?) = ByteArrayOutputStream()
 
     override fun open() = Unit
 

@@ -11,10 +11,10 @@ class DownloadFileUseCase(
 ) : OmhSuspendUseCase<DownloadFileUseCaseParams, DownloadFileUseCaseResult>(dispatcher) {
 
     override suspend fun execute(parameters: DownloadFileUseCaseParams) = DownloadFileUseCaseResult(
-        repository.downloadFile(parameters.fileId)
+        repository.downloadFile(parameters.fileId, parameters.mimeType)
     )
 }
 
-data class DownloadFileUseCaseParams(val fileId: String)
+data class DownloadFileUseCaseParams(val fileId: String, val mimeType: String)
 
 data class DownloadFileUseCaseResult(val outputStream: ByteArrayOutputStream)

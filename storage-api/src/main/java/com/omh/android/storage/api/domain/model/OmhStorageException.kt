@@ -10,4 +10,12 @@ sealed class OmhStorageException(val statusCode: Int) : Exception() {
     class InvalidCredentialsException(statusCode: Int) : OmhStorageException(statusCode)
 
     class ApiException(statusCode: Int) : OmhStorageException(statusCode)
+
+    class DownloadException(
+        statusCode: Int,
+        private val messageError: String
+    ) : OmhStorageException(statusCode) {
+        override val message: String
+            get() = messageError
+    }
 }
