@@ -14,7 +14,7 @@ interface OmhFileRepository {
 
     fun uploadFile(localFileToUpload: File, parentId: String?): OmhFile?
 
-    fun downloadFile(fileId: String): ByteArrayOutputStream
+    fun downloadFile(fileId: String, mimeType: String?): ByteArrayOutputStream
 
     fun open()
 
