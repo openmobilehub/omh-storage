@@ -23,20 +23,19 @@ fun CoroutineScope.launchSafe(
     }
 }
 
-fun OmhFile.isNotSupported(): Boolean {
-    when (this.mimeType) {
-        OmhFileType.THIRD_PARTY_SHORTCUT.mimeType,
-        OmhFileType.FILE.mimeType,
-        OmhFileType.FUSIONTABLE.mimeType,
-        OmhFileType.JAMBOARD.mimeType,
-        OmhFileType.MAP.mimeType,
-        OmhFileType.SITE.mimeType,
-        OmhFileType.UNKNOWN.mimeType -> return true
-    }
-    return false
-}
+private val NON_SUPPORTED_MIME_TYPES_FOR_DOWNLOAD = listOf(
+    OmhFileType.THIRD_PARTY_SHORTCUT,
+    OmhFileType.FILE,
+    OmhFileType.FUSIONTABLE,
+    OmhFileType.JAMBOARD,
+    OmhFileType.MAP,
+    OmhFileType.SITE,
+    OmhFileType.UNKNOWN
+)
 
-fun OmhFile.getMimeType() =
+fun OmhFile.isDownloadable(): Boolean = !NON_SUPPORTED_MIME_TYPES_FOR_DOWNLOAD.contains(fileType)
+
+fun OmhFile.getDownloadableMimeType() =
     when (this.mimeType) {
         OmhFileType.DOCUMENT.mimeType -> OmhFileType.MICROSOFT_WORD.mimeType
         OmhFileType.DRAWING.mimeType -> OmhFileType.PNG.mimeType
