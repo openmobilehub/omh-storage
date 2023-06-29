@@ -3,11 +3,15 @@ package com.omh.android.storage.api.drive.nongms.data.source
 import android.webkit.MimeTypeMap
 import com.omh.android.storage.api.data.source.OmhFileRemoteDataSource
 import com.omh.android.storage.api.domain.model.OmhFile
+import com.omh.android.storage.api.domain.model.OmhStorageException
+import com.omh.android.storage.api.domain.model.OmhStorageStatusCodes.DOWNLOAD_ERROR
+import com.omh.android.storage.api.domain.model.OmhStorageStatusCodes.DOWNLOAD_GOOGLE_WORKSPACE_ERROR
 import com.omh.android.storage.api.drive.nongms.data.GoogleRetrofitImpl
 import com.omh.android.storage.api.drive.nongms.data.GoogleStorageApiService
 import com.omh.android.storage.api.drive.nongms.data.source.body.CreateFileRequestBody
 import com.omh.android.storage.api.drive.nongms.data.source.mapper.toFile
 import com.omh.android.storage.api.drive.nongms.data.source.mapper.toFileList
+import com.omh.android.storage.api.drive.nongms.data.utils.toByteArrayOutputStream
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -24,6 +28,7 @@ internal class NonGmsFileRemoteDataSourceImpl(private val retrofitImpl: GoogleRe
         private const val FILE_NAME_KEY = "name"
         private const val FILE_PARENTS_KEY = "parents"
         private const val ANY_MIME_TYPE = "*/*"
+        private const val MEDIA = "media"
 
         private val JSON_MIME_TYPE = "application/json".toMediaTypeOrNull()
     }
@@ -111,6 +116,38 @@ internal class NonGmsFileRemoteDataSourceImpl(private val retrofitImpl: GoogleRe
         }
     }
 
-    override fun downloadFile(fileId: String, mimeType: String?): ByteArrayOutputStream =
-        ByteArrayOutputStream()
+    override fun downloadFile(fileId: String, mimeType: String?): ByteArrayOutputStream {
+        val response = retrofitImpl
+            .getGoogleStorageApiService()
+            .downloadMediaFile(fileId = fileId, alt = MEDIA)
+            .execute()
+
+        val outputStream = response.body().toByteArrayOutputStream()
+
+        return if (response.isSuccessful) {
+            outputStream
+        } else {
+            mimeType?.let {
+                return exportDocEditor(fileId, mimeType)
+            }
+            val errorBody = response.errorBody()?.string().orEmpty()
+            throw (OmhStorageException.DownloadException(DOWNLOAD_ERROR, errorBody))
+        }
+    }
+
+    private fun exportDocEditor(fileId: String, mimeType: String): ByteArrayOutputStream {
+        val response = retrofitImpl
+            .getGoogleStorageApiService()
+            .exportDocEditor(fileId = fileId, mimeType = mimeType)
+            .execute()
+
+        val outputStream = response.body().toByteArrayOutputStream()
+
+        return if (response.isSuccessful) {
+            outputStream
+        } else {
+            val errorBody = response.errorBody()?.string().orEmpty()
+            throw (OmhStorageException.DownloadException(DOWNLOAD_GOOGLE_WORKSPACE_ERROR, errorBody))
+        }
+    }
 }
