@@ -36,17 +36,17 @@ private val NON_SUPPORTED_MIME_TYPES_FOR_DOWNLOAD = listOf(
 fun OmhFile.isDownloadable(): Boolean = !NON_SUPPORTED_MIME_TYPES_FOR_DOWNLOAD.contains(fileType)
 
 fun OmhFile.getDownloadableMimeType() =
-    when (this.mimeType) {
-        OmhFileType.DOCUMENT.mimeType -> OmhFileType.MICROSOFT_WORD.mimeType
-        OmhFileType.DRAWING.mimeType -> OmhFileType.PNG.mimeType
-        OmhFileType.FOLDER.mimeType -> OmhFileType.ZIP.mimeType
-        OmhFileType.FORM.mimeType -> OmhFileType.PDF.mimeType
-        OmhFileType.PHOTO.mimeType -> OmhFileType.JPEG.mimeType
-        OmhFileType.PRESENTATION.mimeType -> OmhFileType.MICROSOFT_POWERPOINT.mimeType
-        OmhFileType.SCRIPT.mimeType -> OmhFileType.JSON.mimeType
-        OmhFileType.SHORTCUT.mimeType -> OmhFileType.SHORTCUT.mimeType
-        OmhFileType.SPREADSHEET.mimeType -> OmhFileType.MICROSOFT_EXCEL.mimeType
-        OmhFileType.VIDEO.mimeType,
-        OmhFileType.AUDIO.mimeType -> OmhFileType.MP4.mimeType
+    when (fileType) {
+        OmhFileType.DOCUMENT -> OmhFileType.MICROSOFT_WORD.mimeType
+        OmhFileType.DRAWING -> OmhFileType.PNG.mimeType
+        OmhFileType.FOLDER -> OmhFileType.ZIP.mimeType
+        OmhFileType.FORM -> OmhFileType.PDF.mimeType
+        OmhFileType.PHOTO -> OmhFileType.JPEG.mimeType
+        OmhFileType.PRESENTATION -> OmhFileType.MICROSOFT_POWERPOINT.mimeType
+        OmhFileType.SCRIPT -> OmhFileType.JSON.mimeType
+        OmhFileType.SHORTCUT -> OmhFileType.SHORTCUT.mimeType
+        OmhFileType.SPREADSHEET -> OmhFileType.MICROSOFT_EXCEL.mimeType
+        OmhFileType.VIDEO,
+        OmhFileType.AUDIO -> OmhFileType.MP4.mimeType
         else -> this.mimeType
     }
