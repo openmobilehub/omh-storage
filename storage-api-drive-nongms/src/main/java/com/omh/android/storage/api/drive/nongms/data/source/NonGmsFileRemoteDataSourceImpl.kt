@@ -111,5 +111,6 @@ internal class NonGmsFileRemoteDataSourceImpl(private val retrofitImpl: GoogleRe
         }
     }
 
-    override fun downloadFile(fileId: String): ByteArrayOutputStream = ByteArrayOutputStream()
+    override fun downloadFile(fileId: String, mimeType: String?): ByteArrayOutputStream =
+        ByteArrayOutputStream()
 }
