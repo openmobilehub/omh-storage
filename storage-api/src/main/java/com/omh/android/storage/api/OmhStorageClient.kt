@@ -10,6 +10,9 @@ import com.omh.android.storage.api.domain.usecase.CreateFileUseCaseResult
 import com.omh.android.storage.api.domain.usecase.DeleteFileUseCase
 import com.omh.android.storage.api.domain.usecase.DeleteFileUseCaseParams
 import com.omh.android.storage.api.domain.usecase.DeleteFileUseCaseResult
+import com.omh.android.storage.api.domain.usecase.DownloadFileUseCase
+import com.omh.android.storage.api.domain.usecase.DownloadFileUseCaseParams
+import com.omh.android.storage.api.domain.usecase.DownloadFileUseCaseResult
 import com.omh.android.storage.api.domain.usecase.GetFilesListUseCase
 import com.omh.android.storage.api.domain.usecase.GetFilesListUseCaseParams
 import com.omh.android.storage.api.domain.usecase.GetFilesListUseCaseResult
@@ -56,7 +59,7 @@ abstract class OmhStorageClient protected constructor(
         val deleteFileUseCase = DeleteFileUseCase(getRepository())
         return OmhStorageTaskImpl {
             val parameters = DeleteFileUseCaseParams(id)
-            val result = deleteFileUseCase(parameters)
+            val result: OmhResult<DeleteFileUseCaseResult> = deleteFileUseCase(parameters)
             result
         }
     }
@@ -68,7 +71,16 @@ abstract class OmhStorageClient protected constructor(
         val uploadFileUseCase = UploadFileUseCase(getRepository())
         return OmhStorageTaskImpl {
             val parameters = UploadFileUseCaseParams(localFileToUpload, parentId)
-            val result = uploadFileUseCase(parameters)
+            val result: OmhResult<UploadFileUseCaseResult> = uploadFileUseCase(parameters)
+            result
+        }
+    }
+
+    fun downloadFile(fileId: String): OmhTask<DownloadFileUseCaseResult> {
+        val downloadFileUseCase = DownloadFileUseCase(getRepository())
+        return OmhStorageTaskImpl {
+            val parameters = DownloadFileUseCaseParams(fileId)
+            val result: OmhResult<DownloadFileUseCaseResult> = downloadFileUseCase(parameters)
             result
         }
     }

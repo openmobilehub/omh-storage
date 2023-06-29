@@ -4,7 +4,9 @@ import com.omh.android.storage.api.data.source.OmhFileRemoteDataSource
 import com.omh.android.storage.api.domain.repository.OmhFileRepository
 import java.io.File
 
-internal class GmsFileRepositoryImpl(private val dataSource: OmhFileRemoteDataSource) : OmhFileRepository {
+internal class GmsFileRepositoryImpl(
+    private val dataSource: OmhFileRemoteDataSource
+) : OmhFileRepository {
 
     override fun getFilesList(parentId: String) = dataSource.getFilesList(parentId)
 
@@ -16,9 +18,9 @@ internal class GmsFileRepositoryImpl(private val dataSource: OmhFileRemoteDataSo
     override fun uploadFile(localFileToUpload: File, parentId: String?) =
         dataSource.uploadFile(localFileToUpload, parentId)
 
+    override fun downloadFile(fileId: String) = dataSource.downloadFile(fileId)
+
     override fun open() = Unit
 
     override fun update() = Unit
-
-    override fun download() = Unit
 }

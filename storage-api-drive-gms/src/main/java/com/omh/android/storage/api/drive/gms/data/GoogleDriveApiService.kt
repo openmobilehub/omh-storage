@@ -30,4 +30,9 @@ internal class GoogleDriveApiService(private val apiProvider: GoogleDriveApiProv
         .googleDriveApiService
         .files()
         .create(file, mediaContent)
+
+    fun downloadFile(fileId: String): Drive.Files.Get = apiProvider
+        .googleDriveApiService
+        .files()
+        .get(fileId)
 }
