@@ -59,7 +59,7 @@ abstract class OmhStorageClient protected constructor(
         val deleteFileUseCase = DeleteFileUseCase(getRepository())
         return OmhStorageTaskImpl {
             val parameters = DeleteFileUseCaseParams(id)
-            val result = deleteFileUseCase(parameters)
+            val result: OmhResult<DeleteFileUseCaseResult> = deleteFileUseCase(parameters)
             result
         }
     }
@@ -71,7 +71,7 @@ abstract class OmhStorageClient protected constructor(
         val uploadFileUseCase = UploadFileUseCase(getRepository())
         return OmhStorageTaskImpl {
             val parameters = UploadFileUseCaseParams(localFileToUpload, parentId)
-            val result = uploadFileUseCase(parameters)
+            val result: OmhResult<UploadFileUseCaseResult> = uploadFileUseCase(parameters)
             result
         }
     }
@@ -80,7 +80,7 @@ abstract class OmhStorageClient protected constructor(
         val downloadFileUseCase = DownloadFileUseCase(getRepository())
         return OmhStorageTaskImpl {
             val parameters = DownloadFileUseCaseParams(fileId)
-            val result = downloadFileUseCase(parameters)
+            val result: OmhResult<DownloadFileUseCaseResult> = downloadFileUseCase(parameters)
             result
         }
     }
