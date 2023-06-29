@@ -18,7 +18,8 @@ internal class GmsFileRepositoryImpl(
     override fun uploadFile(localFileToUpload: File, parentId: String?) =
         dataSource.uploadFile(localFileToUpload, parentId)
 
-    override fun downloadFile(fileId: String) = dataSource.downloadFile(fileId)
+    override fun downloadFile(fileId: String, mimeType: String?) =
+        dataSource.downloadFile(fileId, mimeType)
 
     override fun open() = Unit
 

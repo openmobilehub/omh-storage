@@ -10,6 +10,8 @@ import com.omh.android.storage.api.domain.model.OmhFileType
 import com.omh.android.storage.api.domain.usecase.DownloadFileUseCaseResult
 import com.omh.android.storage.sample.domain.model.FileType
 import com.omh.android.storage.sample.presentation.BaseViewModel
+import com.omh.android.storage.sample.util.getMimeType
+import com.omh.android.storage.sample.util.isNotSupported
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.io.File
 import java.io.FileOutputStream
@@ -111,7 +113,13 @@ class FileViewerViewModel @Inject constructor(
         setState(FileViewerViewState.Loading)
 
         lastFileClicked?.let { file ->
-            val cancellable = omhStorageClient.downloadFile(file.id)
+            if (file.isNotSupported()) {
+                toastMessage.postValue("${file.name} is not downloadable")
+                return
+            }
+
+            val mimeType = file.getMimeType()
+            val cancellable = omhStorageClient.downloadFile(file.id, mimeType)
                 .addOnSuccess { data ->
                     handleDownloadSuccess(data, file)
                     toastMessage.postValue("${file.name} was successfully downloaded")
