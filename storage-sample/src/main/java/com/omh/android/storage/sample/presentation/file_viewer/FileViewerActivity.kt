@@ -39,8 +39,6 @@ class FileViewerActivity :
         fun getIntent(context: Context) = Intent(context, FileViewerActivity::class.java).apply {
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK)
         }
-
-        private const val REQUEST_PERMISSIONS_CODE = 1
     }
 
     override val viewModel: FileViewerViewModel by viewModels()
