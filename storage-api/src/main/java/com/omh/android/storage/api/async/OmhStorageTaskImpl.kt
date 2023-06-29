@@ -31,7 +31,7 @@ internal class OmhStorageTaskImpl<T>(private val task: suspend () -> OmhResult<T
     }
 
     private suspend fun executeFailure(e: Exception) = withContext(Dispatchers.Main) {
-        onFailure?.invoke(e)
+        onFailure?.invoke(e).also { e.printStackTrace() }
     }
 
     private suspend fun executeSuccess(data: T) {
