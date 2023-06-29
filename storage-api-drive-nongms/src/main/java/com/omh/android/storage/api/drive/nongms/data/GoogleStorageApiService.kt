@@ -24,6 +24,8 @@ internal interface GoogleStorageApiService {
 
         private const val QUERY_Q = "q"
         private const val QUERY_FIELDS = "fields"
+        private const val QUERY_MIME_TYPE = "mimeType"
+        private const val QUERY_ALT = "alt"
 
         private const val Q_VALUE = "'%s' in parents and trashed = false"
 
@@ -59,4 +61,16 @@ internal interface GoogleStorageApiService {
         @Part(META_DATA) metadata: RequestBody,
         @Part filePart: MultipartBody.Part
     ): Call<FileRemoteResponse>
+
+    @GET("$FILES_PARTICLE/{$FILE_ID}")
+    fun downloadMediaFile(
+        @Path(FILE_ID) fileId: String,
+        @Query(QUERY_ALT) alt: String
+    ): Call<ResponseBody>
+
+    @GET("$FILES_PARTICLE/{$FILE_ID}/export")
+    fun exportDocEditor(
+        @Path(FILE_ID) fileId: String,
+        @Query(QUERY_MIME_TYPE) mimeType: String
+    ): Call<ResponseBody>
 }

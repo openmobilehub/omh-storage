@@ -2,7 +2,6 @@ package com.omh.android.storage.api.drive.nongms.data.repository
 
 import com.omh.android.storage.api.data.source.OmhFileRemoteDataSource
 import com.omh.android.storage.api.domain.repository.OmhFileRepository
-import java.io.ByteArrayOutputStream
 import java.io.File
 
 internal class NonGmsFileRepositoryImpl(
@@ -20,7 +19,8 @@ internal class NonGmsFileRepositoryImpl(
     override fun uploadFile(localFileToUpload: File, parentId: String?) =
         dataSource.uploadFile(localFileToUpload, parentId)
 
-    override fun downloadFile(fileId: String, mimeType: String?) = ByteArrayOutputStream()
+    override fun downloadFile(fileId: String, mimeType: String?) =
+        dataSource.downloadFile(fileId, mimeType)
 
     override fun open() = Unit
 
