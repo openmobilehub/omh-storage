@@ -27,6 +27,11 @@ sealed class FileViewerViewEvent : ViewEvent {
         override fun getEventName() = "FileViewerViewEvent.FileClicked"
     }
 
+    object DownloadFile : FileViewerViewEvent() {
+
+        override fun getEventName() = "FileViewerViewEvent.DownloadFile"
+    }
+
     object BackPressed : FileViewerViewEvent() {
 
         override fun getEventName() = "FileViewerViewEvent.BackPressed"

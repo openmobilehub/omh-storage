@@ -3,13 +3,16 @@ package com.omh.android.storage.sample.presentation.file_viewer
 import android.content.Context
 import android.net.Uri
 import com.omh.android.auth.api.OmhAuthClient
+import android.os.Environment
 import com.omh.android.storage.api.OmhStorageClient
 import com.omh.android.storage.api.domain.model.OmhFile
 import com.omh.android.storage.api.domain.model.OmhFileType
+import com.omh.android.storage.api.domain.usecase.DownloadFileUseCaseResult
 import com.omh.android.storage.sample.domain.model.FileType
 import com.omh.android.storage.sample.presentation.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.io.File
+import java.io.FileOutputStream
 import java.util.Stack
 import javax.inject.Inject
 
@@ -36,6 +39,7 @@ class FileViewerViewModel @Inject constructor(
     var isGridLayoutManager = true
     var createFileSelectedType: OmhFileType? = null
     private val parentIdStack = Stack<String>().apply { push(ID_ROOT) }
+    private var lastFileClicked: OmhFile? = null
 
     override fun getInitialState(): FileViewerViewState = FileViewerViewState.Initial
 
@@ -50,6 +54,7 @@ class FileViewerViewModel @Inject constructor(
             is FileViewerViewEvent.DeleteFile -> deleteFileEvent(event)
             is FileViewerViewEvent.UploadFile -> uploadFile(event)
             FileViewerViewEvent.SignOut -> signOut()
+            FileViewerViewEvent.DownloadFile -> downloadFileEvent()
         }
     }
 
@@ -88,7 +93,8 @@ class FileViewerViewModel @Inject constructor(
             parentIdStack.push(fileId)
             refreshFileListEvent()
         } else {
-            // TODO: Implement download file
+            lastFileClicked = file
+            setState(FileViewerViewState.CheckPermissions)
         }
     }
 
@@ -97,6 +103,28 @@ class FileViewerViewModel @Inject constructor(
             setState(FileViewerViewState.Finish)
         } else {
             parentIdStack.pop()
+            refreshFileListEvent()
+        }
+    }
+
+    private fun downloadFileEvent() {
+        setState(FileViewerViewState.Loading)
+
+        lastFileClicked?.let { file ->
+            val cancellable = omhStorageClient.downloadFile(file.id)
+                .addOnSuccess { data ->
+                    handleDownloadSuccess(data, file)
+                    toastMessage.postValue("${file.name} was successfully downloaded")
+                    refreshFileListEvent()
+                }
+                .addOnFailure {
+                    toastMessage.postValue("ERROR: ${file.name} was NOT downloaded")
+                    refreshFileListEvent()
+                }
+                .execute()
+            cancellableCollector.addCancellable(cancellable)
+        } ?: run {
+            toastMessage.postValue("The file was NOT downloaded")
             refreshFileListEvent()
         }
     }
@@ -195,5 +223,20 @@ class FileViewerViewModel @Inject constructor(
             .execute()
 
         cancellableCollector.addCancellable(cancellable)
+    }
+
+    private fun handleDownloadSuccess(
+        result: DownloadFileUseCaseResult,
+        file: OmhFile
+    ) {
+        val bytes = result.outputStream
+        val downloadFolder = Environment
+            .getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_DOWNLOADS
+            )
+        val fileToSave = File(downloadFolder, file.name)
+        val fileOutputStream = FileOutputStream(fileToSave)
+
+        bytes.writeTo(fileOutputStream)
     }
 }
