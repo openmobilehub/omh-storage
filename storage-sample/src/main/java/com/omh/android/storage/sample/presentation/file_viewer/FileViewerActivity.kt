@@ -129,7 +129,7 @@ class FileViewerActivity :
         is FileViewerViewState.Content -> buildContentState(state)
         is FileViewerViewState.SwapLayoutManager -> buildSwapLayoutManagerState()
         FileViewerViewState.Finish -> buildFinishState()
-        FileViewerViewState.CheckReadExternalStoragePermissions -> requestPermissions()
+        FileViewerViewState.CheckPermissions -> requestPermissions()
     }
 
     private fun buildInitialState() {

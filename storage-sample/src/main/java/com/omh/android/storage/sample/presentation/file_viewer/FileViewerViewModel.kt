@@ -94,7 +94,7 @@ class FileViewerViewModel @Inject constructor(
             refreshFileListEvent()
         } else {
             lastFileClicked = file
-            setState(FileViewerViewState.CheckReadExternalStoragePermissions)
+            setState(FileViewerViewState.CheckPermissions)
         }
     }
 
