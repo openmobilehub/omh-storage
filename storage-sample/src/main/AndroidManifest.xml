@@ -13,19 +13,20 @@
         android:theme="@style/Theme.OMHStorage">
 
         <activity
-            android:name=".presentation.login.LoginActivity"
+            android:name=".presentation.splash.SplashActivity"
             android:exported="true"
-            android:resizeableActivity="true">
+            android:theme="@style/Theme.AppCompat.Starting">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
         <activity
-            android:name=".presentation.splash.SplashActivity"
-            android:exported="false"
-            android:label="Splash" />
+            android:name=".presentation.login.LoginActivity"
+            android:exported="false" />
 
         <activity
             android:name=".presentation.file_viewer.FileViewerActivity"

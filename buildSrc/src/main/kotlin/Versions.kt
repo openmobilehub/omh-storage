@@ -38,4 +38,7 @@ object Versions {
 
     // Play services
     const val googlePlayBase = "18.2.0"
+
+    // Splash
+    const val splash = "1.0.1"
 }

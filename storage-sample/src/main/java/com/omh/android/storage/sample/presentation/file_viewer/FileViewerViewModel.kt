@@ -226,7 +226,7 @@ class FileViewerViewModel @Inject constructor(
 
     private fun signOut() {
         val cancellable = authClient.signOut()
-            .addOnSuccess { setState(FileViewerViewState.Finish) }
+            .addOnSuccess { setState(FileViewerViewState.SignOut) }
             .addOnFailure { setState(FileViewerViewState.Finish) }
             .execute()
 
@@ -246,5 +246,10 @@ class FileViewerViewModel @Inject constructor(
         val fileOutputStream = FileOutputStream(fileToSave)
 
         bytes.writeTo(fileOutputStream)
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        cancellableCollector.clear()
     }
 }

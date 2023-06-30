@@ -34,4 +34,9 @@ sealed class FileViewerViewState : ViewState {
 
         override fun getName() = "FileViewerViewState.CheckPermissions"
     }
+
+    object SignOut : FileViewerViewState() {
+
+        override fun getName() = "FileViewerViewState.SignOut"
+    }
 }
