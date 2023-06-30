@@ -80,4 +80,20 @@ internal class GmsFileRemoteDataSourceImpl(private val apiService: GoogleDriveAp
 
         return outputStream
     }
+
+    override fun updateFile(localFileToUpload: File, fileId: String): OmhFile? {
+        val localMimeType = getStringMimeTypeFromLocalFile(localFileToUpload)
+
+        val file = GoogleApiFile().apply {
+            id = fileId
+            name = localFileToUpload.name
+            mimeType = localMimeType
+        }
+
+        val mediaContent = FileContent(localMimeType, localFileToUpload)
+
+        val response: GoogleApiFile = apiService.uploadFile(file, mediaContent).execute()
+
+        return response.toOmhFile()
+    }
 }

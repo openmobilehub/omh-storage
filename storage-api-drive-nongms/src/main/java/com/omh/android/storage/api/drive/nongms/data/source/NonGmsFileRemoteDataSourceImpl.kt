@@ -151,4 +151,6 @@ internal class NonGmsFileRemoteDataSourceImpl(private val retrofitImpl: GoogleRe
             throw (OmhStorageException.DownloadException(DOWNLOAD_GOOGLE_WORKSPACE_ERROR, errorBody))
         }
     }
+
+    override fun updateFile(localFileToUpload: File, fileId: String): OmhFile? = null
 }
