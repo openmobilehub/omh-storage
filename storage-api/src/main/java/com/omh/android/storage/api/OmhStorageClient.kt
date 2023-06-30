@@ -78,6 +78,7 @@ abstract class OmhStorageClient protected constructor(
             result
         }
     }
+
     fun downloadFile(fileId: String, mimeType: String?): OmhTask<DownloadFileUseCaseResult> {
         val downloadFileUseCase = DownloadFileUseCase(getRepository())
         return OmhStorageTaskImpl {

@@ -151,6 +151,51 @@ internal class NonGmsFileRemoteDataSourceImpl(private val retrofitImpl: GoogleRe
             throw (OmhStorageException.DownloadException(DOWNLOAD_GOOGLE_WORKSPACE_ERROR, errorBody))
         }
     }
+    override fun updateFile(
+        localFileToUpload: File,
+        fileId: String,
+        parentId: String?
+    ): OmhFile? {
+        val jsonMetaData = JSONObject().apply {
+            put(FILE_NAME_KEY, localFileToUpload.name)
+            put(FILE_PARENTS_KEY, parentId.isNullOrBlank())
+            put("description", "TEST HANS VIII")
+        }
 
-    override fun updateFile(localFileToUpload: File, fileId: String): OmhFile? = null
+        val jsonRequestBody = jsonMetaData.toString().toRequestBody(JSON_MIME_TYPE)
+        val response = retrofitImpl
+            .getGoogleStorageApiService()
+            .updateMetaData(jsonRequestBody, fileId)
+            .execute()
+
+        return if (response.isSuccessful) {
+            val omhFile = response.body()?.toFile()
+            updateMediaFile(localFileToUpload, omhFile)
+        } else {
+            null
+        }
+    }
+
+    private fun updateMediaFile(
+        localFileToUpload: File,
+        omhFile: OmhFile?
+    ): OmhFile? {
+        if (omhFile == null) {
+            return null
+        }
+
+        val mimeType = omhFile.mimeType.toMediaTypeOrNull()
+        val requestFile = localFileToUpload.asRequestBody(mimeType)
+
+        val response = retrofitImpl
+            .getGoogleStorageApiService()
+            .updateFile(requestFile, omhFile.id)
+            .execute()
+
+        return if (response.isSuccessful) {
+            response.body()?.toFile()
+        } else {
+            null
+        }
+    }
 }
