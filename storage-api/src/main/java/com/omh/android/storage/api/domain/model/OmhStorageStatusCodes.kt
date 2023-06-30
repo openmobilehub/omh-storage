@@ -1,6 +1,7 @@
 package com.omh.android.storage.api.domain.model
 
 object OmhStorageStatusCodes {
+
     const val DOWNLOAD_ERROR = 1
     const val DOWNLOAD_GOOGLE_WORKSPACE_ERROR = 2
 

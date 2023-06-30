@@ -127,18 +127,19 @@ internal class NonGmsFileRemoteDataSourceImpl(private val retrofitImpl: GoogleRe
         return if (response.isSuccessful) {
             outputStream
         } else {
-            mimeType?.let {
-                return exportDocEditor(fileId, mimeType)
+            if (mimeType == null) {
+                val errorBody = response.errorBody()?.string().orEmpty()
+                throw (OmhStorageException.DownloadException(DOWNLOAD_ERROR, errorBody))
             }
-            val errorBody = response.errorBody()?.string().orEmpty()
-            throw (OmhStorageException.DownloadException(DOWNLOAD_ERROR, errorBody))
+
+            return exportDocEditor(fileId, mimeType)
         }
     }
 
     private fun exportDocEditor(fileId: String, mimeType: String): ByteArrayOutputStream {
         val response = retrofitImpl
             .getGoogleStorageApiService()
-            .exportDocEditor(fileId = fileId, mimeType = mimeType)
+            .exportDocEditor(fileId, mimeType)
             .execute()
 
         val outputStream = response.body().toByteArrayOutputStream()

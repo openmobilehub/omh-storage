@@ -8,7 +8,7 @@ fun ResponseBody?.toByteArrayOutputStream(): ByteArrayOutputStream {
 
     if (this == null) return outputStream
 
-    this.byteStream().use { inputStream ->
+    byteStream().use { inputStream ->
         inputStream.copyTo(outputStream)
     }
 

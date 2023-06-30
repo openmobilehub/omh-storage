@@ -35,7 +35,7 @@ private val NON_SUPPORTED_MIME_TYPES_FOR_DOWNLOAD = listOf(
 
 fun OmhFile.isDownloadable(): Boolean = !NON_SUPPORTED_MIME_TYPES_FOR_DOWNLOAD.contains(fileType)
 
-fun OmhFile.getNormalizedMimeType() = when (fileType) {
+fun OmhFile.normalizedMimeType() = when (fileType) {
         OmhFileType.DOCUMENT -> OmhFileType.MICROSOFT_WORD.mimeType
         OmhFileType.DRAWING -> OmhFileType.PNG.mimeType
         OmhFileType.FORM -> OmhFileType.PDF.mimeType

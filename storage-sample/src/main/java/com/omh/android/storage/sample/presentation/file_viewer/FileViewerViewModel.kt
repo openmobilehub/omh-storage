@@ -10,7 +10,7 @@ import com.omh.android.storage.api.domain.model.OmhFileType
 import com.omh.android.storage.api.domain.usecase.DownloadFileUseCaseResult
 import com.omh.android.storage.sample.domain.model.FileType
 import com.omh.android.storage.sample.presentation.BaseViewModel
-import com.omh.android.storage.sample.util.getNormalizedMimeType
+import com.omh.android.storage.sample.util.normalizedMimeType
 import com.omh.android.storage.sample.util.isDownloadable
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.io.File
@@ -118,7 +118,7 @@ class FileViewerViewModel @Inject constructor(
                 return
             }
 
-            val mimeType = file.getNormalizedMimeType()
+            val mimeType = file.normalizedMimeType()
             val cancellable = omhStorageClient.downloadFile(file.id, mimeType)
                 .addOnSuccess { data ->
                     handleDownloadSuccess(data, file)
