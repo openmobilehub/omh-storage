@@ -6,7 +6,9 @@ import java.io.ByteArrayOutputStream
 fun ResponseBody?.toByteArrayOutputStream(): ByteArrayOutputStream {
     val outputStream = ByteArrayOutputStream()
 
-    if (this == null) return outputStream
+    if (this == null) {
+        return outputStream
+    }
 
     byteStream().use { inputStream ->
         inputStream.copyTo(outputStream)
