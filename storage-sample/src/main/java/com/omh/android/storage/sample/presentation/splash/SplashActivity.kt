@@ -32,5 +32,7 @@ class SplashActivity : AppCompatActivity() {
                 FileViewerActivity.getIntent(this)
             }
         )
+
+        finish()
     }
 }
