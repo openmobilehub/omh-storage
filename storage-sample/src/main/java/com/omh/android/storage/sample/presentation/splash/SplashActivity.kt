@@ -1,17 +1,13 @@
 package com.omh.android.storage.sample.presentation.splash
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.omh.android.auth.api.OmhAuthClient
-import com.omh.android.auth.api.OmhCredentials
-import com.omh.android.storage.api.OmhStorageClient
 import com.omh.android.storage.sample.databinding.ActivitySplashBinding
 import com.omh.android.storage.sample.presentation.file_viewer.FileViewerActivity
+import com.omh.android.storage.sample.presentation.login.LoginActivity
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -21,19 +17,22 @@ class SplashActivity : AppCompatActivity() {
     lateinit var omhAuthClient: OmhAuthClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        installSplashScreen()
         super.onCreate(savedInstanceState)
         setContentView(ActivitySplashBinding.inflate(layoutInflater).root)
-        checkUserThenNavigate()
     }
 
-    private fun checkUserThenNavigate() {
-        if (omhAuthClient.getUser() == null) {
-            return
-        }
-        navigateToFilesAndFolders()
-    }
+    override fun onResume() {
+        super.onResume()
 
-    private fun navigateToFilesAndFolders() {
-        startActivity(FileViewerActivity.getIntent(this))
+        startActivity(
+            if (omhAuthClient.getUser() == null) {
+                LoginActivity.getIntent(this)
+            } else {
+                FileViewerActivity.getIntent(this)
+            }
+        )
+
+        finish()
     }
 }

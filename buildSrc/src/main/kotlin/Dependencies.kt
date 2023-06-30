@@ -47,4 +47,7 @@ object Libs {
 
     // Play services
     val googlePlayBase by lazy { "com.google.android.gms:play-services-base:${Versions.googlePlayBase}" }
+
+    // Splash
+    val splash by lazy { "androidx.core:core-splashscreen:${Versions.splash}" }
 }

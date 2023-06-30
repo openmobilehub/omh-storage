@@ -27,6 +27,7 @@ import com.omh.android.storage.sample.databinding.ActivityFileViewerBinding
 import com.omh.android.storage.sample.databinding.DialogCreateFileBinding
 import com.omh.android.storage.sample.databinding.DialogUploadFileBinding
 import com.omh.android.storage.sample.presentation.BaseActivity
+import com.omh.android.storage.sample.presentation.login.LoginActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -128,6 +129,7 @@ class FileViewerActivity :
         is FileViewerViewState.SwapLayoutManager -> buildSwapLayoutManagerState()
         FileViewerViewState.Finish -> buildFinishState()
         FileViewerViewState.CheckPermissions -> requestPermissions()
+        FileViewerViewState.SignOut -> buildSignOutState()
     }
 
     private fun buildInitialState() {
@@ -316,5 +318,10 @@ class FileViewerActivity :
         } else {
             dispatchEvent(FileViewerViewEvent.DownloadFile)
         }
+    }
+
+    private fun buildSignOutState() {
+        startActivity(LoginActivity.getIntent(this))
+        finish()
     }
 }
