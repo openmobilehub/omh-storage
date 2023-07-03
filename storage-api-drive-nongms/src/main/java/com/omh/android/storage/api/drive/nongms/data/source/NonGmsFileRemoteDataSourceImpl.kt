@@ -6,6 +6,8 @@ import com.omh.android.storage.api.domain.model.OmhFile
 import com.omh.android.storage.api.domain.model.OmhStorageException
 import com.omh.android.storage.api.domain.model.OmhStorageStatusCodes.DOWNLOAD_ERROR
 import com.omh.android.storage.api.domain.model.OmhStorageStatusCodes.DOWNLOAD_GOOGLE_WORKSPACE_ERROR
+import com.omh.android.storage.api.domain.model.OmhStorageStatusCodes.UPDATE_CONTENT_FILE
+import com.omh.android.storage.api.domain.model.OmhStorageStatusCodes.UPDATE_META_DATA
 import com.omh.android.storage.api.drive.nongms.data.GoogleRetrofitImpl
 import com.omh.android.storage.api.drive.nongms.data.GoogleStorageApiService
 import com.omh.android.storage.api.drive.nongms.data.source.body.CreateFileRequestBody
@@ -159,7 +161,6 @@ internal class NonGmsFileRemoteDataSourceImpl(private val retrofitImpl: GoogleRe
         val jsonMetaData = JSONObject().apply {
             put(FILE_NAME_KEY, localFileToUpload.name)
             put(FILE_PARENTS_KEY, parentId.isNullOrBlank())
-            put("description", "TEST HANS VIII")
         }
 
         val jsonRequestBody = jsonMetaData.toString().toRequestBody(JSON_MIME_TYPE)
@@ -172,7 +173,8 @@ internal class NonGmsFileRemoteDataSourceImpl(private val retrofitImpl: GoogleRe
             val omhFile = response.body()?.toFile()
             updateMediaFile(localFileToUpload, omhFile)
         } else {
-            null
+            val errorBody = response.errorBody()?.string().orEmpty()
+            throw (OmhStorageException.DownloadException(UPDATE_META_DATA, errorBody))
         }
     }
 
@@ -195,7 +197,8 @@ internal class NonGmsFileRemoteDataSourceImpl(private val retrofitImpl: GoogleRe
         return if (response.isSuccessful) {
             response.body()?.toFile()
         } else {
-            null
+            val errorBody = response.errorBody()?.string().orEmpty()
+            throw (OmhStorageException.DownloadException(UPDATE_CONTENT_FILE, errorBody))
         }
     }
 }
