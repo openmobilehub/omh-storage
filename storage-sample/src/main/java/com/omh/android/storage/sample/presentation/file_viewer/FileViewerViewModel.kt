@@ -39,6 +39,8 @@ class FileViewerViewModel @Inject constructor(
         const val DEFAULT_FILE_NAME = "Untitled"
     }
 
+    var selectedFile: OmhFile? = null
+    var isUpload = false
     var isGridLayoutManager = true
     var createFileSelectedType: OmhFileType? = null
     private val parentIdStack = Stack<String>().apply { push(ID_ROOT) }
@@ -56,6 +58,7 @@ class FileViewerViewModel @Inject constructor(
             is FileViewerViewEvent.CreateFile -> createFileEvent(event)
             is FileViewerViewEvent.DeleteFile -> deleteFileEvent(event)
             is FileViewerViewEvent.UploadFile -> uploadFile(event)
+            is FileViewerViewEvent.UpdateFile -> updateFile(event)
             FileViewerViewEvent.SignOut -> signOut()
             FileViewerViewEvent.DownloadFile -> downloadFileEvent()
         }
@@ -136,6 +139,37 @@ class FileViewerViewModel @Inject constructor(
             toastMessage.postValue("The file was NOT downloaded")
             refreshFileListEvent()
         }
+    }
+
+    private fun updateFile(event: FileViewerViewEvent.UpdateFile) {
+        val file = selectedFile ?: return
+
+        setState(FileViewerViewState.Loading)
+
+        val parentId = parentIdStack.peek()
+        val filePath = getFile(event.context, event.uri, file.name)
+
+        val cancellable = omhStorageClient.updateFile(filePath, file.id, parentId)
+            .addOnSuccess { result ->
+                val resultMessage = if (result.file == null) {
+                    "${file.name} was not updated"
+                } else {
+                    "${file.name} was successfully updated"
+                }
+
+                toastMessage.postValue(resultMessage)
+
+                refreshFileListEvent()
+            }
+            .addOnFailure { e ->
+                toastMessage.postValue("ERROR: ${file.name} was not updated")
+                e.printStackTrace()
+
+                refreshFileListEvent()
+            }
+            .execute()
+
+        cancellableCollector.addCancellable(cancellable)
     }
 
     private fun createFileEvent(event: FileViewerViewEvent.CreateFile) {

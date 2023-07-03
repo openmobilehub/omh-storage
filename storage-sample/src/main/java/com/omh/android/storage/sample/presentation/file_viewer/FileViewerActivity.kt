@@ -64,8 +64,13 @@ class FileViewerActivity :
         filePicker = registerForActivityResult(
             ActivityResultContracts.GetContent()
         ) { uri: Uri? ->
-            uri?.let { validUri ->
-                showUploadFileDialog(validUri)
+            uri?.let {
+                val fileName = if (viewModel.isUpload) {
+                    DocumentFile.fromSingleUri(this, uri)?.name
+                } else {
+                    viewModel.selectedFile?.name
+                } ?: FileViewerViewModel.DEFAULT_FILE_NAME
+                showUploadFileDialog(uri, fileName)
             }
         }
 
@@ -110,9 +115,8 @@ class FileViewerActivity :
             }
 
             R.id.uploadFile -> {
-                filePicker.launch(
-                    FileViewerViewModel.ANY_MIME_TYPE
-                )
+                viewModel.isUpload = true
+                filePicker.launch(FileViewerViewModel.ANY_MIME_TYPE)
             }
 
             R.id.signOut -> {
@@ -195,6 +199,12 @@ class FileViewerActivity :
         dispatchEvent(FileViewerViewEvent.DeleteFile(file))
     }
 
+    override fun onUpdateClicked(file: OmhFile) {
+        viewModel.selectedFile = file
+        viewModel.isUpload = false
+        filePicker.launch(FileViewerViewModel.ANY_MIME_TYPE)
+    }
+
     private fun buildFinishState() = finish().also { finishAffinity() }
 
     private fun showCreateFileDialog() {
@@ -266,18 +276,18 @@ class FileViewerActivity :
         }
     }
 
-    private fun showUploadFileDialog(uri: Uri) {
-        val fileName: String = DocumentFile
-            .fromSingleUri(this, uri)?.name
-            ?: FileViewerViewModel.DEFAULT_FILE_NAME
-
+    private fun showUploadFileDialog(uri: Uri, fileName: String) {
         val dialogUploadFileView = DialogUploadFileBinding.inflate(layoutInflater)
         dialogUploadFileView.fileName.text = fileName
 
         val uploadFileDialogBuilder = AlertDialog.Builder(this)
             .setTitle(getString(R.string.text_upload_file_title))
             .setPositiveButton(getString(R.string.text_upload)) { dialog, _ ->
-                configureUploadFilePositiveButtonEvent(dialog, fileName, uri)
+                if (viewModel.isUpload) {
+                    configureUploadFilePositiveButtonEvent(dialog, fileName, uri)
+                } else {
+                    configureUpdateFilePositiveButtonEvent(dialog, uri)
+                }
             }
             .setNegativeButton(getString(R.string.text_cancel)) { dialog, _ ->
                 dialog.cancel()
@@ -300,6 +310,14 @@ class FileViewerActivity :
             dispatchEvent(FileViewerViewEvent.UploadFile(this, uri, fileName))
         }
 
+        dialog.dismiss()
+    }
+
+    private fun configureUpdateFilePositiveButtonEvent(
+        dialog: DialogInterface,
+        uri: Uri
+    ) {
+        dispatchEvent(FileViewerViewEvent.UpdateFile(this, uri))
         dialog.dismiss()
     }
 

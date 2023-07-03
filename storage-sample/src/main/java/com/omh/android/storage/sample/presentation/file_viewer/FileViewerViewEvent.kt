@@ -52,6 +52,11 @@ sealed class FileViewerViewEvent : ViewEvent {
         override fun getEventName() = "FileViewerViewEvent.UploadFile"
     }
 
+    class UpdateFile(val context: Context, val uri: Uri) : FileViewerViewEvent() {
+
+        override fun getEventName() = "FileViewerViewEvent.UpdateFile"
+    }
+
     object SignOut : FileViewerViewEvent() {
 
         override fun getEventName() = "FileViewerViewEvent.SignOut"
