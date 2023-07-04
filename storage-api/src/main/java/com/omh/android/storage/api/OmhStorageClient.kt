@@ -88,14 +88,11 @@ abstract class OmhStorageClient protected constructor(
         }
     }
 
-    fun updateFile(
-        localFileToUpload: File,
-        fileId: String
-    ): OmhTask<UpdateFileUseCaseResult> {
-        val uploadFileUseCase = UpdateFileUseCase(getRepository())
+    fun updateFile(localFileToUpload: File, fileId: String): OmhTask<UpdateFileUseCaseResult> {
+        val updateFileUseCase = UpdateFileUseCase(getRepository())
         return OmhStorageTaskImpl {
             val parameters = UpdateFileUseCaseParams(localFileToUpload, fileId)
-            val result: OmhResult<UpdateFileUseCaseResult> = uploadFileUseCase(parameters)
+            val result = updateFileUseCase(parameters)
             result
         }
     }

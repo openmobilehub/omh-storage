@@ -155,12 +155,10 @@ internal class NonGmsFileRemoteDataSourceImpl(private val retrofitImpl: GoogleRe
     }
     override fun updateFile(
         localFileToUpload: File,
-        fileId: String,
-        parentId: String?
+        fileId: String
     ): OmhFile? {
         val jsonMetaData = JSONObject().apply {
             put(FILE_NAME_KEY, localFileToUpload.name)
-            put(FILE_PARENTS_KEY, parentId.isNullOrBlank())
         }
 
         val jsonRequestBody = jsonMetaData.toString().toRequestBody(JSON_MIME_TYPE)
