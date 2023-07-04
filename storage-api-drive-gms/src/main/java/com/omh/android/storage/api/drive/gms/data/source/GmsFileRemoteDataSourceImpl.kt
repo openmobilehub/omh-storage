@@ -68,7 +68,7 @@ internal class GmsFileRemoteDataSourceImpl(private val apiService: GoogleDriveAp
         return response.toOmhFile()
     }
 
-    override fun updateFile(localFileToUpload: File, fileId: String, parentId: String?) = null
+    override fun updateFile(localFileToUpload: File, fileId: String) = null
 
     private fun getStringMimeTypeFromLocalFile(file: File) = MimeTypeMap
         .getSingleton()
