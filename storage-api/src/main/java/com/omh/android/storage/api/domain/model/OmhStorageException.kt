@@ -13,9 +13,11 @@ sealed class OmhStorageException(val statusCode: Int) : Exception() {
 
     class DownloadException(
         statusCode: Int,
-        private val messageError: String
-    ) : OmhStorageException(statusCode) {
         override val message: String
-            get() = messageError
-    }
+    ) : OmhStorageException(statusCode)
+
+    class UpdateException(
+        statusCode: Int,
+        override val message: String
+    ) : OmhStorageException(statusCode)
 }

@@ -6,6 +6,8 @@ import com.omh.android.storage.api.domain.model.OmhFile
 import com.omh.android.storage.api.domain.model.OmhStorageException
 import com.omh.android.storage.api.domain.model.OmhStorageStatusCodes.DOWNLOAD_ERROR
 import com.omh.android.storage.api.domain.model.OmhStorageStatusCodes.DOWNLOAD_GOOGLE_WORKSPACE_ERROR
+import com.omh.android.storage.api.domain.model.OmhStorageStatusCodes.UPDATE_CONTENT_FILE
+import com.omh.android.storage.api.domain.model.OmhStorageStatusCodes.UPDATE_META_DATA
 import com.omh.android.storage.api.drive.nongms.data.GoogleRetrofitImpl
 import com.omh.android.storage.api.drive.nongms.data.GoogleStorageApiService
 import com.omh.android.storage.api.drive.nongms.data.source.body.CreateFileRequestBody
@@ -151,6 +153,46 @@ internal class NonGmsFileRemoteDataSourceImpl(private val retrofitImpl: GoogleRe
             throw (OmhStorageException.DownloadException(DOWNLOAD_GOOGLE_WORKSPACE_ERROR, errorBody))
         }
     }
+    override fun updateFile(
+        localFileToUpload: File,
+        fileId: String
+    ): OmhFile? {
+        val jsonMetaData = JSONObject().apply {
+            put(FILE_NAME_KEY, localFileToUpload.name)
+        }
 
-    override fun updateFile(localFileToUpload: File, fileId: String): OmhFile? = null
+        val jsonRequestBody = jsonMetaData.toString().toRequestBody(JSON_MIME_TYPE)
+        val response = retrofitImpl
+            .getGoogleStorageApiService()
+            .updateMetaData(jsonRequestBody, fileId)
+            .execute()
+
+        return if (response.isSuccessful) {
+            val omhFile = response.body()?.toFile() ?: return null
+            updateMediaFile(localFileToUpload, omhFile)
+        } else {
+            val errorBody = response.errorBody()?.string().orEmpty()
+            throw OmhStorageException.UpdateException(UPDATE_META_DATA, errorBody)
+        }
+    }
+
+    private fun updateMediaFile(
+        localFileToUpload: File,
+        omhFile: OmhFile
+    ): OmhFile? {
+        val mimeType = omhFile.mimeType.toMediaTypeOrNull()
+        val requestFile = localFileToUpload.asRequestBody(mimeType)
+
+        val response = retrofitImpl
+            .getGoogleStorageApiService()
+            .updateFile(requestFile, omhFile.id)
+            .execute()
+
+        return if (response.isSuccessful) {
+            response.body()?.toFile()
+        } else {
+            val errorBody = response.errorBody()?.string().orEmpty()
+            throw OmhStorageException.UpdateException(UPDATE_CONTENT_FILE, errorBody)
+        }
+    }
 }

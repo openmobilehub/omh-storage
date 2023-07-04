@@ -11,6 +11,7 @@ import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Multipart
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Part
 import retrofit2.http.Path
@@ -73,4 +74,16 @@ internal interface GoogleStorageApiService {
         @Path(FILE_ID) fileId: String,
         @Query(QUERY_MIME_TYPE) mimeType: String
     ): Call<ResponseBody>
+
+    @PATCH("$UPLOAD_FILES_PARTICLE/{$FILE_ID}")
+    fun updateFile(
+        @Body filePart: RequestBody,
+        @Path(FILE_ID) fileId: String
+    ): Call<FileRemoteResponse>
+
+    @PATCH("$FILES_PARTICLE/{$FILE_ID}")
+    fun updateMetaData(
+        @Body filePart: RequestBody,
+        @Path(FILE_ID) fileId: String
+    ): Call<FileRemoteResponse>
 }
