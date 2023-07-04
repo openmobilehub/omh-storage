@@ -168,22 +168,18 @@ internal class NonGmsFileRemoteDataSourceImpl(private val retrofitImpl: GoogleRe
             .execute()
 
         return if (response.isSuccessful) {
-            val omhFile = response.body()?.toFile()
+            val omhFile = response.body()?.toFile() ?: return null
             updateMediaFile(localFileToUpload, omhFile)
         } else {
             val errorBody = response.errorBody()?.string().orEmpty()
-            throw (OmhStorageException.DownloadException(UPDATE_META_DATA, errorBody))
+            throw (OmhStorageException.UpdateException(UPDATE_META_DATA, errorBody))
         }
     }
 
     private fun updateMediaFile(
         localFileToUpload: File,
-        omhFile: OmhFile?
+        omhFile: OmhFile
     ): OmhFile? {
-        if (omhFile == null) {
-            return null
-        }
-
         val mimeType = omhFile.mimeType.toMediaTypeOrNull()
         val requestFile = localFileToUpload.asRequestBody(mimeType)
 
@@ -196,7 +192,7 @@ internal class NonGmsFileRemoteDataSourceImpl(private val retrofitImpl: GoogleRe
             response.body()?.toFile()
         } else {
             val errorBody = response.errorBody()?.string().orEmpty()
-            throw (OmhStorageException.DownloadException(UPDATE_CONTENT_FILE, errorBody))
+            throw (OmhStorageException.UpdateException(UPDATE_CONTENT_FILE, errorBody))
         }
     }
 }

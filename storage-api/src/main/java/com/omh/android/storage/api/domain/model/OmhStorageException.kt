@@ -18,4 +18,12 @@ sealed class OmhStorageException(val statusCode: Int) : Exception() {
         override val message: String
             get() = messageError
     }
+
+    class UpdateException(
+        statusCode: Int,
+        private val messageError: String
+    ) : OmhStorageException(statusCode) {
+        override val message: String
+            get() = messageError
+    }
 }
