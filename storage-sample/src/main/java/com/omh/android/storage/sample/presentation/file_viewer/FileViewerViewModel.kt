@@ -146,10 +146,8 @@ class FileViewerViewModel @Inject constructor(
 
         setState(FileViewerViewState.Loading)
 
-        val parentId = parentIdStack.peek()
         val filePath = getFile(event.context, event.uri, file.name)
-
-        val cancellable = omhStorageClient.updateFile(filePath, file.id, parentId)
+        val cancellable = omhStorageClient.updateFile(filePath, file.id)
             .addOnSuccess { result ->
                 val resultMessage = if (result.file == null) {
                     "${file.name} was not updated"
