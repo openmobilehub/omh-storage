@@ -68,7 +68,7 @@ class FileViewerActivity :
                 val fileName = if (viewModel.isUpload) {
                     DocumentFile.fromSingleUri(this, uri)?.name
                 } else {
-                    viewModel.selectedFile?.name
+                    viewModel.lastFileClicked?.name
                 } ?: FileViewerViewModel.DEFAULT_FILE_NAME
                 showUploadFileDialog(uri, fileName)
             }
@@ -200,7 +200,7 @@ class FileViewerActivity :
     }
 
     override fun onUpdateClicked(file: OmhFile) {
-        viewModel.selectedFile = file
+        viewModel.lastFileClicked = file
         viewModel.isUpload = false
         filePicker.launch(FileViewerViewModel.ANY_MIME_TYPE)
     }

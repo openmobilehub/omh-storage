@@ -39,12 +39,11 @@ class FileViewerViewModel @Inject constructor(
         const val DEFAULT_FILE_NAME = "Untitled"
     }
 
-    var selectedFile: OmhFile? = null
     var isUpload = false
     var isGridLayoutManager = true
     var createFileSelectedType: OmhFileType? = null
     private val parentIdStack = Stack<String>().apply { push(ID_ROOT) }
-    private var lastFileClicked: OmhFile? = null
+    var lastFileClicked: OmhFile? = null
 
     override fun getInitialState(): FileViewerViewState = FileViewerViewState.Initial
 
@@ -142,7 +141,7 @@ class FileViewerViewModel @Inject constructor(
     }
 
     private fun updateFile(event: FileViewerViewEvent.UpdateFile) {
-        val file = selectedFile ?: return
+        val file = lastFileClicked ?: return
 
         setState(FileViewerViewState.Loading)
 
