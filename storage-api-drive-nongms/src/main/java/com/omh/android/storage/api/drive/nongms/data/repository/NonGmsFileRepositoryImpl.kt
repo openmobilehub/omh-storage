@@ -1,6 +1,7 @@
 package com.omh.android.storage.api.drive.nongms.data.repository
 
 import com.omh.android.storage.api.data.source.OmhFileRemoteDataSource
+import com.omh.android.storage.api.domain.model.OmhFile
 import com.omh.android.storage.api.domain.repository.OmhFileRepository
 import java.io.File
 
@@ -22,7 +23,8 @@ internal class NonGmsFileRepositoryImpl(
     override fun downloadFile(fileId: String, mimeType: String?) =
         dataSource.downloadFile(fileId, mimeType)
 
-    override fun open() = Unit
+    override fun updateFile(localFileToUpload: File, fileId: String): OmhFile? =
+        dataSource.updateFile(localFileToUpload, fileId)
 
-    override fun update() = Unit
+    override fun open() = Unit
 }

@@ -17,6 +17,9 @@ import com.omh.android.storage.api.domain.usecase.GetFilesListUseCase
 import com.omh.android.storage.api.domain.usecase.GetFilesListUseCaseParams
 import com.omh.android.storage.api.domain.usecase.GetFilesListUseCaseResult
 import com.omh.android.storage.api.domain.usecase.OmhResult
+import com.omh.android.storage.api.domain.usecase.UpdateFileUseCase
+import com.omh.android.storage.api.domain.usecase.UpdateFileUseCaseParams
+import com.omh.android.storage.api.domain.usecase.UpdateFileUseCaseResult
 import com.omh.android.storage.api.domain.usecase.UploadFileUseCase
 import com.omh.android.storage.api.domain.usecase.UploadFileUseCaseParams
 import com.omh.android.storage.api.domain.usecase.UploadFileUseCaseResult
@@ -75,12 +78,23 @@ abstract class OmhStorageClient protected constructor(
             result
         }
     }
-
     fun downloadFile(fileId: String, mimeType: String?): OmhTask<DownloadFileUseCaseResult> {
         val downloadFileUseCase = DownloadFileUseCase(getRepository())
         return OmhStorageTaskImpl {
             val parameters = DownloadFileUseCaseParams(fileId, mimeType)
             val result: OmhResult<DownloadFileUseCaseResult> = downloadFileUseCase(parameters)
+            result
+        }
+    }
+
+    fun updateFile(
+        localFileToUpload: File,
+        fileId: String
+    ): OmhTask<UpdateFileUseCaseResult> {
+        val uploadFileUseCase = UpdateFileUseCase(getRepository())
+        return OmhStorageTaskImpl {
+            val parameters = UpdateFileUseCaseParams(localFileToUpload, fileId)
+            val result: OmhResult<UpdateFileUseCaseResult> = uploadFileUseCase(parameters)
             result
         }
     }

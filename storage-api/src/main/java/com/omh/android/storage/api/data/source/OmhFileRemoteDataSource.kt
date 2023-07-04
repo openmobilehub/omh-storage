@@ -18,4 +18,6 @@ interface OmhFileRemoteDataSource {
     fun uploadFile(localFileToUpload: File, parentId: String?): OmhFile?
 
     fun downloadFile(fileId: String, mimeType: String?): ByteArrayOutputStream
+
+    fun updateFile(localFileToUpload: File, fileId: String): OmhFile?
 }
