@@ -2,9 +2,8 @@ package com.omh.android.storage.sample.presentation.file_viewer
 
 import android.content.Context
 import android.net.Uri
-import com.omh.android.auth.api.OmhAuthClient
 import android.os.Environment
-import androidx.documentfile.provider.DocumentFile
+import com.omh.android.auth.api.OmhAuthClient
 import com.omh.android.storage.api.OmhStorageClient
 import com.omh.android.storage.api.domain.model.OmhFile
 import com.omh.android.storage.api.domain.model.OmhFileType
@@ -12,8 +11,8 @@ import com.omh.android.storage.api.domain.usecase.DownloadFileUseCaseResult
 import com.omh.android.storage.sample.domain.model.FileType
 import com.omh.android.storage.sample.presentation.BaseViewModel
 import com.omh.android.storage.sample.util.getNameWithExtension
-import com.omh.android.storage.sample.util.normalizedMimeType
 import com.omh.android.storage.sample.util.isDownloadable
+import com.omh.android.storage.sample.util.normalizedMimeType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.io.File
 import java.io.FileOutputStream
@@ -44,7 +43,7 @@ class FileViewerViewModel @Inject constructor(
     var isGridLayoutManager = true
     var createFileSelectedType: OmhFileType? = null
     private val parentIdStack = Stack<String>().apply { push(ID_ROOT) }
-    var lastFileClicked: OmhFile? = null
+    private var lastFileClicked: OmhFile? = null
 
     override fun getInitialState(): FileViewerViewState = FileViewerViewState.Initial
 
@@ -115,13 +114,14 @@ class FileViewerViewModel @Inject constructor(
     }
 
     private fun downloadFileEvent() {
+        setState(FileViewerViewState.Loading)
+
         lastFileClicked?.let { file ->
             if (!file.isDownloadable()) {
                 toastMessage.postValue("${file.name} is not downloadable")
+                refreshFileListEvent()
                 return
             }
-
-            setState(FileViewerViewState.Loading)
 
             val mimeType = file.normalizedMimeType()
             val cancellable = omhStorageClient.downloadFile(file.id, mimeType)
@@ -143,9 +143,12 @@ class FileViewerViewModel @Inject constructor(
     }
 
     private fun updateFileEvent(event: FileViewerViewEvent.UpdateFile) {
-        val fileId = lastFileClicked?.id ?: return
+        val fileId = lastFileClicked?.id
 
-        setState(FileViewerViewState.Loading)
+        if (fileId.isNullOrBlank()) {
+            refreshFileListEvent()
+            return
+        }
 
         val filePath = getFile(event.context, event.uri, event.fileName)
         val cancellable = omhStorageClient.updateFile(filePath, fileId)
