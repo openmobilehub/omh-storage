@@ -1,6 +1,9 @@
 package com.omh.android.storage.api.domain.model
 
-enum class OmhFileType(val mimeType: String) {
+enum class OmhFileType(
+    val mimeType: String,
+    val extension: String? = null
+) {
     /**
      * Can find documentation about supported MIME types here:
      *
@@ -29,34 +32,88 @@ enum class OmhFileType(val mimeType: String) {
     VIDEO("application/vnd.google-apps.video"),
 
     // Documents
-    MICROSOFT_WORD("application/vnd.openxmlformats-officedocument.wordprocessingml.document"), // .docx
-    OPEN_DOCUMENT_TEXT("application/vnd.oasis.opendocument.text"), // .odt
-    RICH_TEXT("application/rtf"), // RTF
-    PDF("application/pdf"), // .pdf
-    TEXT("text/plain"), // .txt
-    ZIP("application/zip"), // ZIP
-    EPUB("application/epub+zip"), // .epub
+    MICROSOFT_WORD(
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        ".docx"
+    ), // .docx
+    OPEN_DOCUMENT_TEXT(
+        "application/vnd.oasis.opendocument.text",
+        ".odt"
+    ), // .odt
+    RICH_TEXT(
+        "application/rtf",
+        ".rtf"
+    ), // RTF
+    PDF(
+        "application/pdf",
+        ".pdf"
+    ), // .pdf
+    TEXT(
+        "text/plain",
+        ".txt"
+    ), // .txt
+    ZIP(
+        "application/zip",
+        ".zip"
+    ), // ZIP
+    EPUB(
+        "application/epub+zip",
+        ".epub"
+    ), // .epub
 
     // Spreadsheets
-    MICROSOFT_EXCEL("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"), // .xlsx
-    OPEN_DOCUMENT_SPREADSHEET("application/x-vnd.oasis.opendocument.spreadsheet"), // .ods
-    CSV("text/csv"), // .csv
-    TSV("text/tab-separated-values"), // .tsv
+    MICROSOFT_EXCEL(
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        ".xlsx"
+    ), // .xlsx
+    OPEN_DOCUMENT_SPREADSHEET(
+        "application/x-vnd.oasis.opendocument.spreadsheet",
+        ".ods"
+    ), // .ods
+    CSV(
+        "text/csv",
+        ".csv"
+    ), // .csv
+    TSV(
+        "text/tab-separated-values",
+        ".tsv"
+    ), // .tsv
 
     // Presentations
-    MICROSOFT_POWERPOINT("application/vnd.openxmlformats-officedocument.presentationml.presentation"), // .pptx
-    OPEN_DOCUMENT_PRESENTATION("application/vnd.oasis.opendocument.presentation"), // .odp
+    MICROSOFT_POWERPOINT(
+        "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+        ".pptx"
+    ), // .pptx
+    OPEN_DOCUMENT_PRESENTATION(
+        "application/vnd.oasis.opendocument.presentation",
+        ".odp"
+    ), // .odp
 
     // Drawings
-    JPEG("image/jpeg"), // .jpg
-    PNG("image/png"), // .png
-    SVG("image/svg+xml"), // .svg
+    JPEG(
+        "image/jpeg",
+        "jpg"
+    ), // .jpg
+    PNG(
+        "image/png",
+        ".png"
+    ), // .png
+    SVG(
+        "image/svg+xml",
+        ".svg"
+    ), // .svg
 
     // Apps Scripts
-    JSON("application/vnd.google-apps.script+json"), // .json
+    JSON(
+        "application/vnd.google-apps.script+json",
+        ".json"
+    ), // .json
 
     // Video
-    MP4("video/mp4"),
+    MP4(
+        "video/mp4",
+        ".mp4"
+    ),
 
     // Other MYME type
     OTHER("")

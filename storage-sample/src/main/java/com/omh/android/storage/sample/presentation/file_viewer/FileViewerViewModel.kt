@@ -10,6 +10,7 @@ import com.omh.android.storage.api.domain.model.OmhFileType
 import com.omh.android.storage.api.domain.usecase.DownloadFileUseCaseResult
 import com.omh.android.storage.sample.domain.model.FileType
 import com.omh.android.storage.sample.presentation.BaseViewModel
+import com.omh.android.storage.sample.util.getNameWithExtension
 import com.omh.android.storage.sample.util.normalizedMimeType
 import com.omh.android.storage.sample.util.isDownloadable
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -242,7 +243,7 @@ class FileViewerViewModel @Inject constructor(
             .getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_DOWNLOADS
             )
-        val fileToSave = File(downloadFolder, file.name)
+        val fileToSave = File(downloadFolder, file.getNameWithExtension())
         val fileOutputStream = FileOutputStream(fileToSave)
 
         bytes.writeTo(fileOutputStream)
