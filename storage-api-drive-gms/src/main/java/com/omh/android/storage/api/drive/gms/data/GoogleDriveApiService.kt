@@ -35,4 +35,9 @@ internal class GoogleDriveApiService(private val apiProvider: GoogleDriveApiProv
         .googleDriveApiService
         .files()
         .get(fileId)
+
+    fun updateFile(fileId: String, file: File, mediaContent: FileContent): Drive.Files.Update = apiProvider
+        .googleDriveApiService
+        .files()
+        .update(fileId, file, mediaContent)
 }

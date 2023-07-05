@@ -85,14 +85,13 @@ internal class GmsFileRemoteDataSourceImpl(private val apiService: GoogleDriveAp
         val localMimeType = getStringMimeTypeFromLocalFile(localFileToUpload)
 
         val file = GoogleApiFile().apply {
-            id = fileId
             name = localFileToUpload.name
             mimeType = localMimeType
         }
 
         val mediaContent = FileContent(localMimeType, localFileToUpload)
 
-        val response: GoogleApiFile = apiService.uploadFile(file, mediaContent).execute()
+        val response: GoogleApiFile = apiService.updateFile(fileId, file, mediaContent).execute()
 
         return response.toOmhFile()
     }
