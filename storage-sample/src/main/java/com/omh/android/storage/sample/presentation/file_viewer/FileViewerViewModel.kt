@@ -141,17 +141,17 @@ class FileViewerViewModel @Inject constructor(
     }
 
     private fun updateFile(event: FileViewerViewEvent.UpdateFile) {
-        val file = lastFileClicked ?: return
+        val fileId = lastFileClicked?.id ?: return
 
         setState(FileViewerViewState.Loading)
 
-        val filePath = getFile(event.context, event.uri, file.name)
-        val cancellable = omhStorageClient.updateFile(filePath, file.id)
+        val filePath = getFile(event.context, event.uri, event.fileName)
+        val cancellable = omhStorageClient.updateFile(filePath, fileId)
             .addOnSuccess { result ->
                 val resultMessage = if (result.file == null) {
-                    "${file.name} was not updated"
+                    "${event.fileName} was not updated"
                 } else {
-                    "${file.name} was successfully updated"
+                    "${event.fileName} was successfully updated"
                 }
 
                 toastMessage.postValue(resultMessage)
@@ -159,7 +159,7 @@ class FileViewerViewModel @Inject constructor(
                 refreshFileListEvent()
             }
             .addOnFailure { e ->
-                toastMessage.postValue("ERROR: ${file.name} was not updated")
+                toastMessage.postValue("ERROR: ${event.fileName} was not updated")
                 e.printStackTrace()
 
                 refreshFileListEvent()
