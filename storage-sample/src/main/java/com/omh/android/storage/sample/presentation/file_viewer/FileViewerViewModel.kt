@@ -60,6 +60,7 @@ class FileViewerViewModel @Inject constructor(
             is FileViewerViewEvent.UpdateFile -> updateFile(event)
             FileViewerViewEvent.SignOut -> signOut()
             FileViewerViewEvent.DownloadFile -> downloadFileEvent()
+            is FileViewerViewEvent.UpdateFileClicked -> updateFileClicked(event)
         }
     }
 
@@ -113,13 +114,13 @@ class FileViewerViewModel @Inject constructor(
     }
 
     private fun downloadFileEvent() {
-        setState(FileViewerViewState.Loading)
-
         lastFileClicked?.let { file ->
             if (!file.isDownloadable()) {
                 toastMessage.postValue("${file.name} is not downloadable")
                 return
             }
+
+            setState(FileViewerViewState.Loading)
 
             val mimeType = file.normalizedMimeType()
             val cancellable = omhStorageClient.downloadFile(file.id, mimeType)
@@ -263,6 +264,11 @@ class FileViewerViewModel @Inject constructor(
             .execute()
 
         cancellableCollector.addCancellable(cancellable)
+    }
+
+    private fun updateFileClicked(event: FileViewerViewEvent.UpdateFileClicked) {
+        lastFileClicked = event.file
+        setState(FileViewerViewState.FilePicker)
     }
 
     private fun handleDownloadSuccess(

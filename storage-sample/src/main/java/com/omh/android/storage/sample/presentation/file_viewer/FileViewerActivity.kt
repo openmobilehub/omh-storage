@@ -46,7 +46,8 @@ class FileViewerActivity :
     private lateinit var binding: ActivityFileViewerBinding
     private var filesAdapter: FileAdapter? = null
     private lateinit var onBackPressedCallback: OnBackPressedCallback
-    private lateinit var filePicker: ActivityResultLauncher<String>
+    private lateinit var filePickerUpload: ActivityResultLauncher<String>
+    private lateinit var filePickerUpdate: ActivityResultLauncher<String>
     private lateinit var requestPermissionLauncher: ActivityResultLauncher<Array<String>>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,17 +62,18 @@ class FileViewerActivity :
             }
         }
 
-        filePicker = registerForActivityResult(
+        filePickerUpload = registerForActivityResult(ActivityResultContracts.GetContent()
+        ) { uri: Uri? ->
+            uri?.let {
+                showUploadFileDialog(uri)
+            }
+        }
+
+        filePickerUpdate = registerForActivityResult(
             ActivityResultContracts.GetContent()
         ) { uri: Uri? ->
             uri?.let {
-                val fileName = DocumentFile.fromSingleUri(this, uri)?.name
-                    ?: FileViewerViewModel.DEFAULT_FILE_NAME
-                if (viewModel.isUpload) {
-                    showUploadFileDialog(uri, fileName)
-                } else {
-                    showUpdateFileDialog(uri, fileName)
-                }
+                showUpdateFileDialog(uri)
             }
         }
 
@@ -95,6 +97,9 @@ class FileViewerActivity :
         }
     }
 
+    private fun getFileName(uri: Uri) = (DocumentFile.fromSingleUri(this, uri)?.name
+        ?: FileViewerViewModel.DEFAULT_FILE_NAME)
+
     override fun onResume() {
         super.onResume()
         onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
@@ -116,8 +121,7 @@ class FileViewerActivity :
             }
 
             R.id.uploadFile -> {
-                viewModel.isUpload = true
-                filePicker.launch(FileViewerViewModel.ANY_MIME_TYPE)
+                filePickerUpload.launch(FileViewerViewModel.ANY_MIME_TYPE)
             }
 
             R.id.signOut -> {
@@ -135,6 +139,7 @@ class FileViewerActivity :
         FileViewerViewState.Finish -> buildFinishState()
         FileViewerViewState.CheckPermissions -> requestPermissions()
         FileViewerViewState.SignOut -> buildSignOutState()
+        is FileViewerViewState.FilePicker -> buildFilePicker()
     }
 
     private fun buildInitialState() {
@@ -201,9 +206,11 @@ class FileViewerActivity :
     }
 
     override fun onUpdateClicked(file: OmhFile) {
-        viewModel.lastFileClicked = file
-        viewModel.isUpload = false
-        filePicker.launch(FileViewerViewModel.ANY_MIME_TYPE)
+        dispatchEvent(FileViewerViewEvent.UpdateFileClicked(file))
+    }
+
+    private fun buildFilePicker() {
+        filePickerUpdate.launch(FileViewerViewModel.ANY_MIME_TYPE)
     }
 
     private fun buildFinishState() = finish().also { finishAffinity() }
@@ -277,8 +284,10 @@ class FileViewerActivity :
         }
     }
 
-    private fun showUploadFileDialog(uri: Uri, fileName: String) {
+    private fun showUploadFileDialog(uri: Uri) {
         val dialogUploadFileView = DialogUploadFileBinding.inflate(layoutInflater)
+        val fileName = getFileName(uri)
+
         dialogUploadFileView.fileName.text = fileName
 
         val uploadFileDialogBuilder = AlertDialog.Builder(this)
@@ -298,8 +307,10 @@ class FileViewerActivity :
         createFileAlertDialog.show()
     }
 
-    private fun showUpdateFileDialog(uri: Uri, fileName: String) {
+    private fun showUpdateFileDialog(uri: Uri) {
         val dialogUploadFileView = DialogUploadFileBinding.inflate(layoutInflater)
+        val fileName = getFileName(uri)
+
         dialogUploadFileView.fileName.text = fileName
 
         val uploadFileDialogBuilder = AlertDialog.Builder(this)

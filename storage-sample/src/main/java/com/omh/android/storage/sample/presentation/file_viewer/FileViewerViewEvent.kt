@@ -61,4 +61,9 @@ sealed class FileViewerViewEvent : ViewEvent {
 
         override fun getEventName() = "FileViewerViewEvent.SignOut"
     }
+
+    class UpdateFileClicked(val file: OmhFile) : FileViewerViewEvent() {
+
+        override fun getEventName() = "FileViewerViewEvent.UpdateFileClicked"
+    }
 }
