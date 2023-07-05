@@ -2,8 +2,8 @@ package com.omh.android.storage.sample.presentation.file_viewer
 
 import android.content.Context
 import android.net.Uri
-import com.omh.android.auth.api.OmhAuthClient
 import android.os.Environment
+import com.omh.android.auth.api.OmhAuthClient
 import com.omh.android.storage.api.OmhStorageClient
 import com.omh.android.storage.api.domain.model.OmhFile
 import com.omh.android.storage.api.domain.model.OmhFileType
@@ -11,8 +11,8 @@ import com.omh.android.storage.api.domain.usecase.DownloadFileUseCaseResult
 import com.omh.android.storage.sample.domain.model.FileType
 import com.omh.android.storage.sample.presentation.BaseViewModel
 import com.omh.android.storage.sample.util.getNameWithExtension
-import com.omh.android.storage.sample.util.normalizedMimeType
 import com.omh.android.storage.sample.util.isDownloadable
+import com.omh.android.storage.sample.util.normalizedMimeType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.io.File
 import java.io.FileOutputStream
@@ -39,6 +39,7 @@ class FileViewerViewModel @Inject constructor(
         const val DEFAULT_FILE_NAME = "Untitled"
     }
 
+    var isUpload = false
     var isGridLayoutManager = true
     var createFileSelectedType: OmhFileType? = null
     private val parentIdStack = Stack<String>().apply { push(ID_ROOT) }
@@ -56,8 +57,10 @@ class FileViewerViewModel @Inject constructor(
             is FileViewerViewEvent.CreateFile -> createFileEvent(event)
             is FileViewerViewEvent.DeleteFile -> deleteFileEvent(event)
             is FileViewerViewEvent.UploadFile -> uploadFile(event)
+            is FileViewerViewEvent.UpdateFile -> updateFileEvent(event)
             FileViewerViewEvent.SignOut -> signOut()
             FileViewerViewEvent.DownloadFile -> downloadFileEvent()
+            is FileViewerViewEvent.UpdateFileClicked -> updateFileClickEvent(event)
         }
     }
 
@@ -116,6 +119,7 @@ class FileViewerViewModel @Inject constructor(
         lastFileClicked?.let { file ->
             if (!file.isDownloadable()) {
                 toastMessage.postValue("${file.name} is not downloadable")
+                refreshFileListEvent()
                 return
             }
 
@@ -136,6 +140,38 @@ class FileViewerViewModel @Inject constructor(
             toastMessage.postValue("The file was NOT downloaded")
             refreshFileListEvent()
         }
+    }
+
+    private fun updateFileEvent(event: FileViewerViewEvent.UpdateFile) {
+        val fileId = lastFileClicked?.id
+
+        if (fileId.isNullOrBlank()) {
+            refreshFileListEvent()
+            return
+        }
+
+        val filePath = getFile(event.context, event.uri, event.fileName)
+        val cancellable = omhStorageClient.updateFile(filePath, fileId)
+            .addOnSuccess { result ->
+                val resultMessage = if (result.file == null) {
+                    "${event.fileName} was not updated"
+                } else {
+                    "${event.fileName} was successfully updated"
+                }
+
+                toastMessage.postValue(resultMessage)
+
+                refreshFileListEvent()
+            }
+            .addOnFailure { e ->
+                toastMessage.postValue("ERROR: ${event.fileName} was not updated")
+                e.printStackTrace()
+
+                refreshFileListEvent()
+            }
+            .execute()
+
+        cancellableCollector.addCancellable(cancellable)
     }
 
     private fun createFileEvent(event: FileViewerViewEvent.CreateFile) {
@@ -234,6 +270,11 @@ class FileViewerViewModel @Inject constructor(
         cancellableCollector.addCancellable(cancellable)
     }
 
+    private fun updateFileClickEvent(event: FileViewerViewEvent.UpdateFileClicked) {
+        lastFileClicked = event.file
+        setState(FileViewerViewState.ShowUpdateFilePicker)
+    }
+
     private fun handleDownloadSuccess(
         result: DownloadFileUseCaseResult,
         file: OmhFile
@@ -253,4 +294,6 @@ class FileViewerViewModel @Inject constructor(
         super.onCleared()
         cancellableCollector.clear()
     }
+
+    fun getFileName(documentFileName: String?): String = documentFileName ?: DEFAULT_FILE_NAME
 }

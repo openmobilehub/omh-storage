@@ -11,6 +11,8 @@
     <string name="text_file_type_label">File Type:</string>
     <string name="text_upload_file_title">Upload File</string>
     <string name="text_upload">Upload</string>
+    <string name="text_update_file_title">Update File</string>
+    <string name="text_update">Update</string>
     <string name="text_cancel">Cancel</string>
     <string name="text_sign_out">Sign out</string>
 </resources>

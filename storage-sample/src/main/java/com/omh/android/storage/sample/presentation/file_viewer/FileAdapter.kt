@@ -94,6 +94,8 @@ class FileAdapter(
         fun onFileClicked(file: OmhFile)
 
         fun onDeleteClicked(file: OmhFile)
+
+        fun onUpdateClicked(file: OmhFile)
     }
 
     abstract class FileViewHolder(binding: View) : RecyclerView.ViewHolder(binding) {
@@ -114,6 +116,7 @@ class FileAdapter(
                 loadFileIcon(context, iconLink, fileIcon)
                 root.setOnClickListener { listener.onFileClicked(file) }
                 buttonDelete.setOnClickListener { listener.onDeleteClicked(file) }
+                buttonUpdate.setOnClickListener { listener.onUpdateClicked(file) }
             }
         }
     }
@@ -131,6 +134,7 @@ class FileAdapter(
                 loadFileIcon(context, iconLink, fileIcon)
                 root.setOnClickListener { listener.onFileClicked(file) }
                 buttonDelete.setOnClickListener { listener.onDeleteClicked(file) }
+                buttonUpdate.setOnClickListener { listener.onUpdateClicked(file) }
             }
         }
     }
