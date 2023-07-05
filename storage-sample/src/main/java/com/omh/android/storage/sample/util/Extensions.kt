@@ -35,16 +35,28 @@ private val NON_SUPPORTED_MIME_TYPES_FOR_DOWNLOAD = listOf(
 
 fun OmhFile.isDownloadable(): Boolean = !NON_SUPPORTED_MIME_TYPES_FOR_DOWNLOAD.contains(fileType)
 
-fun OmhFile.normalizedMimeType() = when (fileType) {
-        OmhFileType.DOCUMENT -> OmhFileType.MICROSOFT_WORD.mimeType
-        OmhFileType.DRAWING -> OmhFileType.PNG.mimeType
-        OmhFileType.FORM -> OmhFileType.PDF.mimeType
-        OmhFileType.PHOTO -> OmhFileType.JPEG.mimeType
-        OmhFileType.PRESENTATION -> OmhFileType.MICROSOFT_POWERPOINT.mimeType
-        OmhFileType.SCRIPT -> OmhFileType.JSON.mimeType
-        OmhFileType.SHORTCUT -> OmhFileType.SHORTCUT.mimeType
-        OmhFileType.SPREADSHEET -> OmhFileType.MICROSOFT_EXCEL.mimeType
-        OmhFileType.VIDEO,
-        OmhFileType.AUDIO -> OmhFileType.MP4.mimeType
-        else -> this.mimeType
-    }
+fun OmhFile.normalizedMimeType(): String = when (fileType) {
+    OmhFileType.DOCUMENT -> OmhFileType.MICROSOFT_WORD.mimeType
+    OmhFileType.DRAWING -> OmhFileType.PNG.mimeType
+    OmhFileType.FORM -> OmhFileType.PDF.mimeType
+    OmhFileType.PHOTO -> OmhFileType.JPEG.mimeType
+    OmhFileType.PRESENTATION -> OmhFileType.MICROSOFT_POWERPOINT.mimeType
+    OmhFileType.SCRIPT -> OmhFileType.JSON.mimeType
+    OmhFileType.SHORTCUT -> OmhFileType.SHORTCUT.mimeType
+    OmhFileType.SPREADSHEET -> OmhFileType.MICROSOFT_EXCEL.mimeType
+    OmhFileType.VIDEO,
+    OmhFileType.AUDIO -> OmhFileType.MP4.mimeType
+
+    else -> this.mimeType
+}
+
+fun OmhFile.getNameWithExtension(): String = if (isFileNameWithExtension(name)) {
+    name
+} else {
+    "$name${getExtension().orEmpty()}"
+}
+
+private fun isFileNameWithExtension(fileName: String): Boolean {
+    val lastDotIndex: Int = fileName.lastIndexOf('.')
+    return lastDotIndex != -1 && lastDotIndex < fileName.length - 1
+}

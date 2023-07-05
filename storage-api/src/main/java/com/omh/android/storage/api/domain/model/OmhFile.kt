@@ -14,4 +14,6 @@ data class OmhFile(
     fun isFolder() = fileType == OmhFileType.FOLDER
 
     fun isFile() = !isFolder()
+
+    fun getExtension(): String? = fileType.extension
 }
