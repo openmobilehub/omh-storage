@@ -40,7 +40,7 @@ sealed class FileViewerViewState : ViewState {
         override fun getName() = "FileViewerViewState.SignOut"
     }
 
-    object FilePicker : FileViewerViewState() {
+    object ShowUpdateFilePicker : FileViewerViewState() {
 
         override fun getName() = "FileViewerViewState.FilePicker"
     }

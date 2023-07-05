@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.Uri
 import com.omh.android.auth.api.OmhAuthClient
 import android.os.Environment
+import androidx.documentfile.provider.DocumentFile
 import com.omh.android.storage.api.OmhStorageClient
 import com.omh.android.storage.api.domain.model.OmhFile
 import com.omh.android.storage.api.domain.model.OmhFileType
@@ -57,10 +58,10 @@ class FileViewerViewModel @Inject constructor(
             is FileViewerViewEvent.CreateFile -> createFileEvent(event)
             is FileViewerViewEvent.DeleteFile -> deleteFileEvent(event)
             is FileViewerViewEvent.UploadFile -> uploadFile(event)
-            is FileViewerViewEvent.UpdateFile -> updateFile(event)
+            is FileViewerViewEvent.UpdateFile -> updateFileEvent(event)
             FileViewerViewEvent.SignOut -> signOut()
             FileViewerViewEvent.DownloadFile -> downloadFileEvent()
-            is FileViewerViewEvent.UpdateFileClicked -> updateFileClicked(event)
+            is FileViewerViewEvent.UpdateFileClicked -> updateFileClickEvent(event)
         }
     }
 
@@ -141,7 +142,7 @@ class FileViewerViewModel @Inject constructor(
         }
     }
 
-    private fun updateFile(event: FileViewerViewEvent.UpdateFile) {
+    private fun updateFileEvent(event: FileViewerViewEvent.UpdateFile) {
         val fileId = lastFileClicked?.id ?: return
 
         setState(FileViewerViewState.Loading)
@@ -266,9 +267,9 @@ class FileViewerViewModel @Inject constructor(
         cancellableCollector.addCancellable(cancellable)
     }
 
-    private fun updateFileClicked(event: FileViewerViewEvent.UpdateFileClicked) {
+    private fun updateFileClickEvent(event: FileViewerViewEvent.UpdateFileClicked) {
         lastFileClicked = event.file
-        setState(FileViewerViewState.FilePicker)
+        setState(FileViewerViewState.ShowUpdateFilePicker)
     }
 
     private fun handleDownloadSuccess(
@@ -290,4 +291,6 @@ class FileViewerViewModel @Inject constructor(
         super.onCleared()
         cancellableCollector.clear()
     }
+
+    fun getFileName(documentFileName: String?): String = documentFileName ?: DEFAULT_FILE_NAME
 }

@@ -65,7 +65,10 @@ class FileViewerActivity :
         filePickerUpload = registerForActivityResult(ActivityResultContracts.GetContent()
         ) { uri: Uri? ->
             uri?.let {
-                showUploadFileDialog(uri)
+                val titleText = getString(R.string.text_upload_file_title)
+                val positiveText = getString(R.string.text_upload)
+
+                showBeforeSubmitFileDialog(uri, titleText, positiveText, ::configureUploadFilePositiveButtonEvent)
             }
         }
 
@@ -73,7 +76,10 @@ class FileViewerActivity :
             ActivityResultContracts.GetContent()
         ) { uri: Uri? ->
             uri?.let {
-                showUpdateFileDialog(uri)
+                val titleText = getString(R.string.text_update_file_title)
+                val positiveText = getString(R.string.text_update)
+
+                showBeforeSubmitFileDialog(uri, titleText, positiveText, ::configureUpdateFilePositiveButtonEvent)
             }
         }
 
@@ -96,9 +102,6 @@ class FileViewerActivity :
             }
         }
     }
-
-    private fun getFileName(uri: Uri) = (DocumentFile.fromSingleUri(this, uri)?.name
-        ?: FileViewerViewModel.DEFAULT_FILE_NAME)
 
     override fun onResume() {
         super.onResume()
@@ -139,7 +142,7 @@ class FileViewerActivity :
         FileViewerViewState.Finish -> buildFinishState()
         FileViewerViewState.CheckPermissions -> requestPermissions()
         FileViewerViewState.SignOut -> buildSignOutState()
-        is FileViewerViewState.FilePicker -> buildFilePicker()
+        is FileViewerViewState.ShowUpdateFilePicker -> launchUpdateFilePicker()
     }
 
     private fun buildInitialState() {
@@ -209,7 +212,7 @@ class FileViewerActivity :
         dispatchEvent(FileViewerViewEvent.UpdateFileClicked(file))
     }
 
-    private fun buildFilePicker() {
+    private fun launchUpdateFilePicker() {
         filePickerUpdate.launch(FileViewerViewModel.ANY_MIME_TYPE)
     }
 
@@ -284,39 +287,22 @@ class FileViewerActivity :
         }
     }
 
-    private fun showUploadFileDialog(uri: Uri) {
+    private fun showBeforeSubmitFileDialog(
+        uri: Uri,
+        titleText: String,
+        positiveTextButton: String,
+        positiveAction: (DialogInterface, String, Uri) -> Unit
+    ) {
         val dialogUploadFileView = DialogUploadFileBinding.inflate(layoutInflater)
-        val fileName = getFileName(uri)
+        val documentFileName = DocumentFile.fromSingleUri(this, uri)?.name
+        val fileName = viewModel.getFileName(documentFileName)
 
         dialogUploadFileView.fileName.text = fileName
 
         val uploadFileDialogBuilder = AlertDialog.Builder(this)
-            .setTitle(getString(R.string.text_upload_file_title))
-            .setPositiveButton(getString(R.string.text_upload)) { dialog, _ ->
-                configureUploadFilePositiveButtonEvent(dialog, fileName, uri)
-            }
-            .setNegativeButton(getString(R.string.text_cancel)) { dialog, _ ->
-                dialog.cancel()
-            }
-
-        val createFileAlertDialog = uploadFileDialogBuilder.create().apply {
-            setCancelable(false)
-            setView(dialogUploadFileView.root)
-        }
-
-        createFileAlertDialog.show()
-    }
-
-    private fun showUpdateFileDialog(uri: Uri) {
-        val dialogUploadFileView = DialogUploadFileBinding.inflate(layoutInflater)
-        val fileName = getFileName(uri)
-
-        dialogUploadFileView.fileName.text = fileName
-
-        val uploadFileDialogBuilder = AlertDialog.Builder(this)
-            .setTitle(getString(R.string.text_update_file_title))
-            .setPositiveButton(getString(R.string.text_update)) { dialog, _ ->
-                configureUpdateFilePositiveButtonEvent(dialog, fileName, uri)
+            .setTitle(titleText)
+            .setPositiveButton(positiveTextButton) { dialog, _ ->
+                positiveAction(dialog, fileName, uri)
             }
             .setNegativeButton(getString(R.string.text_cancel)) { dialog, _ ->
                 dialog.cancel()
