@@ -1,7 +1,8 @@
-package com.omh.android.storage.api.drive.nongms.data
+package com.omh.android.storage.api.drive.nongms.data.retrofit
 
 import com.omh.android.auth.api.OmhCredentials
 import com.omh.android.storage.api.drive.nongms.BuildConfig
+import com.omh.android.storage.api.drive.nongms.data.GoogleStorageApiService
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit

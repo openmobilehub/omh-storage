@@ -8,20 +8,20 @@ import com.omh.android.storage.api.domain.model.OmhStorageStatusCodes.DOWNLOAD_E
 import com.omh.android.storage.api.domain.model.OmhStorageStatusCodes.DOWNLOAD_GOOGLE_WORKSPACE_ERROR
 import com.omh.android.storage.api.domain.model.OmhStorageStatusCodes.UPDATE_CONTENT_FILE
 import com.omh.android.storage.api.domain.model.OmhStorageStatusCodes.UPDATE_META_DATA
-import com.omh.android.storage.api.drive.nongms.data.GoogleRetrofitImpl
 import com.omh.android.storage.api.drive.nongms.data.GoogleStorageApiService
+import com.omh.android.storage.api.drive.nongms.data.retrofit.GoogleRetrofitImpl
 import com.omh.android.storage.api.drive.nongms.data.source.body.CreateFileRequestBody
 import com.omh.android.storage.api.drive.nongms.data.source.mapper.toFile
 import com.omh.android.storage.api.drive.nongms.data.source.mapper.toFileList
 import com.omh.android.storage.api.drive.nongms.data.utils.toByteArrayOutputStream
+import java.io.ByteArrayOutputStream
+import java.io.File
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONArray
 import org.json.JSONObject
-import java.io.ByteArrayOutputStream
-import java.io.File
 
 internal class NonGmsFileRemoteDataSourceImpl(private val retrofitImpl: GoogleRetrofitImpl) :
     OmhFileRemoteDataSource {
