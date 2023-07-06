@@ -150,6 +150,7 @@ class FileViewerViewModel @Inject constructor(
     }
 
     private fun updateFileEvent(event: FileViewerViewEvent.UpdateFile) {
+        setState(FileViewerViewState.Loading)
         val fileId = lastFileClicked?.id
 
         if (fileId.isNullOrBlank()) {
