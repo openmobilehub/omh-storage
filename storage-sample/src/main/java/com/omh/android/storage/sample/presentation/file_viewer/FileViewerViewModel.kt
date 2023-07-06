@@ -74,7 +74,14 @@ class FileViewerViewModel @Inject constructor(
 
         val cancellable = omhStorageClient.listFiles(parentId)
             .addOnSuccess { data ->
-                val files: List<OmhFile> = data.files
+                val files: List<OmhFile> = data
+                    .files
+                    .sortedWith(
+                        compareBy<OmhFile> { !it.isFolder() }
+                            .thenBy { it.mimeType }
+                            .thenBy { it.name }
+                    )
+
                 setState(FileViewerViewState.Content(files))
             }
             .addOnFailure { e ->
