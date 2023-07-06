@@ -6,10 +6,9 @@ import com.omh.android.auth.api.models.OmhAuthStatusCodes
 import com.omh.android.storage.api.OmhStorageClient
 import com.omh.android.storage.api.domain.model.OmhStorageException
 import com.omh.android.storage.api.domain.repository.OmhFileRepository
-import com.omh.android.storage.api.drive.nongms.data.GoogleRetrofitImpl
 import com.omh.android.storage.api.drive.nongms.data.repository.NonGmsFileRepositoryImpl
+import com.omh.android.storage.api.drive.nongms.data.retrofit.GoogleRetrofitImpl
 import com.omh.android.storage.api.drive.nongms.data.source.NonGmsFileRemoteDataSourceImpl
-import kotlin.jvm.Throws
 
 internal class OmhNonGmsStorageClientImpl private constructor(
     authClient: OmhAuthClient
