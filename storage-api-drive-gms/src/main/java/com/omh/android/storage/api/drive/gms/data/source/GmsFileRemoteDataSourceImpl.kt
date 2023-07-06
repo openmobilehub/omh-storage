@@ -76,7 +76,7 @@ internal class GmsFileRemoteDataSourceImpl(private val apiService: GoogleDriveAp
     override fun downloadFile(fileId: String, mimeType: String?): ByteArrayOutputStream {
         val outputStream = ByteArrayOutputStream()
 
-        apiService.downloadFile(fileId).executeAndDownloadTo(outputStream)
+        apiService.downloadFile(fileId).executeMediaAndDownloadTo(outputStream)
 
         return outputStream
     }
