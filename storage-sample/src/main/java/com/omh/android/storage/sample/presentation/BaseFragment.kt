@@ -1,12 +1,9 @@
-package com.omh.android.storage.sample.presentation.base
+package com.omh.android.storage.sample.presentation
 
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.omh.android.storage.sample.presentation.BaseViewModel
-import com.omh.android.storage.sample.presentation.ViewEvent
-import com.omh.android.storage.sample.presentation.ViewState
 import com.omh.android.storage.sample.util.LOG_MESSAGE_STATE
 import com.omh.android.storage.sample.util.TAG_VIEW_UPDATE
 import java.lang.Exception

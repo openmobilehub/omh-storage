@@ -26,7 +26,7 @@ import com.omh.android.storage.sample.R
 import com.omh.android.storage.sample.databinding.ActivityFileViewerBinding
 import com.omh.android.storage.sample.databinding.DialogCreateFileBinding
 import com.omh.android.storage.sample.databinding.DialogUploadFileBinding
-import com.omh.android.storage.sample.presentation.base.BaseFragment
+import com.omh.android.storage.sample.presentation.BaseFragment
 import com.omh.android.storage.sample.presentation.login.LoginActivity
 import dagger.hilt.android.AndroidEntryPoint
 

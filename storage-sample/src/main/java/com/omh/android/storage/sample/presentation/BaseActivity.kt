@@ -1,4 +1,4 @@
-package com.omh.android.storage.sample.presentation.base
+package com.omh.android.storage.sample.presentation
 
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
