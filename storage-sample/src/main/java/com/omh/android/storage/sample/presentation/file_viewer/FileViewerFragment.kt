@@ -26,18 +26,18 @@ import com.omh.android.storage.sample.R
 import com.omh.android.storage.sample.databinding.ActivityFileViewerBinding
 import com.omh.android.storage.sample.databinding.DialogCreateFileBinding
 import com.omh.android.storage.sample.databinding.DialogUploadFileBinding
-import com.omh.android.storage.sample.presentation.BaseActivity
+import com.omh.android.storage.sample.presentation.base.BaseFragment
 import com.omh.android.storage.sample.presentation.login.LoginActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class FileViewerActivity :
-    BaseActivity<FileViewerViewModel, FileViewerViewState, FileViewerViewEvent>(),
+class FileViewerFragment :
+    BaseFragment<FileViewerViewModel, FileViewerViewState, FileViewerViewEvent>(),
     FileAdapter.GridItemListener {
 
     companion object {
 
-        fun getIntent(context: Context) = Intent(context, FileViewerActivity::class.java).apply {
+        fun getIntent(context: Context) = Intent(context, FileViewerFragment::class.java).apply {
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK)
         }
     }
@@ -186,9 +186,9 @@ class FileViewerActivity :
         filesAdapter = FileAdapter(this, viewModel.isGridLayoutManager)
         with(binding.filesRecyclerView) {
             layoutManager = if (viewModel.isGridLayoutManager) {
-                GridLayoutManager(this@FileViewerActivity, 2)
+                GridLayoutManager(this@FileViewerFragment, 2)
             } else {
-                LinearLayoutManager(this@FileViewerActivity)
+                LinearLayoutManager(this@FileViewerFragment)
             }
             adapter = filesAdapter
         }

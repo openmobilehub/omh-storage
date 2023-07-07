@@ -10,7 +10,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.omh.android.auth.api.OmhAuthClient
 import com.omh.android.storage.sample.databinding.ActivityLoginBinding
-import com.omh.android.storage.sample.presentation.file_viewer.FileViewerActivity
+import com.omh.android.storage.sample.presentation.file_viewer.FileViewerFragment
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -30,7 +30,7 @@ class LoginActivity : AppCompatActivity() {
     ) { result: ActivityResult ->
         try {
             omhAuthClient.getAccountFromIntent(result.data)
-            startActivity(FileViewerActivity.getIntent(this))
+            startActivity(FileViewerFragment.getIntent(this))
         } catch (exception: Exception) {
             AlertDialog.Builder(this)
                 .setTitle("An error has occurred.")
@@ -58,7 +58,7 @@ class LoginActivity : AppCompatActivity() {
         super.onResume()
 
         if (omhAuthClient.getUser() != null) {
-            startActivity(FileViewerActivity.getIntent(this))
+            startActivity(FileViewerFragment.getIntent(this))
         }
     }
 
