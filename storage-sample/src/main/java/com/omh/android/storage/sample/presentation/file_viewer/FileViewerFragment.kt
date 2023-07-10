@@ -5,12 +5,12 @@ import android.content.DialogInterface
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
-import android.view.Menu
+import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
@@ -26,11 +26,13 @@ import com.omh.android.storage.sample.databinding.DialogUploadFileBinding
 import com.omh.android.storage.sample.databinding.FragmentFileViewerBinding
 import com.omh.android.storage.sample.presentation.BaseFragment
 import com.omh.android.storage.sample.presentation.login.LoginFragment
+import com.omh.android.storage.sample.presentation.util.OnBackPressedListener
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class FileViewerFragment :
     BaseFragment<FileViewerViewModel, FileViewerViewState, FileViewerViewEvent>(),
+    OnBackPressedListener,
     FileAdapter.GridItemListener {
 
     companion object {
@@ -41,22 +43,22 @@ class FileViewerFragment :
     override val viewModel: FileViewerViewModel by viewModels()
     private lateinit var binding: FragmentFileViewerBinding
     private var filesAdapter: FileAdapter? = null
-    private lateinit var onBackPressedCallback: OnBackPressedCallback
     private lateinit var filePickerUpload: ActivityResultLauncher<String>
     private lateinit var filePickerUpdate: ActivityResultLauncher<String>
     private lateinit var requestPermissionLauncher: ActivityResultLauncher<Array<String>>
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         binding = FragmentFileViewerBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
 
-        onBackPressedCallback = object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                dispatchEvent(FileViewerViewEvent.BackPressed)
-            }
-        }
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         filePickerUpload = registerForActivityResult(
             ActivityResultContracts.GetContent()
@@ -110,36 +112,41 @@ class FileViewerFragment :
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
-    }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.file_viewer_menu, menu)
+    override fun onBackPressed(): Boolean {
+        dispatchEvent(FileViewerViewEvent.BackPressed)
         return true
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.swapGridOrLinear -> {
-                dispatchEvent(FileViewerViewEvent.SwapLayoutManager)
-            }
-
-            R.id.createFile -> {
-                showCreateFileDialog()
-            }
-
-            R.id.uploadFile -> {
-                filePickerUpload.launch(FileViewerViewModel.ANY_MIME_TYPE)
-            }
-
-            R.id.signOut -> {
-                dispatchEvent(FileViewerViewEvent.SignOut)
-            }
+    /*
+        override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+            menuInflater.inflate(R.menu.file_viewer_menu, menu)
+            return true
         }
-        return super.onOptionsItemSelected(item)
-    }
+    */
+
+    /*
+        override fun onOptionsItemSelected(item: MenuItem): Boolean {
+            when (item.itemId) {
+                R.id.swapGridOrLinear -> {
+                    dispatchEvent(FileViewerViewEvent.SwapLayoutManager)
+                }
+
+                R.id.createFile -> {
+                    showCreateFileDialog()
+                }
+
+                R.id.uploadFile -> {
+                    filePickerUpload.launch(FileViewerViewModel.ANY_MIME_TYPE)
+                }
+
+                R.id.signOut -> {
+                    dispatchEvent(FileViewerViewEvent.SignOut)
+                }
+            }
+            return super.onOptionsItemSelected(item)
+        }
+    */
 
     override fun buildState(state: FileViewerViewState) = when (state) {
         FileViewerViewState.Initial -> buildInitialState()
@@ -191,13 +198,18 @@ class FileViewerFragment :
         }
 
         filesAdapter = FileAdapter(this, viewModel.isGridLayoutManager)
-        with(binding.filesRecyclerView) {
-            layoutManager = if (viewModel.isGridLayoutManager) {
-                GridLayoutManager(this@FileViewerFragment, 2)
-            } else {
-                LinearLayoutManager(this@FileViewerFragment)
+
+        context?.let { context ->
+
+            with(binding.filesRecyclerView) {
+                layoutManager = if (viewModel.isGridLayoutManager) {
+                    GridLayoutManager(context, 2)
+                } else {
+                    LinearLayoutManager(context)
+                }
+                adapter = filesAdapter
             }
-            adapter = filesAdapter
+
         }
     }
 
@@ -223,28 +235,31 @@ class FileViewerFragment :
         filePickerUpdate.launch(FileViewerViewModel.ANY_MIME_TYPE)
     }
 
-    private fun buildFinishState() = finish().also { finishAffinity() }
+    private fun buildFinishState() = Unit // finish().also { finishAffinity() }
 
     private fun showCreateFileDialog() {
         val dialogCreateFileView = DialogCreateFileBinding.inflate(layoutInflater)
 
         configureCreateFileDialogSpinner(dialogCreateFileView)
 
-        val createFileDialogBuilder = AlertDialog.Builder(this)
-            .setTitle(getString(R.string.text_create_file_title))
-            .setPositiveButton("Create") { dialog, _ ->
-                configureCreateFilePositiveButtonEvent(dialogCreateFileView, dialog)
-            }
-            .setNegativeButton("Cancel") { dialog, _ ->
-                dialog.cancel()
+        context?.let { context ->
+
+            val createFileDialogBuilder = AlertDialog.Builder(context)
+                .setTitle(getString(R.string.text_create_file_title))
+                .setPositiveButton("Create") { dialog, _ ->
+                    configureCreateFilePositiveButtonEvent(dialogCreateFileView, dialog)
+                }
+                .setNegativeButton("Cancel") { dialog, _ ->
+                    dialog.cancel()
+                }
+
+            val createFileAlertDialog = createFileDialogBuilder.create().apply {
+                setCancelable(false)
+                setView(dialogCreateFileView.root)
             }
 
-        val createFileAlertDialog = createFileDialogBuilder.create().apply {
-            setCancelable(false)
-            setView(dialogCreateFileView.root)
+            createFileAlertDialog.show()
         }
-
-        createFileAlertDialog.show()
     }
 
     private fun configureCreateFilePositiveButtonEvent(
@@ -264,31 +279,34 @@ class FileViewerFragment :
     private fun configureCreateFileDialogSpinner(view: DialogCreateFileBinding) {
         val fileTypes = FileViewerViewModel.listOfFileTypes
 
-        val fileTypesSpinnerAdapter = ArrayAdapter(
-            this,
-            android.R.layout.simple_spinner_item,
-            fileTypes.map { fileType -> fileType.name }
-        ).apply {
-            setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        }
+        context?.let { context ->
 
-        with(view.fileType) {
-            adapter = fileTypesSpinnerAdapter
-            onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            val fileTypesSpinnerAdapter = ArrayAdapter(
+                context,
+                android.R.layout.simple_spinner_item,
+                fileTypes.map { fileType -> fileType.name }
+            ).apply {
+                setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            }
 
-                override fun onItemSelected(
-                    parent: AdapterView<*>?,
-                    view: View?,
-                    position: Int,
-                    id: Long
-                ) {
-                    val fileType = fileTypes[position]
-                    viewModel.createFileSelectedType = fileType.omhFileType
-                }
+            with(view.fileType) {
+                adapter = fileTypesSpinnerAdapter
+                onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
 
-                override fun onNothingSelected(parent: AdapterView<*>?) {
-                    val fileType = fileTypes[0]
-                    viewModel.createFileSelectedType = fileType.omhFileType
+                    override fun onItemSelected(
+                        parent: AdapterView<*>?,
+                        view: View?,
+                        position: Int,
+                        id: Long
+                    ) {
+                        val fileType = fileTypes[position]
+                        viewModel.createFileSelectedType = fileType.omhFileType
+                    }
+
+                    override fun onNothingSelected(parent: AdapterView<*>?) {
+                        val fileType = fileTypes[0]
+                        viewModel.createFileSelectedType = fileType.omhFileType
+                    }
                 }
             }
         }
@@ -300,27 +318,31 @@ class FileViewerFragment :
         positiveTextButton: String,
         positiveAction: (DialogInterface, String, Uri) -> Unit
     ) {
-        val dialogUploadFileView = DialogUploadFileBinding.inflate(layoutInflater)
-        val documentFileName = DocumentFile.fromSingleUri(this, uri)?.name
-        val fileName = viewModel.getFileName(documentFileName)
 
-        dialogUploadFileView.fileName.text = fileName
+        context?.let { context ->
 
-        val uploadFileDialogBuilder = AlertDialog.Builder(this)
-            .setTitle(titleText)
-            .setPositiveButton(positiveTextButton) { dialog, _ ->
-                positiveAction(dialog, fileName, uri)
+            val dialogUploadFileView = DialogUploadFileBinding.inflate(layoutInflater)
+            val documentFileName = DocumentFile.fromSingleUri(context, uri)?.name
+            val fileName = viewModel.getFileName(documentFileName)
+
+            dialogUploadFileView.fileName.text = fileName
+
+            val uploadFileDialogBuilder = AlertDialog.Builder(context)
+                .setTitle(titleText)
+                .setPositiveButton(positiveTextButton) { dialog, _ ->
+                    positiveAction(dialog, fileName, uri)
+                }
+                .setNegativeButton(getString(R.string.text_cancel)) { dialog, _ ->
+                    dialog.cancel()
+                }
+
+            val createFileAlertDialog = uploadFileDialogBuilder.create().apply {
+                setCancelable(false)
+                setView(dialogUploadFileView.root)
             }
-            .setNegativeButton(getString(R.string.text_cancel)) { dialog, _ ->
-                dialog.cancel()
-            }
 
-        val createFileAlertDialog = uploadFileDialogBuilder.create().apply {
-            setCancelable(false)
-            setView(dialogUploadFileView.root)
+            createFileAlertDialog.show()
         }
-
-        createFileAlertDialog.show()
     }
 
     private fun configureUploadFilePositiveButtonEvent(
@@ -328,11 +350,14 @@ class FileViewerFragment :
         fileName: String,
         uri: Uri
     ) {
-        if (fileName.isNotBlank()) {
-            dispatchEvent(FileViewerViewEvent.UploadFile(this, uri, fileName))
-        }
+        context?.let { context ->
 
-        dialog.dismiss()
+            if (fileName.isNotBlank()) {
+                dispatchEvent(FileViewerViewEvent.UploadFile(context, uri, fileName))
+            }
+
+            dialog.dismiss()
+        }
     }
 
     private fun configureUpdateFilePositiveButtonEvent(
@@ -340,8 +365,11 @@ class FileViewerFragment :
         fileName: String,
         uri: Uri
     ) {
-        dispatchEvent(FileViewerViewEvent.UpdateFile(this, uri, fileName))
-        dialog.dismiss()
+        context?.let { context ->
+
+            dispatchEvent(FileViewerViewEvent.UpdateFile(context, uri, fileName))
+            dialog.dismiss()
+        }
     }
 
     private fun requestPermissions() {
@@ -350,19 +378,26 @@ class FileViewerFragment :
             Manifest.permission.WRITE_EXTERNAL_STORAGE
         )
 
-        val permissionsToAsk: Array<String> = permissionsToRequest.filter { permission: String ->
-            ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED
-        }.toTypedArray()
+        context?.let { context ->
 
-        if (permissionsToAsk.isNotEmpty()) {
-            requestPermissionLauncher.launch(permissionsToAsk)
-        } else {
-            dispatchEvent(FileViewerViewEvent.DownloadFile)
+            val permissionsToAsk: Array<String> =
+                permissionsToRequest.filter { permission: String ->
+                    ContextCompat.checkSelfPermission(
+                        context,
+                        permission
+                    ) != PackageManager.PERMISSION_GRANTED
+                }.toTypedArray()
+
+            if (permissionsToAsk.isNotEmpty()) {
+                requestPermissionLauncher.launch(permissionsToAsk)
+            } else {
+                dispatchEvent(FileViewerViewEvent.DownloadFile)
+            }
         }
     }
 
     private fun buildSignOutState() {
-        startActivity(LoginFragment.newInstance(this))
-        finish()
+        //startActivity(LoginFragment.newInstance(this))
+        //finish()
     }
 }
