@@ -25,13 +25,8 @@
         </activity>
 
         <activity
-            android:name=".presentation.login.LoginFragment"
+            android:name=".presentation.main_activity.MainActivity"
             android:exported="false" />
-
-        <activity
-            android:name=".presentation.file_viewer.FileViewerFragment"
-            android:exported="false"
-            android:label="Storage" />
 
     </application>
 

@@ -5,8 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.omh.android.auth.api.OmhAuthClient
 import com.omh.android.storage.sample.databinding.ActivitySplashBinding
-import com.omh.android.storage.sample.presentation.file_viewer.FileViewerFragment
-import com.omh.android.storage.sample.presentation.login.LoginFragment
+import com.omh.android.storage.sample.presentation.main_activity.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -25,12 +24,13 @@ class SplashActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
+        val isLoginNeeded = omhAuthClient.getUser() == null
+
         startActivity(
-            if (omhAuthClient.getUser() == null) {
-                LoginFragment.getIntent(this)
-            } else {
-                FileViewerFragment.getIntent(this)
-            }
+            MainActivity.getIntent(
+                context = this,
+                isUserLogged = !isLoginNeeded
+            )
         )
 
         finish()

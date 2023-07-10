@@ -56,11 +56,8 @@ class LoginFragment : BaseFragment<LoginViewModel, LoginViewState, LoginViewEven
         savedInstanceState: Bundle?
     ): View {
         binding = ActivityLoginBinding.inflate(layoutInflater)
-        val view = binding.root
 
-        binding.btnLogin.setOnClickListener { dispatchEvent(LoginViewEvent.LoginClicked) }
-
-        return view
+        return binding.root
     }
 
     override fun onResume() {
@@ -76,9 +73,13 @@ class LoginFragment : BaseFragment<LoginViewModel, LoginViewState, LoginViewEven
 
     override fun buildState(state: LoginViewState) {
         when (state) {
-            LoginViewState.Initial -> Unit
+            LoginViewState.Initial -> buildInitialState()
             LoginViewState.StartLogin -> startLogin()
         }
+    }
+
+    private fun buildInitialState() {
+        binding.btnLogin.setOnClickListener { dispatchEvent(LoginViewEvent.LoginClicked) }
     }
 
     private fun startLogin() {
