@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import com.omh.android.storage.sample.databinding.ActivityBaseBinding
 import com.omh.android.storage.sample.presentation.util.OnBackPressedListener
 
@@ -32,13 +33,14 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     fun addFragment(fragment: Fragment) {
-        supportFragmentManager
-            .beginTransaction()
-            .add(
-                binding.activityBaseFragmentContainer.id,
-                fragment
-            )
-            .commit()
+        val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
+
+        transaction.add(
+            binding.activityBaseFragmentContainer.id,
+            fragment
+        )
+
+        transaction.commit()
     }
 
     protected fun getCurrentFragment(): Fragment? = supportFragmentManager

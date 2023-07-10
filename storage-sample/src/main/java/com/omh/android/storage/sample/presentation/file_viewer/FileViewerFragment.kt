@@ -1,9 +1,7 @@
 package com.omh.android.storage.sample.presentation.file_viewer
 
 import android.Manifest
-import android.content.Context
 import android.content.DialogInterface
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
@@ -37,9 +35,7 @@ class FileViewerFragment :
 
     companion object {
 
-        fun getIntent(context: Context) = Intent(context, FileViewerFragment::class.java).apply {
-            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-        }
+        fun newInstance() = FileViewerFragment()
     }
 
     override val viewModel: FileViewerViewModel by viewModels()
@@ -62,13 +58,19 @@ class FileViewerFragment :
             }
         }
 
-        filePickerUpload = registerForActivityResult(ActivityResultContracts.GetContent()
+        filePickerUpload = registerForActivityResult(
+            ActivityResultContracts.GetContent()
         ) { uri: Uri? ->
             uri?.let {
                 val titleText = getString(R.string.text_upload_file_title)
                 val positiveText = getString(R.string.text_upload)
 
-                showBeforeSubmitFileDialog(uri, titleText, positiveText, ::configureUploadFilePositiveButtonEvent)
+                showBeforeSubmitFileDialog(
+                    uri,
+                    titleText,
+                    positiveText,
+                    ::configureUploadFilePositiveButtonEvent
+                )
             }
         }
 
@@ -79,7 +81,12 @@ class FileViewerFragment :
                 val titleText = getString(R.string.text_update_file_title)
                 val positiveText = getString(R.string.text_update)
 
-                showBeforeSubmitFileDialog(uri, titleText, positiveText, ::configureUpdateFilePositiveButtonEvent)
+                showBeforeSubmitFileDialog(
+                    uri,
+                    titleText,
+                    positiveText,
+                    ::configureUpdateFilePositiveButtonEvent
+                )
             }
         }
 
@@ -355,7 +362,7 @@ class FileViewerFragment :
     }
 
     private fun buildSignOutState() {
-        startActivity(LoginFragment.getIntent(this))
+        startActivity(LoginFragment.newInstance(this))
         finish()
     }
 }

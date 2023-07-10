@@ -1,6 +1,5 @@
 package com.omh.android.storage.sample.presentation.login
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,7 +12,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.viewModels
 import com.omh.android.storage.sample.databinding.FragmentLoginBinding
 import com.omh.android.storage.sample.presentation.BaseFragment
-import com.omh.android.storage.sample.presentation.file_viewer.FileViewerFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -21,7 +19,7 @@ class LoginFragment : BaseFragment<LoginViewModel, LoginViewState, LoginViewEven
 
     companion object {
 
-        fun getIntent(context: Context) = Intent(context, LoginFragment::class.java)
+        fun newInstance() = LoginFragment()
     }
 
     override val viewModel: LoginViewModel by viewModels()
@@ -36,7 +34,7 @@ class LoginFragment : BaseFragment<LoginViewModel, LoginViewState, LoginViewEven
                 result.data?.let { intent ->
                     viewModel.getAccountFromIntent(intent)
                     // TODO: This should dispatch an event for replace fragment, not for start an activity
-                    startActivity(FileViewerFragment.getIntent(context))
+                    // startActivity(FileViewerFragment.getInstance(context))
                 }
             } catch (exception: Exception) {
                 AlertDialog.Builder(context)
@@ -67,7 +65,7 @@ class LoginFragment : BaseFragment<LoginViewModel, LoginViewState, LoginViewEven
         context?.let { context ->
             if (viewModel.isUserLogged()) {
                 // TODO: this should dispatch method for replace fragment instead launch an activity
-                startActivity(FileViewerFragment.getIntent(context))
+                // startActivity(FileViewerFragment.getInstance())
             }
         }
     }
