@@ -13,6 +13,7 @@ object Libs {
     val lifecycleKtx by lazy { "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.lifecycleKtx}" }
     val viewModelKtx by lazy { "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycleKtx}" }
     val activityKtx by lazy { "androidx.activity:activity-ktx:${Versions.activityKtx}" }
+    val fragmentKtx by lazy { "androidx.fragment:fragment-ktx:${Versions.fragmentKtx}" }
 
     // Retrofit
     val retrofit by lazy { "com.squareup.retrofit2:retrofit:${Versions.retrofit}" }

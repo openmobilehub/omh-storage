@@ -6,7 +6,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.omh.android.auth.api.OmhAuthClient
 import com.omh.android.storage.sample.databinding.ActivitySplashBinding
 import com.omh.android.storage.sample.presentation.file_viewer.FileViewerFragment
-import com.omh.android.storage.sample.presentation.login.LoginActivity
+import com.omh.android.storage.sample.presentation.login.LoginFragment
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -27,7 +27,7 @@ class SplashActivity : AppCompatActivity() {
 
         startActivity(
             if (omhAuthClient.getUser() == null) {
-                LoginActivity.getIntent(this)
+                LoginFragment.getIntent(this)
             } else {
                 FileViewerFragment.getIntent(this)
             }

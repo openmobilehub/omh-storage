@@ -1,0 +1,87 @@
+package com.omh.android.storage.sample.presentation.login
+
+import android.content.Context
+import android.content.Intent
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.viewModels
+import com.omh.android.storage.sample.databinding.ActivityLoginBinding
+import com.omh.android.storage.sample.presentation.BaseFragment
+import com.omh.android.storage.sample.presentation.file_viewer.FileViewerFragment
+import dagger.hilt.android.AndroidEntryPoint
+
+@AndroidEntryPoint
+class LoginFragment : BaseFragment<LoginViewModel, LoginViewState, LoginViewEvent>() {
+
+    companion object {
+
+        fun getIntent(context: Context) = Intent(context, LoginFragment::class.java)
+    }
+
+    override val viewModel: LoginViewModel by viewModels()
+
+    private lateinit var binding: ActivityLoginBinding
+
+    private val loginLauncher: ActivityResultLauncher<Intent> = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result: ActivityResult ->
+        context?.let { context ->
+            try {
+                result.data?.let { intent ->
+                    viewModel.getAccountFromIntent(intent)
+                    startActivity(FileViewerFragment.getIntent(context))
+                }
+            } catch (exception: Exception) {
+                AlertDialog.Builder(context)
+                    .setTitle("An error has occurred.")
+                    .setMessage(exception.message)
+                    .setPositiveButton(android.R.string.ok) { dialog, _ ->
+                        dialog.dismiss()
+                    }
+                    .create()
+                    .show()
+            }
+        }
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = ActivityLoginBinding.inflate(layoutInflater)
+        val view = binding.root
+
+        binding.btnLogin.setOnClickListener { dispatchEvent(LoginViewEvent.LoginClicked) }
+
+        return view
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        context?.let { context ->
+            if (viewModel.isUserLogged()) {
+                // TODO: this should dispatch method for replace fragment instead launch an activity
+                startActivity(FileViewerFragment.getIntent(context))
+            }
+        }
+    }
+
+    override fun buildState(state: LoginViewState) {
+        when (state) {
+            LoginViewState.Initial -> Unit
+            LoginViewState.StartLogin -> startLogin()
+        }
+    }
+
+    private fun startLogin() {
+        loginLauncher.launch(viewModel.getLoginIntent())
+    }
+}

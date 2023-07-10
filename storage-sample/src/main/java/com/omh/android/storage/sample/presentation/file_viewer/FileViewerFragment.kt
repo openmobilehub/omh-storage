@@ -15,10 +15,10 @@ import android.widget.ArrayAdapter
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.documentfile.provider.DocumentFile
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.omh.android.storage.api.domain.model.OmhFile
@@ -27,7 +27,7 @@ import com.omh.android.storage.sample.databinding.ActivityFileViewerBinding
 import com.omh.android.storage.sample.databinding.DialogCreateFileBinding
 import com.omh.android.storage.sample.databinding.DialogUploadFileBinding
 import com.omh.android.storage.sample.presentation.BaseFragment
-import com.omh.android.storage.sample.presentation.login.LoginActivity
+import com.omh.android.storage.sample.presentation.login.LoginFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -355,7 +355,7 @@ class FileViewerFragment :
     }
 
     private fun buildSignOutState() {
-        startActivity(LoginActivity.getIntent(this))
+        startActivity(LoginFragment.getIntent(this))
         finish()
     }
 }
