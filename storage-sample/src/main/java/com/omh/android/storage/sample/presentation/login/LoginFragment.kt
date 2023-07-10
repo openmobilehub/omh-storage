@@ -11,7 +11,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.viewModels
-import com.omh.android.storage.sample.databinding.ActivityLoginBinding
+import com.omh.android.storage.sample.databinding.FragmentLoginBinding
 import com.omh.android.storage.sample.presentation.BaseFragment
 import com.omh.android.storage.sample.presentation.file_viewer.FileViewerFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,7 +26,7 @@ class LoginFragment : BaseFragment<LoginViewModel, LoginViewState, LoginViewEven
 
     override val viewModel: LoginViewModel by viewModels()
 
-    private lateinit var binding: ActivityLoginBinding
+    private lateinit var binding: FragmentLoginBinding
 
     private val loginLauncher: ActivityResultLauncher<Intent> = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -55,7 +55,7 @@ class LoginFragment : BaseFragment<LoginViewModel, LoginViewState, LoginViewEven
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = ActivityLoginBinding.inflate(layoutInflater)
+        binding = FragmentLoginBinding.inflate(layoutInflater)
 
         return binding.root
     }

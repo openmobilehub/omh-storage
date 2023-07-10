@@ -23,9 +23,9 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.omh.android.storage.api.domain.model.OmhFile
 import com.omh.android.storage.sample.R
-import com.omh.android.storage.sample.databinding.ActivityFileViewerBinding
 import com.omh.android.storage.sample.databinding.DialogCreateFileBinding
 import com.omh.android.storage.sample.databinding.DialogUploadFileBinding
+import com.omh.android.storage.sample.databinding.FragmentFileViewerBinding
 import com.omh.android.storage.sample.presentation.BaseFragment
 import com.omh.android.storage.sample.presentation.login.LoginFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -43,7 +43,7 @@ class FileViewerFragment :
     }
 
     override val viewModel: FileViewerViewModel by viewModels()
-    private lateinit var binding: ActivityFileViewerBinding
+    private lateinit var binding: FragmentFileViewerBinding
     private var filesAdapter: FileAdapter? = null
     private lateinit var onBackPressedCallback: OnBackPressedCallback
     private lateinit var filePickerUpload: ActivityResultLauncher<String>
@@ -52,7 +52,7 @@ class FileViewerFragment :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityFileViewerBinding.inflate(layoutInflater)
+        binding = FragmentFileViewerBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
 

@@ -9,7 +9,6 @@ sealed class LoginViewState : ViewState {
         override fun getName() = "LoginViewState.Initial"
     }
 
-
     object StartLogin : LoginViewState() {
 
         override fun getName() = "LoginViewState.StartLogin"
