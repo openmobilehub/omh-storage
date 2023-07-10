@@ -35,6 +35,7 @@ class LoginFragment : BaseFragment<LoginViewModel, LoginViewState, LoginViewEven
             try {
                 result.data?.let { intent ->
                     viewModel.getAccountFromIntent(intent)
+                    // TODO: This should dispatch an event for replace fragment, not for start an activity
                     startActivity(FileViewerFragment.getIntent(context))
                 }
             } catch (exception: Exception) {

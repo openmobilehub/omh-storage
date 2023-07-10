@@ -26,6 +26,11 @@ abstract class BaseActivity : AppCompatActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
+    }
+
     fun addFragment(fragment: Fragment) {
         supportFragmentManager
             .beginTransaction()
