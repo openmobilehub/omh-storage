@@ -17,15 +17,14 @@ import org.junit.After
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
+import java.io.File
 
 @ExperimentalCoroutinesApi
 class UpdateFileUseCaseTest {
     private val repository: OmhFileRepository = mockk()
     private val dispatcher: CoroutineDispatcher = Dispatchers.Default
 
-    private val getFilesListUseCase: GetFilesListUseCase = GetFilesListUseCase(repository, dispatcher)
-
-    private val params: GetFilesListUseCaseParams = mockk()
+    private val updateFileUseCase: UpdateFileUseCase = UpdateFileUseCase(repository, dispatcher)
 
     @Before
     fun prepareEnvironment() {
@@ -42,25 +41,27 @@ class UpdateFileUseCaseTest {
     }
 
     @Test
-    fun `given the params, when GetFilesListUseCase success, then result is returned`() = runTest {
-        val parentId = "510"
-        val expectedResult: List<OmhFile> = mockk()
+    fun `given the params, when UpdateFileUseCase success, then result is returned`() = runTest {
+        val id = "123"
+        val file = File("pathFile")
+        val params = UpdateFileUseCaseParams(file, id)
+        val expectedResult: OmhFile = mockk()
 
-        every { params.parentId } returns parentId
+        coEvery { repository.updateFile(params.localFileToUpload, params.fileId) } returns expectedResult
 
-        coEvery { repository.getFilesList(any()) } returns expectedResult
-
-        val result: OmhResult<GetFilesListUseCaseResult> = getFilesListUseCase(params)
+        val result: OmhResult<UpdateFileUseCaseResult> = updateFileUseCase(params)
 
         Assert.assertTrue(result is OmhResult.OmhSuccess)
-        TestCase.assertEquals((result as OmhResult.OmhSuccess).data.files, expectedResult)
+        TestCase.assertEquals((result as OmhResult.OmhSuccess).data.file, expectedResult)
     }
 
     @Test
-    fun `given the params, when GetFilesListUseCase fails, then a OmhError is returned`() = runTest {
+    fun `given the params, when UpdateFileUseCase fails, then a OmhError is returned`() = runTest {
+        val params: UpdateFileUseCaseParams = mockk()
+
         coEvery { repository.downloadFile(any(), any()) } throws RuntimeException()
 
-        val result: OmhResult<GetFilesListUseCaseResult> = getFilesListUseCase(params)
+        val result: OmhResult<UpdateFileUseCaseResult> = updateFileUseCase(params)
 
         assert(result is OmhResult.OmhError)
     }

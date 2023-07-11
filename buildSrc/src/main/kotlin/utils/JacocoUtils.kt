@@ -88,9 +88,12 @@ private fun JacocoReportBase.setDirs(project: Project) {
             "**/*\$Lambda$*.*",
             "**/*\$inlined$*.*",
             "**/async/**",
-            "**/data/**",
+            "**/data/**/source/**",
+            "**/data/**/utils/**",
+            "**/data/**/mapper/**",
             "**/domain/model/**",
-            "**/domain/repository/**"
+            "**/domain/repository/**",
+            "**/*$*",
         )
     }
 
