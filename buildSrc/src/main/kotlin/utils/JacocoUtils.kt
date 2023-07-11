@@ -99,6 +99,7 @@ private fun JacocoReportBase.setDirs(project: Project) {
             "**/gms/*.*",
             "**/nongms/*.*",
             "**/domain/usecase/OmhResult.*",
+            "**/retrofit/**"
         )
     }
 
