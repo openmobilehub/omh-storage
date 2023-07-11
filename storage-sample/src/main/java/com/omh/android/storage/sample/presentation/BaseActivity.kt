@@ -45,10 +45,16 @@ abstract class BaseActivity : AppCompatActivity() {
         navController.navigate(action)
     }
 
-    protected fun getCurrentFragment(): Fragment? = supportFragmentManager
-        .findFragmentById(
-            binding.activityBaseFragmentContainer.id
-        )
+    protected fun getCurrentFragment(): Fragment? {
+        val navHostFragment: NavHostFragment = supportFragmentManager
+            .findFragmentById(
+                binding.activityBaseFragmentContainer.id
+            ) as NavHostFragment
+
+        return navHostFragment
+            .childFragmentManager
+            .fragments[0]
+    }
 
     private fun onBackPressedCallback() {
         var eventConsumed = false

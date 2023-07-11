@@ -6,7 +6,6 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
@@ -25,8 +24,8 @@ import com.omh.android.storage.sample.databinding.DialogCreateFileBinding
 import com.omh.android.storage.sample.databinding.DialogUploadFileBinding
 import com.omh.android.storage.sample.databinding.FragmentFileViewerBinding
 import com.omh.android.storage.sample.presentation.BaseFragment
-import com.omh.android.storage.sample.presentation.login.LoginFragment
 import com.omh.android.storage.sample.presentation.util.OnBackPressedListener
+import com.omh.android.storage.sample.presentation.util.navigateTo
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -35,9 +34,9 @@ class FileViewerFragment :
     OnBackPressedListener,
     FileAdapter.GridItemListener {
 
-    companion object {
+    interface FileViewerFragmentListener {
 
-        fun newInstance() = FileViewerFragment()
+        fun finishApplication()
     }
 
     override val viewModel: FileViewerViewModel by viewModels()
@@ -118,35 +117,13 @@ class FileViewerFragment :
         return true
     }
 
-    /*
-        override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-            menuInflater.inflate(R.menu.file_viewer_menu, menu)
-            return true
-        }
-    */
+    fun swapLayout() = dispatchEvent(FileViewerViewEvent.SwapLayoutManager)
 
-    /*
-        override fun onOptionsItemSelected(item: MenuItem): Boolean {
-            when (item.itemId) {
-                R.id.swapGridOrLinear -> {
-                    dispatchEvent(FileViewerViewEvent.SwapLayoutManager)
-                }
+    fun createFile() = showCreateFileDialog()
 
-                R.id.createFile -> {
-                    showCreateFileDialog()
-                }
+    fun uploadFile() = filePickerUpload.launch(FileViewerViewModel.ANY_MIME_TYPE)
 
-                R.id.uploadFile -> {
-                    filePickerUpload.launch(FileViewerViewModel.ANY_MIME_TYPE)
-                }
-
-                R.id.signOut -> {
-                    dispatchEvent(FileViewerViewEvent.SignOut)
-                }
-            }
-            return super.onOptionsItemSelected(item)
-        }
-    */
+    fun signOut() = dispatchEvent(FileViewerViewEvent.SignOut)
 
     override fun buildState(state: FileViewerViewState) = when (state) {
         FileViewerViewState.Initial -> buildInitialState()
@@ -235,7 +212,10 @@ class FileViewerFragment :
         filePickerUpdate.launch(FileViewerViewModel.ANY_MIME_TYPE)
     }
 
-    private fun buildFinishState() = Unit // finish().also { finishAffinity() }
+    private fun buildFinishState() {
+        val activity = activity as? FileViewerFragmentListener
+        activity?.finishApplication()
+    }
 
     private fun showCreateFileDialog() {
         val dialogCreateFileView = DialogCreateFileBinding.inflate(layoutInflater)
@@ -397,7 +377,6 @@ class FileViewerFragment :
     }
 
     private fun buildSignOutState() {
-        //startActivity(LoginFragment.newInstance(this))
-        //finish()
+        navigateTo(R.id.action_file_viewer_fragment_to_login_fragment)
     }
 }

@@ -10,17 +10,14 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.viewModels
+import com.omh.android.storage.sample.R
 import com.omh.android.storage.sample.databinding.FragmentLoginBinding
 import com.omh.android.storage.sample.presentation.BaseFragment
+import com.omh.android.storage.sample.presentation.util.navigateTo
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class LoginFragment : BaseFragment<LoginViewModel, LoginViewState, LoginViewEvent>() {
-
-    companion object {
-
-        fun newInstance() = LoginFragment()
-    }
 
     override val viewModel: LoginViewModel by viewModels()
 
@@ -33,8 +30,7 @@ class LoginFragment : BaseFragment<LoginViewModel, LoginViewState, LoginViewEven
             try {
                 result.data?.let { intent ->
                     viewModel.getAccountFromIntent(intent)
-                    // TODO: This should dispatch an event for replace fragment, not for start an activity
-                    // startActivity(FileViewerFragment.getInstance(context))
+                    navigateTo(R.id.action_login_fragment_to_file_viewer_fragment)
                 }
             } catch (exception: Exception) {
                 AlertDialog.Builder(context)
@@ -62,11 +58,8 @@ class LoginFragment : BaseFragment<LoginViewModel, LoginViewState, LoginViewEven
     override fun onResume() {
         super.onResume()
 
-        context?.let { context ->
-            if (viewModel.isUserLogged()) {
-                // TODO: this should dispatch method for replace fragment instead launch an activity
-                // startActivity(FileViewerFragment.getInstance())
-            }
+        if (viewModel.isUserLogged()) {
+            navigateTo(R.id.action_login_fragment_to_file_viewer_fragment)
         }
     }
 
