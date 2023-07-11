@@ -9,8 +9,6 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
 import junit.framework.TestCase.assertEquals
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.After
@@ -22,11 +20,8 @@ import org.junit.Test
 class CreateFileUseCaseTest {
 
     private val repository: OmhFileRepository = mockk()
-    private val dispatcher: CoroutineDispatcher = Dispatchers.Default
 
-    private val createFileUseCase: CreateFileUseCase = CreateFileUseCase(repository, dispatcher)
-
-    private val params: CreateFileUseCaseParams = mockk()
+    private val createFileUseCase: CreateFileUseCase = CreateFileUseCase(repository)
 
     @Before
     fun prepareEnvironment() {
@@ -49,6 +44,7 @@ class CreateFileUseCaseTest {
         val parentId = "510"
         val id = "123"
         val modifiedTime = "2023-07-04T03:03:55.397Z"
+        val params = CreateFileUseCaseParams(name, mimeType, parentId)
 
         val expectedFile: OmhFile = mockk()
 
@@ -58,11 +54,7 @@ class CreateFileUseCaseTest {
         every { expectedFile.id } returns id
         every { expectedFile.modifiedTime } returns modifiedTime
 
-        every { params.name } returns name
-        every { params.mimeType } returns mimeType
-        every { params.parentId } returns parentId
-
-        coEvery { repository.createFile(any(), any(), any()) } returns expectedFile
+        coEvery { repository.createFile(params.name, params.mimeType, params.parentId) } returns expectedFile
 
         val result: OmhResult<CreateFileUseCaseResult> = createFileUseCase(params)
 
@@ -72,13 +64,7 @@ class CreateFileUseCaseTest {
 
     @Test
     fun `given the params, when CreateFileUseCase fails, then a OmhError is returned`() = runTest {
-        val name = "fileName"
-        val mimeType = "image/jpg"
-        val parentId = "510"
-
-        every { params.name } returns name
-        every { params.mimeType } returns mimeType
-        every { params.parentId } returns parentId
+        val params: CreateFileUseCaseParams = mockk()
 
         coEvery {
             repository.createFile(any(), any(), any())

@@ -8,8 +8,6 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
 import junit.framework.TestCase
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.After
@@ -21,11 +19,8 @@ import java.io.ByteArrayOutputStream
 @ExperimentalCoroutinesApi
 class DownloadFileUseCaseTest {
     private val repository: OmhFileRepository = mockk()
-    private val dispatcher: CoroutineDispatcher = Dispatchers.Default
 
-    private val downloadFileUseCase: DownloadFileUseCase = DownloadFileUseCase(repository, dispatcher)
-
-    private val params: DownloadFileUseCaseParams = mockk()
+    private val downloadFileUseCase: DownloadFileUseCase = DownloadFileUseCase(repository)
 
     @Before
     fun prepareEnvironment() {
@@ -46,11 +41,9 @@ class DownloadFileUseCaseTest {
         val id = "123"
         val mimeType = "image/jpg"
         val expectedResult: ByteArrayOutputStream = mockk()
+        val params = DownloadFileUseCaseParams(id, mimeType)
 
-        every { params.fileId } returns id
-        every { params.mimeType } returns mimeType
-
-        coEvery { repository.downloadFile(any(), any()) } returns expectedResult
+        coEvery { repository.downloadFile(params.fileId, params.mimeType) } returns expectedResult
 
         val result: OmhResult<DownloadFileUseCaseResult> = downloadFileUseCase(params)
 
@@ -60,6 +53,8 @@ class DownloadFileUseCaseTest {
 
     @Test
     fun `given the params, when DownloadFileUseCase fails, then a OmhError is returned`() = runTest {
+        val params: DownloadFileUseCaseParams = mockk()
+
         coEvery { repository.downloadFile(any(), any()) } throws RuntimeException()
 
         val result: OmhResult<DownloadFileUseCaseResult> = downloadFileUseCase(params)

@@ -9,8 +9,6 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
 import junit.framework.TestCase
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.After
@@ -22,11 +20,8 @@ import java.io.File
 @ExperimentalCoroutinesApi
 class UploadFileUseCaseTest {
     private val repository: OmhFileRepository = mockk()
-    private val dispatcher: CoroutineDispatcher = Dispatchers.Default
 
-    private val uploadFileUseCase: UploadFileUseCase = UploadFileUseCase(repository, dispatcher)
-
-    private val params: UploadFileUseCaseParams = mockk()
+    private val uploadFileUseCase: UploadFileUseCase = UploadFileUseCase(repository)
 
     @Before
     fun prepareEnvironment() {
@@ -47,11 +42,9 @@ class UploadFileUseCaseTest {
         val parentId = "510"
         val file = File("pathFile")
         val expectedResult: OmhFile = mockk()
+        val params = UploadFileUseCaseParams(file, parentId)
 
-        every { params.parentId } returns parentId
-        every { params.localFileToUpload } returns file
-
-        coEvery { repository.uploadFile(any(), any()) } returns expectedResult
+        coEvery { repository.uploadFile(params.localFileToUpload, params.parentId) } returns expectedResult
 
         val result: OmhResult<UploadFileUseCaseResult> = uploadFileUseCase(params)
 
@@ -61,6 +54,8 @@ class UploadFileUseCaseTest {
 
     @Test
     fun `given the params, when UploadFileUseCase fails, then a OmhError is returned`() = runTest {
+        val params: UploadFileUseCaseParams = mockk()
+
         coEvery { repository.downloadFile(any(), any()) } throws RuntimeException()
 
         val result: OmhResult<UploadFileUseCaseResult> = uploadFileUseCase(params)

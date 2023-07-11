@@ -9,8 +9,6 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
 import junit.framework.TestCase
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.After
@@ -21,11 +19,8 @@ import org.junit.Test
 @ExperimentalCoroutinesApi
 class GetFilesListUseCaseTest {
     private val repository: OmhFileRepository = mockk()
-    private val dispatcher: CoroutineDispatcher = Dispatchers.Default
 
-    private val getFilesListUseCase: GetFilesListUseCase = GetFilesListUseCase(repository, dispatcher)
-
-    private val params: GetFilesListUseCaseParams = mockk()
+    private val getFilesListUseCase: GetFilesListUseCase = GetFilesListUseCase(repository)
 
     @Before
     fun prepareEnvironment() {
@@ -43,12 +38,10 @@ class GetFilesListUseCaseTest {
 
     @Test
     fun `given the params, when GetFilesListUseCase success, then result is returned`() = runTest {
-        val parentId = "510"
         val expectedResult: List<OmhFile> = mockk()
+        val params = GetFilesListUseCaseParams()
 
-        every { params.parentId } returns parentId
-
-        coEvery { repository.getFilesList(any()) } returns expectedResult
+        coEvery { repository.getFilesList(params.parentId) } returns expectedResult
 
         val result: OmhResult<GetFilesListUseCaseResult> = getFilesListUseCase(params)
 
@@ -58,6 +51,8 @@ class GetFilesListUseCaseTest {
 
     @Test
     fun `given the params, when GetFilesListUseCase fails, then a OmhError is returned`() = runTest {
+        val params: GetFilesListUseCaseParams = mockk()
+
         coEvery { repository.downloadFile(any(), any()) } throws RuntimeException()
 
         val result: OmhResult<GetFilesListUseCaseResult> = getFilesListUseCase(params)

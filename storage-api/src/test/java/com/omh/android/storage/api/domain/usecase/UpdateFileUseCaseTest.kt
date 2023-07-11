@@ -9,8 +9,6 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
 import junit.framework.TestCase
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.After
@@ -22,9 +20,8 @@ import java.io.File
 @ExperimentalCoroutinesApi
 class UpdateFileUseCaseTest {
     private val repository: OmhFileRepository = mockk()
-    private val dispatcher: CoroutineDispatcher = Dispatchers.Default
 
-    private val updateFileUseCase: UpdateFileUseCase = UpdateFileUseCase(repository, dispatcher)
+    private val updateFileUseCase: UpdateFileUseCase = UpdateFileUseCase(repository)
 
     @Before
     fun prepareEnvironment() {

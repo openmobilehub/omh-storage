@@ -8,8 +8,6 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
 import junit.framework.TestCase
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.After
@@ -20,11 +18,8 @@ import org.junit.Test
 @ExperimentalCoroutinesApi
 class DeleteFileUseCaseTest {
     private val repository: OmhFileRepository = mockk()
-    private val dispatcher: CoroutineDispatcher = Dispatchers.Default
 
-    private val deleteFileUseCase: DeleteFileUseCase = DeleteFileUseCase(repository, dispatcher)
-
-    private val params: DeleteFileUseCaseParams = mockk()
+    private val deleteFileUseCase: DeleteFileUseCase = DeleteFileUseCase(repository)
 
     @Before
     fun prepareEnvironment() {
@@ -43,10 +38,9 @@ class DeleteFileUseCaseTest {
     @Test
     fun `given the params, when DeleteFileUseCase success, then OmhSuccess is returned`() = runTest {
         val id = "123"
+        val params = DeleteFileUseCaseParams(id)
 
-        every { params.fileId } returns id
-
-        coEvery { repository.deleteFile(any()) } returns true
+        coEvery { repository.deleteFile(params.fileId) } returns true
 
         val result: OmhResult<DeleteFileUseCaseResult> = deleteFileUseCase(params)
 
@@ -56,6 +50,8 @@ class DeleteFileUseCaseTest {
 
     @Test
     fun `given the params, when DeleteFileUseCase fails, then a OmhError is returned`() = runTest {
+        val params: DeleteFileUseCaseParams = mockk()
+
         coEvery { repository.deleteFile(any()) } throws RuntimeException()
 
         val result: OmhResult<DeleteFileUseCaseResult> = deleteFileUseCase(params)
