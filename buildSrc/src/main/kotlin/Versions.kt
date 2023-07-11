@@ -1,7 +1,7 @@
 object Versions {
     // Build Plugins
     const val androidGradlePlugin = "7.4.1"
-    const val kotlin = "1.7.20"
+    const val kotlin = "1.8.20"
     const val detekt = "1.22.0"
     const val jacoco = "0.8.6"
 

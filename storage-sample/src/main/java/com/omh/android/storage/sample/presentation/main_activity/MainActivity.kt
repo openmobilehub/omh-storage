@@ -6,7 +6,9 @@ import android.os.Bundle
 import com.omh.android.storage.sample.presentation.BaseActivity
 import com.omh.android.storage.sample.presentation.file_viewer.FileViewerFragment
 import com.omh.android.storage.sample.presentation.login.LoginFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : BaseActivity() {
 
     companion object {
