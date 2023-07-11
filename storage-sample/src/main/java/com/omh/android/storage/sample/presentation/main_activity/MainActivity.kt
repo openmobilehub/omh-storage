@@ -3,9 +3,8 @@ package com.omh.android.storage.sample.presentation.main_activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import com.omh.android.storage.sample.R
 import com.omh.android.storage.sample.presentation.BaseActivity
-import com.omh.android.storage.sample.presentation.file_viewer.FileViewerFragment
-import com.omh.android.storage.sample.presentation.login.LoginFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -30,11 +29,11 @@ class MainActivity : BaseActivity() {
             IS_USER_LOGGED_EXTRA_DEFAULT_VALUE
         )
 
-        addFragment(
+        navigateTo(
             if (isUserLogged) {
-                FileViewerFragment.newInstance()
+                R.id.action_login_fragment_to_file_viewer_fragment
             } else {
-                LoginFragment.newInstance()
+                R.id.login_fragment
             }
         )
     }

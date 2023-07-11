@@ -2,9 +2,11 @@ package com.omh.android.storage.sample.presentation
 
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
+import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
 import com.omh.android.storage.sample.databinding.ActivityBaseBinding
 import com.omh.android.storage.sample.presentation.util.OnBackPressedListener
 
@@ -32,15 +34,15 @@ abstract class BaseActivity : AppCompatActivity() {
         onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
     }
 
-    fun addFragment(fragment: Fragment) {
-        val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
+    fun navigateTo(@IdRes action: Int) {
+        val navHostFragment: NavHostFragment = supportFragmentManager
+            .findFragmentById(
+                binding.activityBaseFragmentContainer.id
+            ) as NavHostFragment
 
-        transaction.add(
-            binding.activityBaseFragmentContainer.id,
-            fragment
-        )
+        val navController: NavController = navHostFragment.navController
 
-        transaction.commit()
+        navController.navigate(action)
     }
 
     protected fun getCurrentFragment(): Fragment? = supportFragmentManager
