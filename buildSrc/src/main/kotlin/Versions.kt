@@ -29,6 +29,10 @@ object Versions {
     const val androidAppCompat = "1.6.1"
     const val material = "1.8.0"
 
+    // Navigation
+    const val navigationFragment = "2.5.3"
+    const val navigationUIKtx = "2.5.3"
+
     // Testing
     const val junit = "4.13.2"
     const val androidJunit = "1.1.5"

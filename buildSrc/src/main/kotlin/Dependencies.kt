@@ -36,6 +36,10 @@ object Libs {
     val androidAppCompat by lazy { "androidx.appcompat:appcompat:${Versions.androidAppCompat}" }
     val material by lazy { "com.google.android.material:material:${Versions.material}" }
 
+    // Navigation
+    val navigationFragmentKtx by lazy { "androidx.navigation:navigation-fragment-ktx:${Versions.navigationFragment}" }
+    val navigationUIKtx by lazy { "androidx.navigation:navigation-ui-ktx:${Versions.navigationUIKtx}" }
+
     // Testing
     val junit by lazy { "junit:junit:${Versions.junit}" }
     val androidJunit by lazy { "androidx.test.ext:junit:${Versions.androidJunit}" }

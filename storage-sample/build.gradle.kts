@@ -64,6 +64,8 @@ dependencies {
     implementation(Libs.material)
     implementation(Libs.coroutinesAndroid)
     implementation(Libs.splash)
+    implementation(Libs.navigationFragmentKtx)
+    implementation(Libs.navigationUIKtx)
     implementation("com.github.bumptech.glide:glide:4.14.2")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     annotationProcessor("com.github.bumptech.glide:compiler:4.14.2")
