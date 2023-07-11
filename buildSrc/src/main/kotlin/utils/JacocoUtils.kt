@@ -91,9 +91,14 @@ private fun JacocoReportBase.setDirs(project: Project) {
             "**/data/**/source/**",
             "**/data/**/utils/**",
             "**/data/**/mapper/**",
+            "**/data/*.*",
             "**/domain/model/**",
             "**/domain/repository/**",
             "**/*$*",
+            "**/api/*.*",
+            "**/gms/*.*",
+            "**/nongms/*.*",
+            "**/domain/usecase/OmhResult.*",
         )
     }
 
