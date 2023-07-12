@@ -160,43 +160,31 @@ internal class NonGmsFileRepositoryTest {
         verify { dataSource.uploadFile(localFileUpload, PARENT_ID) }
     }
 
-    @Test
+    @Test(expected = OmhStorageException.DownloadException::class)
     fun `given a null mimeType, when downloadFile fails, then a DownloadException is thrown`() {
         val expectedFile: OmhStorageException.DownloadException = mockk()
 
         every { dataSource.downloadFile(any(), any()) } throws expectedFile
 
-        try {
-            fileRepositoryImpl.downloadFile(FILE_ID, MIME_TYPE)
-        } catch (exception: Exception) {
-            assertTrue(exception is OmhStorageException.DownloadException)
-        }
+        fileRepositoryImpl.downloadFile(FILE_ID, MIME_TYPE)
     }
 
-    @Test
+    @Test(expected = OmhStorageException.DownloadException::class)
     fun `given a fileId and mimeType, when downloadFile fails, then a DownloadException is thrown`() {
         val expectedFile: OmhStorageException.DownloadException = mockk()
 
         every { dataSource.downloadFile(any(), any()) } throws expectedFile
 
-        try {
-            fileRepositoryImpl.downloadFile(FILE_ID, MIME_TYPE)
-        } catch (exception: Exception) {
-            assertTrue(exception is OmhStorageException.DownloadException)
-        }
+        fileRepositoryImpl.downloadFile(FILE_ID, MIME_TYPE)
     }
 
-    @Test
+    @Test(expected = OmhStorageException.UpdateException::class)
     fun `given a File and a file id, when updateFile fails, then a UpdateException is thrown`() {
         val localFileUpload = File(FILE_PATH)
         val expectedFile: OmhStorageException.UpdateException = mockk()
 
         every { dataSource.updateFile(any(), any()) } throws expectedFile
 
-        try {
-            fileRepositoryImpl.updateFile(localFileUpload, FILE_ID)
-        } catch (exception: Exception) {
-            assertTrue(exception is OmhStorageException.UpdateException)
-        }
+        fileRepositoryImpl.updateFile(localFileUpload, FILE_ID)
     }
 }
