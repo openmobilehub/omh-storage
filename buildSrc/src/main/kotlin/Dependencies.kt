@@ -13,6 +13,7 @@ object Libs {
     val lifecycleKtx by lazy { "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.lifecycleKtx}" }
     val viewModelKtx by lazy { "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycleKtx}" }
     val activityKtx by lazy { "androidx.activity:activity-ktx:${Versions.activityKtx}" }
+    val fragmentKtx by lazy { "androidx.fragment:fragment-ktx:${Versions.fragmentKtx}" }
 
     // Retrofit
     val retrofit by lazy { "com.squareup.retrofit2:retrofit:${Versions.retrofit}" }
@@ -34,6 +35,10 @@ object Libs {
     // Android
     val androidAppCompat by lazy { "androidx.appcompat:appcompat:${Versions.androidAppCompat}" }
     val material by lazy { "com.google.android.material:material:${Versions.material}" }
+
+    // Navigation
+    val navigationFragmentKtx by lazy { "androidx.navigation:navigation-fragment-ktx:${Versions.navigationFragment}" }
+    val navigationUIKtx by lazy { "androidx.navigation:navigation-ui-ktx:${Versions.navigationUIKtx}" }
 
     // Testing
     val junit by lazy { "junit:junit:${Versions.junit}" }

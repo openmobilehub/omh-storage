@@ -1,7 +1,7 @@
 object Versions {
     // Build Plugins
     const val androidGradlePlugin = "7.4.1"
-    const val kotlin = "1.7.20"
+    const val kotlin = "1.8.20"
     const val detekt = "1.22.0"
     const val jacoco = "0.8.6"
 
@@ -9,6 +9,7 @@ object Versions {
     const val coreKtx = "1.9.0"
     const val lifecycleKtx = "2.5.1"
     const val activityKtx = "1.6.1"
+    const val fragmentKtx = "1.6.0"
 
     // Retrofit
     const val retrofit = "2.9.0"
@@ -27,6 +28,10 @@ object Versions {
     // Android
     const val androidAppCompat = "1.6.1"
     const val material = "1.8.0"
+
+    // Navigation
+    const val navigationFragment = "2.5.3"
+    const val navigationUIKtx = "2.5.3"
 
     // Testing
     const val junit = "4.13.2"
