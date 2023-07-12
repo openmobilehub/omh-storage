@@ -13,13 +13,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.activity.addCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.MenuProvider
 import androidx.documentfile.provider.DocumentFile
+import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.GridLayoutManager
@@ -30,14 +31,12 @@ import com.omh.android.storage.sample.databinding.DialogCreateFileBinding
 import com.omh.android.storage.sample.databinding.DialogUploadFileBinding
 import com.omh.android.storage.sample.databinding.FragmentFileViewerBinding
 import com.omh.android.storage.sample.presentation.BaseFragment
-import com.omh.android.storage.sample.presentation.util.OnBackPressedListener
 import com.omh.android.storage.sample.presentation.util.navigateTo
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class FileViewerFragment :
     BaseFragment<FileViewerViewModel, FileViewerViewState, FileViewerViewEvent>(),
-    OnBackPressedListener,
     FileAdapter.GridItemListener {
 
     interface FileViewerFragmentListener {
@@ -119,17 +118,15 @@ class FileViewerFragment :
     }
 
     private fun setupToolbar() {
-        val compatActivity: AppCompatActivity = activity as? AppCompatActivity ?: return
-        compatActivity.addMenuProvider(
+        val fragmentActivity: FragmentActivity = activity ?: return
+        fragmentActivity.addMenuProvider(
             FileViewerMenuProvider(),
             viewLifecycleOwner,
             Lifecycle.State.RESUMED
         )
-    }
-
-    override fun onBackPressed(): Boolean {
-        dispatchEvent(FileViewerViewEvent.BackPressed)
-        return true
+        fragmentActivity.onBackPressedDispatcher.addCallback {
+            dispatchEvent(FileViewerViewEvent.BackPressed)
+        }
     }
 
     fun swapLayout() = dispatchEvent(FileViewerViewEvent.SwapLayoutManager)
