@@ -16,6 +16,7 @@ import android.widget.ArrayAdapter
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.MenuProvider
 import androidx.documentfile.provider.DocumentFile
@@ -114,13 +115,17 @@ class FileViewerFragment :
             }
         }
 
-        requireActivity().addMenuProvider(
+        setupToolbar()
+    }
+
+    private fun setupToolbar() {
+        val compatActivity: AppCompatActivity = activity as? AppCompatActivity ?: return
+        compatActivity.addMenuProvider(
             FileViewerMenuProvider(),
             viewLifecycleOwner,
             Lifecycle.State.RESUMED
         )
     }
-
 
     override fun onBackPressed(): Boolean {
         dispatchEvent(FileViewerViewEvent.BackPressed)
