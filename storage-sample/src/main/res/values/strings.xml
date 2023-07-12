@@ -2,6 +2,7 @@
     <string name="app_name">OMH Storage demo</string>
 
     <string name="login">Login</string>
+    <string name="file_viewer_title">File Viewer</string>
     <string name="loading">Loading…</string>
     <string name="empty_folder">This folder is empty</string>
     <string name="text_name">Name</string>

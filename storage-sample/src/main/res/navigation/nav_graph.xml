@@ -20,7 +20,7 @@
     <fragment
         android:id="@+id/file_viewer_fragment"
         android:name="com.omh.android.storage.sample.presentation.file_viewer.FileViewerFragment"
-        android:label="@string/login"
+        android:label="@string/file_viewer_title"
         tools:layout="@layout/fragment_file_viewer">
         <action
             android:id="@+id/action_file_viewer_fragment_to_login_fragment"

@@ -6,6 +6,9 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
@@ -14,8 +17,10 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
+import androidx.core.view.MenuProvider
 import androidx.documentfile.provider.DocumentFile
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.omh.android.storage.api.domain.model.OmhFile
@@ -52,7 +57,6 @@ class FileViewerFragment :
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentFileViewerBinding.inflate(layoutInflater)
-
         return binding.root
     }
 
@@ -109,6 +113,12 @@ class FileViewerFragment :
                 requestPermissions()
             }
         }
+
+        requireActivity().addMenuProvider(
+            FileViewerMenuProvider(),
+            viewLifecycleOwner,
+            Lifecycle.State.RESUMED
+        )
     }
 
 
@@ -378,5 +388,21 @@ class FileViewerFragment :
 
     private fun buildSignOutState() {
         navigateTo(R.id.action_file_viewer_fragment_to_login_fragment)
+    }
+
+    inner class FileViewerMenuProvider : MenuProvider {
+        override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+            menuInflater.inflate(R.menu.file_viewer_menu, menu)
+        }
+
+        override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+            when (menuItem.itemId) {
+                R.id.swapGridOrLinear -> swapLayout()
+                R.id.createFile -> createFile()
+                R.id.uploadFile -> uploadFile()
+                R.id.signOut -> signOut()
+            }
+            return true
+        }
     }
 }
