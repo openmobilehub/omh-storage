@@ -1,18 +1,14 @@
 package com.omh.android.storage.api.domain.usecase
 
-import android.util.Log
 import com.omh.android.storage.api.domain.repository.OmhFileRepository
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
-import io.mockk.every
 import io.mockk.mockk
-import io.mockk.mockkStatic
 import junit.framework.TestCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Assert
-import org.junit.Before
 import org.junit.Test
 import java.io.ByteArrayOutputStream
 
@@ -21,15 +17,6 @@ class DownloadFileUseCaseTest {
     private val repository: OmhFileRepository = mockk()
 
     private val downloadFileUseCase: DownloadFileUseCase = DownloadFileUseCase(repository)
-
-    @Before
-    fun prepareEnvironment() {
-        mockkStatic(Log::class)
-        every { Log.v(any(), any()) } returns 0
-        every { Log.d(any(), any()) } returns 0
-        every { Log.i(any(), any()) } returns 0
-        every { Log.e(any(), any()) } returns 0
-    }
 
     @After
     fun tearDown() {
