@@ -4,7 +4,6 @@ import com.omh.android.storage.api.domain.model.OmhFile
 import com.omh.android.storage.api.domain.repository.OmhFileRepository
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
-import io.mockk.every
 import io.mockk.mockk
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -34,15 +33,11 @@ class CreateFileUseCaseTest {
         val modifiedTime = "2023-07-04T03:03:55.397Z"
         val params = CreateFileUseCaseParams(name, mimeType, parentId)
 
-        val expectedFile: OmhFile = mockk()
+        val expectedFile = OmhFile(mimeType, id, name, modifiedTime, parentId)
 
-        every { expectedFile.name } returns name
-        every { expectedFile.mimeType } returns mimeType
-        every { expectedFile.parentId } returns parentId
-        every { expectedFile.id } returns id
-        every { expectedFile.modifiedTime } returns modifiedTime
-
-        coEvery { repository.createFile(params.name, params.mimeType, params.parentId) } returns expectedFile
+        coEvery {
+            repository.createFile(params.name, params.mimeType, params.parentId)
+        } returns expectedFile
 
         val result: OmhResult<CreateFileUseCaseResult> = createFileUseCase(params)
 
