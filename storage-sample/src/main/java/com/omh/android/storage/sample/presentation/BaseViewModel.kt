@@ -12,7 +12,7 @@ import com.omh.android.storage.sample.util.launchSafe
 abstract class BaseViewModel<State : ViewState, Event : ViewEvent> : ViewModel() {
 
     val state: MutableLiveData<State> = MutableLiveData()
-    val toastMessage: MutableLiveData<String> = MutableLiveData()
+    val toastMessage: MutableLiveData<String?> = MutableLiveData()
     protected val cancellableCollector = CancellableCollector()
 
     init {
