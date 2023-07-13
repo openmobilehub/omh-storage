@@ -9,7 +9,7 @@ android {
 
 dependencies {
     implementation(Libs.reflection)
-    testImplementation(Libs.junit)
+
 
     // Omh Auth
     api(Libs.omhNonGmsAuthLibrary)
@@ -20,4 +20,10 @@ dependencies {
 
     // Play services
     implementation(Libs.googlePlayBase)
+
+    // Test
+    testImplementation(Libs.junit)
+    androidTestImplementation(Libs.androidJunit)
+    testImplementation(Libs.mockk)
+    testImplementation(Libs.coroutineTesting)
 }

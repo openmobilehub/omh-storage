@@ -25,4 +25,5 @@ dependencies {
 
     // Test dependencies
     testImplementation(Libs.junit)
+    testImplementation(Libs.mockk)
 }
