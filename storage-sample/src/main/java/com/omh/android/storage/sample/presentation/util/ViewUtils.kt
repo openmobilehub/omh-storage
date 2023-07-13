@@ -6,11 +6,11 @@ import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
 
-fun View.displayToast(message: String, duration: Int = Toast.LENGTH_LONG) {
+fun View.displayToast(message: String?, duration: Int = Toast.LENGTH_LONG) {
     Toast.makeText(this.context, message, duration).show()
 }
 
-fun Fragment.displayToast(message: String, duration: Int = Toast.LENGTH_LONG) {
+fun Fragment.displayToast(message: String?, duration: Int = Toast.LENGTH_LONG) {
     view?.displayToast(message, duration)
 }
 

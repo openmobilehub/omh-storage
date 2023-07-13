@@ -8,14 +8,16 @@ import com.google.api.client.json.gson.GsonFactory
 import com.google.api.services.drive.Drive
 import com.omh.android.storage.api.drive.gms.BuildConfig
 
-internal class GoogleDriveApiProvider private constructor(private val credential: GoogleAccountCredential) {
+internal class GoogleDriveApiProvider private constructor(internal val credential: GoogleAccountCredential) {
 
     companion object {
         private var instance: GoogleDriveApiProvider? = null
 
-        internal fun getInstance(omhCredentials: GoogleAccountCredential): GoogleDriveApiProvider {
-            if (instance == null) {
-                instance = GoogleDriveApiProvider(omhCredentials)
+        internal fun getInstance(newCred: GoogleAccountCredential): GoogleDriveApiProvider {
+            val oldCred: GoogleAccountCredential? = instance?.credential
+            val isDifferentAccount = oldCred?.selectedAccountName != newCred.selectedAccountName
+            if (instance == null || isDifferentAccount) {
+                instance = GoogleDriveApiProvider(newCred)
             }
 
             return instance!!
@@ -29,10 +31,7 @@ internal class GoogleDriveApiProvider private constructor(private val credential
     internal val googleDriveApiService: Drive by lazy { initDriveService() }
 
     private fun initDriveService(): Drive = Drive
-        .Builder(
-            httpTransport,
-            jsonFactory,
-            credential
-        ).setApplicationName(applicationName)
+        .Builder(httpTransport, jsonFactory, credential)
+        .setApplicationName(applicationName)
         .build()
 }
