@@ -50,7 +50,7 @@ class OmhStorageProvider private constructor(
         val storageFactory: OmhStorageFactory = try {
             getOmhStorageFactory(context)
         } catch (exception: ClassNotFoundException) {
-            throw OmhStorageException.ApiException(OmhAuthStatusCodes.DEVELOPER_ERROR)
+            throw OmhStorageException.ApiException(OmhAuthStatusCodes.DEVELOPER_ERROR, exception)
         }
 
         return storageFactory.getStorageClient(authClient)

@@ -20,6 +20,7 @@ import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONArray
 import org.json.JSONObject
+import retrofit2.HttpException
 import java.io.ByteArrayOutputStream
 import java.io.File
 
@@ -130,8 +131,8 @@ internal class NonGmsFileRemoteDataSourceImpl(private val retrofitImpl: GoogleRe
             outputStream
         } else {
             if (mimeType == null) {
-                val errorBody = response.errorBody()?.string().orEmpty()
-                throw (OmhStorageException.DownloadException(DOWNLOAD_ERROR, errorBody))
+                val cause = HttpException(response)
+                throw (OmhStorageException.DownloadException(DOWNLOAD_ERROR, cause))
             }
 
             return exportDocEditor(fileId, mimeType)
@@ -149,8 +150,8 @@ internal class NonGmsFileRemoteDataSourceImpl(private val retrofitImpl: GoogleRe
         return if (response.isSuccessful) {
             outputStream
         } else {
-            val errorBody = response.errorBody()?.string().orEmpty()
-            throw (OmhStorageException.DownloadException(DOWNLOAD_GOOGLE_WORKSPACE_ERROR, errorBody))
+            val cause = HttpException(response)
+            throw (OmhStorageException.DownloadException(DOWNLOAD_GOOGLE_WORKSPACE_ERROR, cause))
         }
     }
     override fun updateFile(
@@ -171,8 +172,7 @@ internal class NonGmsFileRemoteDataSourceImpl(private val retrofitImpl: GoogleRe
             val omhFile = response.body()?.toFile() ?: return null
             updateMediaFile(localFileToUpload, omhFile)
         } else {
-            val errorBody = response.errorBody()?.string().orEmpty()
-            throw OmhStorageException.UpdateException(UPDATE_META_DATA, errorBody)
+            throw OmhStorageException.UpdateException(UPDATE_META_DATA, HttpException(response))
         }
     }
 
@@ -191,8 +191,7 @@ internal class NonGmsFileRemoteDataSourceImpl(private val retrofitImpl: GoogleRe
         return if (response.isSuccessful) {
             response.body()?.toFile()
         } else {
-            val errorBody = response.errorBody()?.string().orEmpty()
-            throw OmhStorageException.UpdateException(UPDATE_CONTENT_FILE, errorBody)
+            throw OmhStorageException.UpdateException(UPDATE_CONTENT_FILE, HttpException(response))
         }
     }
 }
