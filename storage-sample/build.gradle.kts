@@ -10,6 +10,16 @@ plugins {
 android {
     namespace = "com.omh.android.storage.sample"
 
+    signingConfigs {
+        create("release") {
+            val localProperties = gradleLocalProperties(rootDir)
+            storeFile = file(localProperties["keypath"].toString())
+            storePassword = localProperties["keypass"].toString()
+            keyAlias = localProperties["keyalias"].toString()
+            keyPassword = localProperties["keypassword"].toString()
+        }
+    }
+
     defaultConfig {
         buildConfigField(
             type = "String",
@@ -20,7 +30,13 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            signingConfig = signingConfigs.getByName("release")
+            isMinifyEnabled = true
+            isShrinkResources = true
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
 
