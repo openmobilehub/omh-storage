@@ -4,6 +4,52 @@ plugins {
     `android-application`
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android") version "2.44" apply true
+    id("com.openmobilehub.android.omh-core")
+}
+
+omhConfig {
+    bundle("singleBuild") {
+        storage() {
+            gmsService {
+                dependency = "com.openmobilehub.android:storage-api-drive-gms:1.0.1-rc"
+            }
+            nonGmsService {
+                dependency = "com.openmobilehub.android:storage-api-drive-nongms:1.0.1-rc"
+            }
+        }
+        auth {
+            gmsService {
+                dependency = "com.openmobilehub.android:auth-api-gms:1.0"
+            }
+            nonGmsService {
+                dependency = "com.openmobilehub.android:auth-api-non-gms:1.0"
+            }
+        }
+    }
+    bundle("gms") {
+        storage {
+            gmsService {
+                dependency = "com.openmobilehub.android:storage-api-drive-gms:1.0.1-rc"
+            }
+        }
+        auth {
+            gmsService {
+                dependency = "com.openmobilehub.android:auth-api-gms:1.0"
+            }
+        }
+    }
+    bundle("nongms") {
+        storage {
+            nonGmsService {
+                dependency = "com.openmobilehub.android:storage-api-drive-nongms:1.0.1-rc"
+            }
+        }
+        auth {
+            nonGmsService {
+                dependency = "com.openmobilehub.android:auth-api-non-gms:1.0"
+            }
+        }
+    }
 }
 
 @Suppress("UnstableApiUsage")
@@ -40,13 +86,6 @@ android {
         }
     }
 
-    flavorDimensions += "google_services"
-    productFlavors {
-        create("ngms") {
-            dimension = "google_services"
-        }
-    }
-
     kotlinOptions {
         jvmTarget = "1.8"
     }
@@ -60,17 +99,7 @@ android {
     }
 }
 
-val ngmsImplementation by configurations
-
 dependencies {
-    implementation(project(":storage-api"))
-
-    // Omh Auth
-    ngmsImplementation(Libs.omhNonGmsAuthLibrary)
-    ngmsImplementation(Libs.omhGmsAuthLibrary)
-    ngmsImplementation(project(":storage-api-drive-nongms"))
-    ngmsImplementation(project(":storage-api-drive-gms"))
-
     implementation(Libs.coreKtx)
     implementation(Libs.lifecycleKtx)
     implementation(Libs.viewModelKtx)
