@@ -1,8 +1,7 @@
-package com.omh.android.drive.nongms.repositories
+package com.omh.android.storage.api.drive.gms.data.repository
 
 import com.omh.android.storage.api.data.source.OmhFileRemoteDataSource
 import com.omh.android.storage.api.domain.model.OmhFile
-import com.omh.android.storage.api.drive.gms.data.repository.GmsFileRepositoryImpl
 import io.mockk.MockKAnnotations
 import io.mockk.clearAllMocks
 import io.mockk.every

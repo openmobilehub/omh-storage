@@ -1,9 +1,8 @@
-package com.omh.android.drive.nongms.repositories
+package com.omh.android.storage.api.drive.nongms.data.repository
 
 import com.omh.android.storage.api.data.source.OmhFileRemoteDataSource
 import com.omh.android.storage.api.domain.model.OmhFile
 import com.omh.android.storage.api.domain.model.OmhStorageException
-import com.omh.android.storage.api.drive.nongms.data.repository.NonGmsFileRepositoryImpl
 import io.mockk.MockKAnnotations
 import io.mockk.clearAllMocks
 import io.mockk.every
@@ -20,7 +19,7 @@ import org.junit.Test
 import java.io.ByteArrayOutputStream
 import java.io.File
 
-internal class NonGmsFileRepositoryTest {
+internal class NonGmsFileRepositoryImplTest {
 
     companion object {
         private const val NAME = "file.txt"
