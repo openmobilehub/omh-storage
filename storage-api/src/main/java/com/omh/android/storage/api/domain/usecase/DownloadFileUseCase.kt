@@ -5,7 +5,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import java.io.ByteArrayOutputStream
 
-class DownloadFileUseCase(
+internal class DownloadFileUseCase(
     private val repository: OmhFileRepository,
     dispatcher: CoroutineDispatcher = Dispatchers.Default
 ) : OmhSuspendUseCase<DownloadFileUseCaseParams, DownloadFileUseCaseResult>(dispatcher) {
