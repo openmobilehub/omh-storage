@@ -16,6 +16,9 @@
 
 package com.omh.android.storage.api.drive.nongms.data.source.body
 
+import androidx.annotation.Keep
+
+@Keep
 internal data class CreateFileRequestBody(
     val mimeType: String,
     val name: String,
