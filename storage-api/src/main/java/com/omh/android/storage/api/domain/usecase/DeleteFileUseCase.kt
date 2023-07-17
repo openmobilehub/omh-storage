@@ -4,7 +4,7 @@ import com.omh.android.storage.api.domain.repository.OmhFileRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 
-class DeleteFileUseCase(
+internal class DeleteFileUseCase(
     private val repository: OmhFileRepository,
     dispatcher: CoroutineDispatcher = Dispatchers.Default
 ) : OmhSuspendUseCase<DeleteFileUseCaseParams, DeleteFileUseCaseResult>(dispatcher) {

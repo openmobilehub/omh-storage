@@ -6,7 +6,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import java.io.File
 
-class UpdateFileUseCase(
+internal class UpdateFileUseCase(
     private val repository: OmhFileRepository,
     dispatcher: CoroutineDispatcher = Dispatchers.Default
 ) : OmhSuspendUseCase<UpdateFileUseCaseParams, UpdateFileUseCaseResult>(dispatcher) {

@@ -5,7 +5,7 @@ import com.omh.android.storage.api.domain.repository.OmhFileRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 
-class GetFilesListUseCase(
+internal class GetFilesListUseCase(
     private val repository: OmhFileRepository,
     dispatcher: CoroutineDispatcher = Dispatchers.Default
 ) : OmhSuspendUseCase<GetFilesListUseCaseParams, GetFilesListUseCaseResult>(dispatcher) {

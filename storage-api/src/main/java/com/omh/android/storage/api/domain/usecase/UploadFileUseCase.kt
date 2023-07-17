@@ -6,7 +6,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import java.io.File
 
-class UploadFileUseCase(
+internal class UploadFileUseCase(
     private val repository: OmhFileRepository,
     dispatcher: CoroutineDispatcher = Dispatchers.Default
 ) : OmhSuspendUseCase<UploadFileUseCaseParams, UploadFileUseCaseResult>(dispatcher) {
