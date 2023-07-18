@@ -2,6 +2,7 @@ package com.omh.android.storage.api.drive.gms.data.source
 
 import android.webkit.MimeTypeMap
 import com.google.api.client.http.FileContent
+import com.google.api.client.http.HttpResponseException
 import com.google.api.services.drive.model.FileList
 import com.omh.android.storage.api.data.source.OmhFileRemoteDataSource
 import com.omh.android.storage.api.domain.model.OmhFile
@@ -73,10 +74,24 @@ internal class GmsFileRemoteDataSourceImpl(private val apiService: GoogleDriveAp
         .getMimeTypeFromExtension(file.extension)
         ?: ANY_MIME_TYPE
 
+    @SuppressWarnings("SwallowedException")
     override fun downloadFile(fileId: String, mimeType: String?): ByteArrayOutputStream {
         val outputStream = ByteArrayOutputStream()
 
-        apiService.downloadFile(fileId).executeMediaAndDownloadTo(outputStream)
+        try {
+            apiService.downloadFile(fileId).executeMediaAndDownloadTo(outputStream)
+        } catch (exception: HttpResponseException) {
+            with(outputStream) {
+                flush()
+                reset()
+            }
+
+            if (!mimeType.isNullOrBlank()) {
+                apiService
+                    .downloadGoogleDoc(fileId, mimeType)
+                    .executeMediaAndDownloadTo(outputStream)
+            }
+        }
 
         return outputStream
     }
