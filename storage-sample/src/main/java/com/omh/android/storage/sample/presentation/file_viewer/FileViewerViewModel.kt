@@ -146,10 +146,13 @@ class FileViewerViewModel @Inject constructor(
                 return
             }
 
-            val mimeType = file.normalizedMimeType()
-            val cancellable = omhStorageClient.downloadFile(file.id, mimeType)
+            val mimeTypeToSave = file.normalizedMimeType()
+
+            val cancellable = omhStorageClient.downloadFile(file.id, mimeTypeToSave)
                 .addOnSuccess { data ->
-                    handleDownloadSuccess(data, file)
+                    val fileToSave = file.copy(mimeType = mimeTypeToSave)
+
+                    handleDownloadSuccess(data, fileToSave)
                     toastMessage.postValue("${file.name} was successfully downloaded")
                     refreshFileListEvent()
                 }

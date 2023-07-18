@@ -52,6 +52,11 @@ internal class GoogleDriveApiService(private val apiProvider: GoogleDriveApiProv
         .files()
         .get(fileId)
 
+    fun downloadGoogleDoc(fileId: String, mimeType: String): Drive.Files.Export = apiProvider
+        .googleDriveApiService
+        .files()
+        .export(fileId, mimeType)
+
     fun updateFile(fileId: String, file: File, mediaContent: FileContent): Drive.Files.Update = apiProvider
         .googleDriveApiService
         .files()
