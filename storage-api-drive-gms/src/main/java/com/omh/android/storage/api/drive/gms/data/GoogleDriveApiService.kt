@@ -28,7 +28,7 @@ internal class GoogleDriveApiService(private val apiProvider: GoogleDriveApiProv
         .list()
         .apply {
             if (parentId.isNotEmpty()) {
-                q = "'$parentId' in parents"
+                q = "'$parentId' in parents and trashed = false"
             }
         }
 
