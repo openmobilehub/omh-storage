@@ -6,6 +6,8 @@ import com.google.api.client.http.HttpResponseException
 import com.google.api.services.drive.model.FileList
 import com.omh.android.storage.api.data.source.OmhFileRemoteDataSource
 import com.omh.android.storage.api.domain.model.OmhFile
+import com.omh.android.storage.api.domain.model.OmhStorageException
+import com.omh.android.storage.api.domain.model.OmhStorageStatusCodes
 import com.omh.android.storage.api.drive.gms.data.GoogleDriveApiService
 import com.omh.android.storage.api.drive.gms.data.source.mapper.toOmhFile
 import java.io.ByteArrayOutputStream
@@ -86,11 +88,16 @@ internal class GmsFileRemoteDataSourceImpl(private val apiService: GoogleDriveAp
                 reset()
             }
 
-            if (!mimeType.isNullOrBlank()) {
-                apiService
-                    .downloadGoogleDoc(fileId, mimeType)
-                    .executeMediaAndDownloadTo(outputStream)
+            if (mimeType.isNullOrBlank()) {
+                throw OmhStorageException.DownloadException(
+                    OmhStorageStatusCodes.DOWNLOAD_ERROR,
+                    exception
+                )
             }
+
+            apiService
+                .downloadGoogleDoc(fileId, mimeType)
+                .executeMediaAndDownloadTo(outputStream)
         }
 
         return outputStream
