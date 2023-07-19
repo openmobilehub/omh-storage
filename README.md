@@ -21,7 +21,7 @@ With the OMH Storage Client Library, you can easily add Google Drive and other t
 For instance, the following screenshots showcase multiple devices with Android, both with GMS and Non-GMS. The same app works without changing a single line of code, supporting multiple storage provider implementations.
 <div align="center">
 
-| Non-GMS</br>Huawei Nova 9 SE                      | GMS</br>Moto g(6) Plus       | Non-GMS Device</br>Moto g(6) Plus                                                                                |
+| Non-GMS</br>Huawei Nova 9 SE                      | GMS</br>Moto g(6) Plus       | Non-GMS Device</br>Moto g(6) Plus                                                                            |
 |---------------------------------------------------|------------------------------|--------------------------------------------------------------------------------------------------------------|
 | // replace with the image (probably it is a gift) | // replace with a gift video | <img src="https://github.com/openmobilehub/omh-storage/assets/1755383/35357dc0-bde4-48d6-b8f8-979740cffca1"> |
 
@@ -185,10 +185,11 @@ and Non-GMS configurations.
 **Note:** nongms build covers only Non-GMS configurations.
 
 1. Save and [sync Project with Gradle Files](https://developer.android.com/studio/build#sync-files).
+
 2. Rebuild the project to ensure the availability of `BuildConfig.AUTH_GMS_PATH`, `BuildConfig.AUTH_NON_GMS_PATH`, 
    `BuildConfig.STORAGE_GMS_PATH` and `BuildConfig.STORAGE_NON_GMS_PATH` variables.
-3. Now you can select a build variant. To change the build variant Android Studio uses, do one of
-   the following:
+
+3. Now you can select a build variant. To change the build variant Android Studio uses, do one of the following:
    - Select "Build" > "Select Build Variant..." in the menu.
    - Select "View" > "Tool Windows" > "Build Variants" in the menu.
    - Click the "Build Variants" tab on the tool window bar.
@@ -198,45 +199,135 @@ and Non-GMS configurations.
      changes to the code.(Recommended)
    - "gms" variant builds for devices that has GMS (Google Mobile Services).
    - "nongms" variant builds for devices that doesn't have GMS (Google Mobile Services).
-5. In the `SingletonModule.kt` file in the `:storage-starter-sample` module add the following code to provide the OMH Auth Client and OMH Storage Client.
-// maybe explain better where does this code goes exactly.
+
+5. For get an instance of the OMH Storage client you need an instance of OmhAuthClient. Add the following code to provide the OMH Auth Client.
  
    ```kotlin
-   val omhAuthProvider = OmhAuthProvider.Builder()
+   val omhAuthProvider: OmhAuthProvider = OmhAuthProvider.Builder()
        .addNonGmsPath(BuildConfig.AUTH_NON_GMS_PATH)
        .addGmsPath(BuildConfig.AUTH_GMS_PATH)
        .build()
-   return omhAuthProvider.provideAuthClient(
+   
+   val omhAuthClient: OmhAuthClient = omhAuthProvider.provideAuthClient(
        scopes = listOf("openid", "email", "profile"),
        clientId = BuildConfig.CLIENT_ID,
        context = context
    )
+   ```
    
-   val omhStorageProvider = OmhStorageProvider.Builder()
+6. For instantiate the OmhStorageClient add the following code.
+   
+   ```kotlin
+   val omhStorageProvider: OmhStorageProvider = OmhStorageProvider.Builder()
        .addNonGmsPath(BuildConfig.STORAGE_NON_GMS_PATH)
        .addGmsPath(BuildConfig.STORAGE_GMS_PATH)
        .build()
-   return omhStorageProvider.provideStorageClient(
-       authClient = omhAuthProvider,
+   
+   val omhStorageClient: OmhStorageClient = omhStorageProvider.provideStorageClient(
+       authClient = omhAuthClient,
        context = context
    )
    ```
 
-*Note*: we'd recommend to store the client as a singleton with your preferred dependency injection
-library as this will be your only gateway to the OMH Auth SDK and OMH Storage SDK; and it doesn't change in runtime at all.
+*Note*: we'd recommend to provide the auth client and the storage client as a singleton with your preferred dependency injection library as this will be your only gateway to the OMH Auth SDK and OMH Storage SDK; and it doesn't change in runtime at all.
 
 ## Adding Storage to your app
 First and foremost, the main interface that you'll be interacting with is called OmhStorageClient. In contains all your basic storage functionalities like list, create, delete, download, update and upload files.
-// Is it required to mention the OmhAuthClient interface? 
 
 ### List files
-// Explain how to get the list of files.
+For list files, just use the instance you created of the `omhStorageClient` and call method `listFiles` sending as parameter the desired parent id.
 
-```
-// show the code
-```
+   ```kotlin
+    val cancellable = omhStorageClient.listFiles(parentId)
+                .addOnSuccess { result: GetFilesListUseCaseResult ->
+                    // Get the files list
+                    val filesList: List<OmhFile> = result.files
+                }
+                .addOnFailure { exception: Exception ->
+                    // TODO - Developer: Manage error
+                }
+                .execute()
+    cancellableCollector.addCancellable(cancellable)
+   ```
 
-// Should be explained more functions? If the starter-code 
+### Create files
+For create files, just use the instance you created of the `omhStorageClient` and call method `createFile` sending as parameter the desired name, mime type and parent id.
+
+   ```kotlin
+    val cancellable = omhStorageClient.createFile(name, mimeType, parentId)
+                .addOnSuccess { result: CreateFileUseCaseResult ->
+                   // An instance of OmhFile with the information of the created file. In case the file was not created, will be null
+                   val file: OmhFile? = result.file
+                }
+                .addOnFailure { exception: Exception ->
+                    // TODO - Developer: Manage error
+                }
+                .execute()
+    cancellableCollector.addCancellable(cancellable)
+   ```
+### Delete files
+For delete files, just use the instance you created of the `omhStorageClient` and call method `deleteFile` sending as parameter the id of the file you want to delete.
+
+   ```kotlin
+    val cancellable = omhStorageClient.deleteFile(fileId)
+                .addOnSuccess { result: DeleteFileUseCaseResult ->
+                   // The success variable indicates if the file was deleted or not
+                   val success: Boolean = result.isSuccess
+                }
+                .addOnFailure { exception: Exception ->
+                    // TODO - Developer: Manage error
+                }
+                .execute()
+    cancellableCollector.addCancellable(cancellable)
+   ```
+
+### Upload files
+For upload files, just use the instance you created of the `omhStorageClient` and call method `uploadFile` sending as parameter the local path of the file you want to upload and the id of the remote folder where you want to place it (parent id).
+
+   ```kotlin
+    val cancellable = omhStorageClient.uploadFile(filePath, parentId)
+                .addOnSuccess { result: UploadFileUseCaseResult ->
+                   // An instance of OmhFile with the information of the uploaded file. In case the file was not uploaded, will be null
+                   val file: OmhFile? = result.file
+                }
+                .addOnFailure { exception: Exception ->
+                    // TODO - Developer: Manage error
+                }
+                .execute()
+    cancellableCollector.addCancellable(cancellable)
+   ```
+
+### Update files
+For update files, just use the instance you created of the `omhStorageClient` and call method `updateFile` sending as parameter the local path of the file you want to update and the id of the remote file you want to replace (file id).
+
+   ```kotlin
+    val cancellable = omhStorageClient.updateFile(filePath, fileId)
+                .addOnSuccess { result: UpdateFileUseCaseResult ->
+                   // An instance of OmhFile with the information of the updated file. In case the file was not updated, will be null
+                   val file: OmhFile? = result.file
+                }
+                .addOnFailure { exception: Exception ->
+                    // TODO - Developer: Manage error
+                }
+                .execute()
+    cancellableCollector.addCancellable(cancellable)
+   ```
+
+### Download files
+For download files, just use the instance you created of the `omhStorageClient` and call method `createFile` sending as parameter the id of the file you want to download and the mime type you desire to have locally (once downloaded)
+
+   ```kotlin
+    val cancellable = omhStorageClient.downloadFile(id, mimeTypeToSave)
+                .addOnSuccess { result: DownloadFileUseCaseResult ->
+                   // An instance of ByteArrayOutputStream with the downloaded file
+                   val outputStream: ByteArrayOutputStream = result.outputStream
+                }
+                .addOnFailure { exception: Exception ->
+                   // TODO - Developer: Manage error
+                }
+                .execute()
+    cancellableCollector.addCancellable(cancellable)
+   ```
 
 # Sample App
 This repository includes a [Storage-sample](/storage-sample) that demonstrates the functionality of the OMH Storage Client Library. 
