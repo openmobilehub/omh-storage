@@ -21,10 +21,10 @@ With the OMH Storage Client Library, you can easily add Google Drive and other t
 For instance, the following screenshots showcase multiple devices with Android, both with GMS and Non-GMS. The same app works without changing a single line of code, supporting multiple storage provider implementations.
 <div align="center">
 
-| Non-GMS</br>Huawei Nova 9 SE                      | GMS</br>Moto g(6) Plus       | Non-GMS Device</br>Moto g(6) Plus                                                                            |
-|---------------------------------------------------|------------------------------|--------------------------------------------------------------------------------------------------------------|
-| // replace with the image (probably it is a gift) | // replace with a gift video | <img src="https://github.com/openmobilehub/omh-storage/assets/1755383/35357dc0-bde4-48d6-b8f8-979740cffca1"> |
-
+| Non-GMS</br>Huawei Nova 9 SE | GMS</br>Moto g(6) Plus | Non-GMS Device</br>Moto g(6) Plus |
+|------------------------------|------------------------|-----------------------------------|
+| <img src="https://github.com/openmobilehub/omh-storage/assets/124717244/4de1a1c7-1f51-492c-bfc7-53e475d06b32"> | <img src="https://github.com/openmobilehub/omh-storage/assets/124717244/6aa26b0b-87a9-42dc-a3b8-27a3a3ff04b5"> | <img src="https://github.com/openmobilehub/omh-storage/assets/124717244/66d371c3-728b-4d0f-baf6-b4ebd77a058d"> |
+ 
 </div>
 
 # Getting started
@@ -52,7 +52,7 @@ To access Google APIs, generate a unique client_id for your app in the Google AP
 3. [Go to the Credentials page](https://console.cloud.google.com/apis/credentials).
 4. On the Credentials page, click on "Create credentials" and choose "OAuth Client ID".
 5. In the "Application Type" option, select "Android".
-6. Set your application package name (Use "com.omh.android.auth.sample" if you are following the
+6. Set your application package name (Use "com.omh.android.storage.sample" if you are following the
    starter-code)
 7. Update the debug/release SHA-1 certificate fingerprint for Android's Client ID.
 
