@@ -41,6 +41,4 @@ internal class NonGmsFileRepositoryImpl(
 
     override fun updateFile(localFileToUpload: File, fileId: String): OmhFile? =
         dataSource.updateFile(localFileToUpload, fileId)
-
-    override fun open() = Unit
 }
