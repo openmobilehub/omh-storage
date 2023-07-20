@@ -15,7 +15,7 @@ android {
 }
 
 dependencies {
-    api("com.openmobilehub.android:storage-api:1.0.2-rc")
+    api("com.openmobilehub.android:storage-api:1.0.3-rc")
 
     // Retrofit setup
     implementation(Libs.retrofit)

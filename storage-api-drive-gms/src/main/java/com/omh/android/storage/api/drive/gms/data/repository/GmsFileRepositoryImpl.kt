@@ -39,6 +39,4 @@ internal class GmsFileRepositoryImpl(
 
     override fun updateFile(localFileToUpload: File, fileId: String) =
         dataSource.updateFile(localFileToUpload, fileId)
-
-    override fun open() = Unit
 }
