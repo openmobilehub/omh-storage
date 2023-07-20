@@ -237,6 +237,7 @@ First and foremost, the main interface that you'll be interacting with is called
 For list files, just use the instance you created of the `omhStorageClient` and call method `listFiles` sending as parameter the desired parent id.
 
    ```kotlin
+    val cancellableCollector = CancellableCollector()
     val cancellable = omhStorageClient.listFiles(parentId)
                 .addOnSuccess { result: GetFilesListUseCaseResult ->
                     // Get the files list
@@ -253,6 +254,7 @@ For list files, just use the instance you created of the `omhStorageClient` and 
 For create files, just use the instance you created of the `omhStorageClient` and call method `createFile` sending as parameter the desired name, mime type and parent id.
 
    ```kotlin
+    val cancellableCollector = CancellableCollector()
     val cancellable = omhStorageClient.createFile(name, mimeType, parentId)
                 .addOnSuccess { result: CreateFileUseCaseResult ->
                    // An instance of OmhFile with the information of the created file. In case the file was not created, will be null
@@ -268,6 +270,7 @@ For create files, just use the instance you created of the `omhStorageClient` an
 For delete files, just use the instance you created of the `omhStorageClient` and call method `deleteFile` sending as parameter the id of the file you want to delete.
 
    ```kotlin
+    val cancellableCollector = CancellableCollector()
     val cancellable = omhStorageClient.deleteFile(fileId)
                 .addOnSuccess { result: DeleteFileUseCaseResult ->
                    // The success variable indicates if the file was deleted or not
@@ -284,6 +287,7 @@ For delete files, just use the instance you created of the `omhStorageClient` an
 For upload files, just use the instance you created of the `omhStorageClient` and call method `uploadFile` sending as parameter the local path of the file you want to upload and the id of the remote folder where you want to place it (parent id).
 
    ```kotlin
+    val cancellableCollector = CancellableCollector()
     val cancellable = omhStorageClient.uploadFile(filePath, parentId)
                 .addOnSuccess { result: UploadFileUseCaseResult ->
                    // An instance of OmhFile with the information of the uploaded file. In case the file was not uploaded, will be null
@@ -300,6 +304,7 @@ For upload files, just use the instance you created of the `omhStorageClient` an
 For update files, just use the instance you created of the `omhStorageClient` and call method `updateFile` sending as parameter the local path of the file you want to update and the id of the remote file you want to replace (file id).
 
    ```kotlin
+    val cancellableCollector = CancellableCollector()
     val cancellable = omhStorageClient.updateFile(filePath, fileId)
                 .addOnSuccess { result: UpdateFileUseCaseResult ->
                    // An instance of OmhFile with the information of the updated file. In case the file was not updated, will be null
@@ -316,6 +321,7 @@ For update files, just use the instance you created of the `omhStorageClient` an
 For download files, just use the instance you created of the `omhStorageClient` and call method `createFile` sending as parameter the id of the file you want to download and the mime type you desire to have locally (once downloaded)
 
    ```kotlin
+    val cancellableCollector = CancellableCollector()
     val cancellable = omhStorageClient.downloadFile(id, mimeTypeToSave)
                 .addOnSuccess { result: DownloadFileUseCaseResult ->
                    // An instance of ByteArrayOutputStream with the downloaded file
