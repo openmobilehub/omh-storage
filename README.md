@@ -82,8 +82,7 @@ Gradle dependencies, allowing you to effortlessly manage and include the necessa
 The subsequent instructions will outline the necessary steps for including the OMH Core Plugin as a
 Gradle dependency.
 
-1. In your "auth-starter-sample" module-level `build.gradle` under the `plugins` element add the
-   plugin id.
+1. In your "storage-starter-sample" module-level `build.gradle` under the `plugins` element add the plugin id.
 
    ```
    plugins {
@@ -169,7 +168,7 @@ In this step, you will define the OMH Core Plugin bundles to generate multiple b
 and Non-GMS configurations.
 
 ##### Variant gms
-    - Define the `Service`. In this example is auth.
+    - Define the `Service`. In this example is storage.
     - Define the `ServiceDetails` . In this example is `gmsService`.
     - Define the dependency and the path. In this example
       is `com.openmobilehub.android:storage-api-drive-gms:1.0-rc"`.
@@ -177,7 +176,7 @@ and Non-GMS configurations.
 **Note:** gms build covers only GMS (Google Mobile Services).
 
 ##### Variant nongms
-    - Define the `Service`. In this example is auth.
+    - Define the `Service`. In this example is storage.
     - Define the `ServiceDetails` . In this example is `nonGmsService`.
     - Define the dependency and the path. In this example
       is `com.openmobilehub.android:storage-api-drive-non-gms:1.0-rc`.
