@@ -22,15 +22,62 @@ import java.io.File
 
 interface OmhFileRepository {
 
+    /**
+     * This method list files from an specific folder
+     *
+     * @param parentId The id of the folder you want to get the list of files
+     *
+     * @return A list of OmhFiles
+     */
     fun getFilesList(parentId: String = "root"): List<OmhFile>
 
+    /**
+     * This method create files in an specific folder
+     *
+     * @param name The name of the file to be created
+     * @param mimeType The mimeType of the file to be created
+     * @param parentId The id of the folder where the file will be created
+     *
+     * @return An OmhFile with the information of the created file. Null in case the file was not created
+     */
     fun createFile(name: String, mimeType: String, parentId: String?): OmhFile?
 
+    /**
+     * This method delete files with a given file id
+     *
+     * @param fileId The id of the desired file to delete
+     *
+     * @return true if the file was deleted, false otherwise
+     */
     fun deleteFile(fileId: String): Boolean
 
+    /**
+     * This method upload a file in an specific folder
+     *
+     * @param localFileToUpload The file to be uploaded
+     * @param parentId The id of the folder where the file will be uploaded
+     *
+     * @return An OmhFile with the information of the uploaded file. Null in case the file was not uploaded
+     */
     fun uploadFile(localFileToUpload: File, parentId: String?): OmhFile?
 
+    /**
+     * This method download a file with a given mime type and a given id
+     *
+     * @param fileId The id fo the file to be downloaded
+     * @param mimeType The mimeType of the file to be downloaded
+     *
+     * @return A ByteArrayOutputStream with the content of the downloaded file
+     */
     fun downloadFile(fileId: String, mimeType: String?): ByteArrayOutputStream
 
+    /**
+     * This method update a remote file with the content of a local file
+     *
+     * @param localFileToUpload The local file to be uploaded
+     * @param fileId The id of the desired file to be updated
+     *
+     * @return An OmhFile with the information of the updated file
+     */
     fun updateFile(localFileToUpload: File, fileId: String): OmhFile?
 }
