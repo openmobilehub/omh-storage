@@ -52,6 +52,13 @@ abstract class OmhStorageClient protected constructor(
 
     protected abstract fun getRepository(): OmhFileRepository
 
+    /**
+     * This method list files from an specific folder
+     *
+     * @param parentId The id of the folder you want to get the list of files
+     *
+     * @return An OmhTask with the result of the operation
+     */
     fun listFiles(parentId: String): OmhTask<GetFilesListUseCaseResult> {
         val getFilesListUseCase = GetFilesListUseCase(getRepository())
         return OmhStorageTaskImpl {
@@ -61,6 +68,15 @@ abstract class OmhStorageClient protected constructor(
         }
     }
 
+    /**
+     * This method create files in an specific folder
+     *
+     * @param name The name of the file to be created
+     * @param mimeType The mimeType of the file to be created
+     * @param parentId The id of the folder where the file will be created
+     *
+     * @return An OmhTask with the result of the operation
+     */
     fun createFile(
         name: String,
         mimeType: String,
@@ -74,6 +90,13 @@ abstract class OmhStorageClient protected constructor(
         }
     }
 
+    /**
+     * This method delete files with a given file id
+     *
+     * @param id The id of the desired file to delete
+     *
+     * @return An OmhTask with the result of the operation
+     */
     fun deleteFile(id: String): OmhTask<DeleteFileUseCaseResult> {
         val deleteFileUseCase = DeleteFileUseCase(getRepository())
         return OmhStorageTaskImpl {
@@ -83,6 +106,14 @@ abstract class OmhStorageClient protected constructor(
         }
     }
 
+    /**
+     * This method upload a file in an specific folder
+     *
+     * @param localFileToUpload The file to be uploaded
+     * @param parentId The id of the folder where the file will be uploaded
+     *
+     * @return An OmhTask with the result of the operation
+     */
     fun uploadFile(
         localFileToUpload: File,
         parentId: String?
@@ -95,6 +126,14 @@ abstract class OmhStorageClient protected constructor(
         }
     }
 
+    /**
+     * This method download a file with a given mime type and a given id
+     *
+     * @param fileId The id fo the file to be downloaded
+     * @param mimeType The mimeType of the file to be downloaded
+     *
+     * @return An OmhTask with the result of the operation
+     */
     fun downloadFile(fileId: String, mimeType: String?): OmhTask<DownloadFileUseCaseResult> {
         val downloadFileUseCase = DownloadFileUseCase(getRepository())
         return OmhStorageTaskImpl {
@@ -104,6 +143,14 @@ abstract class OmhStorageClient protected constructor(
         }
     }
 
+    /**
+     * This method update a remote file with the content of a local file
+     *
+     * @param localFileToUpload The local file to be uploaded
+     * @param fileId The id of the desired file to be updated
+     *
+     * @return An OmhTask with the result of the operation
+     */
     fun updateFile(
         localFileToUpload: File,
         fileId: String
