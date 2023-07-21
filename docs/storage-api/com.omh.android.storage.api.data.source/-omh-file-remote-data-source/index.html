@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>OmhFileRemoteDataSource</title>
+    <link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">
+    <script>var pathToRoot = "../../../";</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async="async"></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/jetbrains-mono.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/clipboard.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer="defer"></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/symbol-parameters-wrapper_deferred.js" defer="defer"></script>
+</head>
+<body>
+<div class="navigation-wrapper" id="navigation-wrapper">
+    <div id="leftToggler"><span class="icon-toggler"></span></div>
+    <div class="library-name">
+            <a href="../../../index.html">
+                    <span>storage-api</span>
+            </a>
+    </div>
+    <div>
+1.0.3-rc    </div>
+    <div class="pull-right d-flex">
+        <div class="filter-section" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":storage-api:dokkaHtml/release">androidJvm</button>
+        </div>
+        <button id="theme-toggle-button"><span id="theme-toggle"></span></button>
+        <div id="searchBar"></div>
+    </div>
+</div>
+<div id="container">
+    <div id="leftColumn">
+        <div id="sideMenu"></div>
+    </div>
+    <div id="main">
+<div class="main-content" data-page-type="classlike" id="content" pageIds="storage-api::com.omh.android.storage.api.data.source/OmhFileRemoteDataSource///PointingToDeclaration//731160616">
+  <div class="breadcrumbs"><a href="../../../index.html">storage-api</a><span class="delimiter">/</span><a href="../index.html">com.omh.android.storage.api.data.source</a><span class="delimiter">/</span><span class="current">OmhFileRemoteDataSource</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Omh</span><wbr></wbr><span>File</span><wbr></wbr><span>Remote</span><wbr></wbr><span>Data</span><wbr></wbr><span><span>Source</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":storage-api:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">interface </span><a href="index.html">OmhFileRemoteDataSource</a></div></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="FUNCTION">
+        <h2 class="">Functions</h2>
+        <div class="table"><a data-name="-1091728939%2FFunctions%2F731160616" anchor-label="createFile" id="-1091728939%2FFunctions%2F731160616" data-filterable-set=":storage-api:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":storage-api:dokkaHtml/release" data-filterable-set=":storage-api:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="create-file.html"><span>create</span><wbr></wbr><span><span>File</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1091728939%2FFunctions%2F731160616"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":storage-api:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword"></span><span class="token keyword">fun </span><a href="create-file.html"><span class="token function">createFile</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">name<span class="token operator">: </span><span data-unresolved-link="kotlin/String///PointingToDeclaration/">String</span><span class="token punctuation">, </span></span><span class="parameter ">mimeType<span class="token operator">: </span><span data-unresolved-link="kotlin/String///PointingToDeclaration/">String</span><span class="token punctuation">, </span></span><span class="parameter ">parentId<span class="token operator">: </span><span data-unresolved-link="kotlin/String///PointingToDeclaration/">String</span><span class="token operator">?</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../com.omh.android.storage.api.domain.model/-omh-file/index.html">OmhFile</a><span class="token operator">?</span></div><div class="brief "><p class="paragraph">This method create files in an specific folder</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1383874125%2FFunctions%2F731160616" anchor-label="deleteFile" id="-1383874125%2FFunctions%2F731160616" data-filterable-set=":storage-api:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":storage-api:dokkaHtml/release" data-filterable-set=":storage-api:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="delete-file.html"><span>delete</span><wbr></wbr><span><span>File</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1383874125%2FFunctions%2F731160616"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":storage-api:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword"></span><span class="token keyword">fun </span><a href="delete-file.html"><span class="token function">deleteFile</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">fileId<span class="token operator">: </span><span data-unresolved-link="kotlin/String///PointingToDeclaration/">String</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="kotlin/Boolean///PointingToDeclaration/">Boolean</span></div><div class="brief "><p class="paragraph">This method delete files with a given file id</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="12799374%2FFunctions%2F731160616" anchor-label="downloadFile" id="12799374%2FFunctions%2F731160616" data-filterable-set=":storage-api:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":storage-api:dokkaHtml/release" data-filterable-set=":storage-api:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="download-file.html"><span>download</span><wbr></wbr><span><span>File</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="12799374%2FFunctions%2F731160616"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":storage-api:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword"></span><span class="token keyword">fun </span><a href="download-file.html"><span class="token function">downloadFile</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">fileId<span class="token operator">: </span><span data-unresolved-link="kotlin/String///PointingToDeclaration/">String</span><span class="token punctuation">, </span></span><span class="parameter ">mimeType<span class="token operator">: </span><span data-unresolved-link="kotlin/String///PointingToDeclaration/">String</span><span class="token operator">?</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="java.io/ByteArrayOutputStream///PointingToDeclaration/">ByteArrayOutputStream</span></div><div class="brief "><p class="paragraph">This method download a file with a given mime type and a given id</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1216834133%2FFunctions%2F731160616" anchor-label="getFilesList" id="-1216834133%2FFunctions%2F731160616" data-filterable-set=":storage-api:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":storage-api:dokkaHtml/release" data-filterable-set=":storage-api:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-files-list.html"><span>get</span><wbr></wbr><span>Files</span><wbr></wbr><span><span>List</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1216834133%2FFunctions%2F731160616"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":storage-api:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword"></span><span class="token keyword">fun </span><a href="get-files-list.html"><span class="token function">getFilesList</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">parentId<span class="token operator">: </span><span data-unresolved-link="kotlin/String///PointingToDeclaration/">String</span><span class="token operator"> = </span><span class="token string">&quot;root&quot;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="kotlin.collections/List///PointingToDeclaration/">List</span><span class="token operator">&lt;</span><span class="token keyword"></span><a href="../../com.omh.android.storage.api.domain.model/-omh-file/index.html">OmhFile</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">This method list files from an specific folder</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="576381600%2FFunctions%2F731160616" anchor-label="updateFile" id="576381600%2FFunctions%2F731160616" data-filterable-set=":storage-api:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":storage-api:dokkaHtml/release" data-filterable-set=":storage-api:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="update-file.html"><span>update</span><wbr></wbr><span><span>File</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="576381600%2FFunctions%2F731160616"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":storage-api:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword"></span><span class="token keyword">fun </span><a href="update-file.html"><span class="token function">updateFile</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">localFileToUpload<span class="token operator">: </span><span data-unresolved-link="java.io/File///PointingToDeclaration/">File</span><span class="token punctuation">, </span></span><span class="parameter ">fileId<span class="token operator">: </span><span data-unresolved-link="kotlin/String///PointingToDeclaration/">String</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../com.omh.android.storage.api.domain.model/-omh-file/index.html">OmhFile</a><span class="token operator">?</span></div><div class="brief "><p class="paragraph">This method update a remote file with the content of a local file</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-445819525%2FFunctions%2F731160616" anchor-label="uploadFile" id="-445819525%2FFunctions%2F731160616" data-filterable-set=":storage-api:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":storage-api:dokkaHtml/release" data-filterable-set=":storage-api:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="upload-file.html"><span>upload</span><wbr></wbr><span><span>File</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-445819525%2FFunctions%2F731160616"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":storage-api:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword"></span><span class="token keyword">fun </span><a href="upload-file.html"><span class="token function">uploadFile</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">localFileToUpload<span class="token operator">: </span><span data-unresolved-link="java.io/File///PointingToDeclaration/">File</span><span class="token punctuation">, </span></span><span class="parameter ">parentId<span class="token operator">: </span><span data-unresolved-link="kotlin/String///PointingToDeclaration/">String</span><span class="token operator">?</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../com.omh.android.storage.api.domain.model/-omh-file/index.html">OmhFile</a><span class="token operator">?</span></div><div class="brief "><p class="paragraph">This method upload a file in an specific folder</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      <div class="footer">
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2023 Copyright</span><span
+                class="pull-right"><span>Generated by </span><a
+                href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+      </div>
+    </div>
+</div>
+</body>
+</html>
