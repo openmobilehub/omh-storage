@@ -5,6 +5,7 @@ plugins {
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android") version "2.44" apply true
     id("com.openmobilehub.android.omh-core")
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 
 omhConfig {
@@ -64,14 +65,6 @@ android {
             keyAlias = localProperties["keyalias"].toString()
             keyPassword = localProperties["keypassword"].toString()
         }
-    }
-
-    defaultConfig {
-        buildConfigField(
-            type = "String",
-            name = "CLIENT_ID",
-            value = gradleLocalProperties(rootDir)["clientId"].toString()
-        )
     }
 
     buildTypes {
