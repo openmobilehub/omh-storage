@@ -8,6 +8,9 @@
     <string name="text_name">Name</string>
     <string name="text_swap_grid_linear">Swap Grid/Linear</string>
     <string name="text_create_file_title">Create File</string>
+    <string name="text_download_error_title">Download Error</string>
+    <string name="text_download_error_message">There was an error during download process.\n\nPlease make sure the name of the file don\'t have special characters (for example ?, *, ", [, ], \').\n\nPlease go to your drive account and change the name of the file.</string>
+    <string name="text_accept">Accept</string>
     <string name="text_file_name_label">File Name:</string>
     <string name="text_file_type_label">File Type:</string>
     <string name="text_upload_file_title">Upload File</string>

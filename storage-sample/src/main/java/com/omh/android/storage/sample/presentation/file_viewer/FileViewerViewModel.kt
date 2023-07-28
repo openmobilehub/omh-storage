@@ -28,6 +28,7 @@ import com.omh.android.storage.sample.domain.model.FileType
 import com.omh.android.storage.sample.presentation.BaseViewModel
 import com.omh.android.storage.sample.util.getNameWithExtension
 import com.omh.android.storage.sample.util.isDownloadable
+import com.omh.android.storage.sample.util.normalizeFileName
 import com.omh.android.storage.sample.util.normalizedMimeType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.io.File
@@ -150,10 +151,18 @@ class FileViewerViewModel @Inject constructor(
 
             val cancellable = omhStorageClient.downloadFile(file.id, mimeTypeToSave)
                 .addOnSuccess { data ->
-                    val fileToSave = file.copy(mimeType = mimeTypeToSave)
+                    val fileToSave = file.copy(
+                        name = file.normalizeFileName(),
+                        mimeType = mimeTypeToSave
+                    )
 
-                    handleDownloadSuccess(data, fileToSave)
-                    toastMessage.postValue("${file.name} was successfully downloaded")
+                    try {
+                        handleDownloadSuccess(data, fileToSave)
+                        toastMessage.postValue("${file.name} was successfully downloaded")
+                    } catch (exception: Exception) {
+                        exception.printStackTrace()
+                        setState(FileViewerViewState.ShowDownloadExceptionDialog)
+                    }
                     refreshFileListEvent()
                 }
                 .addOnFailure {

@@ -66,6 +66,18 @@ fun OmhFile.normalizedMimeType(): String = when (fileType) {
     else -> this.mimeType
 }
 
+fun OmhFile.normalizeFileName(): String {
+    val invalidChars = Regex("[\\\\/:*?\"'<>|]")
+
+    var downloadName = name.replace(invalidChars, " ")
+
+    if (downloadName.length >= 255) {
+        downloadName = downloadName.substring(0..254)
+    }
+
+    return downloadName
+}
+
 fun OmhFile.getNameWithExtension(): String = if (isFileNameWithExtension(name)) {
     name
 } else {

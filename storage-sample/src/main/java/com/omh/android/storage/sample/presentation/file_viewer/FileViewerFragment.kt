@@ -162,6 +162,22 @@ class FileViewerFragment :
         FileViewerViewState.CheckPermissions -> requestPermissions()
         FileViewerViewState.SignOut -> buildSignOutState()
         is FileViewerViewState.ShowUpdateFilePicker -> launchUpdateFilePicker()
+        FileViewerViewState.ShowDownloadExceptionDialog -> showDownloadExceptionDialog()
+    }
+
+    private fun showDownloadExceptionDialog() {
+        context?.let { context ->
+            val downloadExceptionDialogBuilder = AlertDialog.Builder(context)
+                .setTitle(getString(R.string.text_download_error_title))
+                .setMessage(getString(R.string.text_download_error_message))
+                .setPositiveButton(getString(R.string.text_accept)) { dialog, _ -> dialog.dismiss() }
+
+            val downloadExceptionDialog = downloadExceptionDialogBuilder.create().apply {
+                setCancelable(false)
+            }
+
+            downloadExceptionDialog.show()
+        }
     }
 
     private fun buildInitialState() {
