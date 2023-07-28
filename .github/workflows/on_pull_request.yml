@@ -20,7 +20,7 @@ jobs:
           cache: gradle
 
       - name: Update local properties for secrets
-        run: echo MAPS_API_KEY="MAPS_API_KEY_VALUE" > ./local.properties
+        run: echo CLIENT_ID="CLIENT_ID_VALUE" > ./local.properties
       - name: Assemble app debug APK
         run: bash ./gradlew assembleDebug
 
@@ -38,7 +38,7 @@ jobs:
           distribution: 'temurin'
           cache: gradle
       - name: Update local properties for secrets
-        run: echo MAPS_API_KEY="MAPS_API_KEY_VALUE" > ./local.properties
+        run: echo CLIENT_ID="CLIENT_ID_VALUE" > ./local.properties
       - name: Misspelling on detekt + ktlint
         run: bash ./gradlew detekt --stacktrace --continue
       - name: Run unit tests and check coverage
