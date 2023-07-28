@@ -60,4 +60,9 @@ sealed class FileViewerViewState : ViewState {
 
         override fun getName() = "FileViewerViewState.FilePicker"
     }
+
+    object ShowDownloadExceptionDialog : FileViewerViewState() {
+
+        override fun getName() = "FileViewerViewState.ShowDownloadExceptionDialog"
+    }
 }
