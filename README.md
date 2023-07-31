@@ -35,6 +35,9 @@ This section describes how to setup an Android Studio project to use the OMH Sto
 ## Set up the development environment
 1. Android Studio is required. If you haven't already done so, [download](https://developer.android.com/studio/index.html) and [install](https://developer.android.com/studio/install.html?pkg=studio) it.
 2. Ensure that you are using the [Android Gradle plugin](https://developer.android.com/studio/releases/gradle-plugin) version 7.0 or later in Android Studio.
+3. Ensure you configured a project on your Google Cloud Developer console.
+
+**Note: If you don't configure your Google Cloud Developer console properly, when you run the app you'll get a "Developer Error". If you have doubts about how make this, you can refer to [Google Cloud Developer Console Documentation](https://cloud.google.com/iap/docs/authenticate-users-google-accounts?hl=en) or see [OMH authentication's readme](https://github.com/openmobilehub/omh-auth)**
 
 ## Clone the repository
 To clone the repository and checkout the `starter-code` branch, use the following command in your Terminal:
@@ -44,7 +47,7 @@ To clone the repository and checkout the `starter-code` branch, use the followin
    ```
 
 ## Set up your Google Cloud project for applications with Google Services(Google Auth)
-To access Google APIs, generate a unique client_id for your app in the Google API Console, for additional information [see](https://github.com/openmobilehub/omh-auth). Add the client_id to your app's code and complete the required Cloud Console setup steps:
+To access Google APIs, generate a unique client_id for your app in the Google API Console, for additional information [see authentication's readme](https://github.com/openmobilehub/omh-auth). Add the client_id to your app's code and complete the required Cloud Console setup steps:
 
 ### Steps
 1. [Go to the Google Cloud Console and open the project selector page.](https://console.cloud.google.com/projectselector2/home/dashboard?utm_source=Docs_ProjectSelector&_gl=1*1ylhfe0*_ga*MTUwMDIzODY1Ni4xNjc1OTYyMDgw*_ga_NRWSTWS78N*MTY4MjA4ODIyNS44NS4xLjE2ODIwODgyMzcuMC4wLjA.)
