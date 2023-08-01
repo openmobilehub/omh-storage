@@ -23,5 +23,5 @@ dependencies {
     implementation("com.android.tools.build:gradle:7.4.1")
     implementation("io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.22.0")
     implementation("org.jacoco:org.jacoco.core:0.8.8")
-    implementation("com.openmobilehub.android:omh-core:1.0")
+    implementation("com.openmobilehub.android:omh-core:1.0.2-beta")
 }
