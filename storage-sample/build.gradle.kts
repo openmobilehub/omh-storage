@@ -9,48 +9,7 @@ plugins {
 }
 
 omhConfig {
-    bundle("singleBuild") {
-        storage() {
-            gmsService {
-                dependency = "com.openmobilehub.android:storage-api-drive-gms:1.0.7-beta"
-            }
-            nonGmsService {
-                dependency = "com.openmobilehub.android:storage-api-drive-nongms:1.0.8-beta"
-            }
-        }
-        auth {
-            gmsService {
-                dependency = "com.openmobilehub.android:auth-api-gms:1.0.1-beta"
-            }
-            nonGmsService {
-                dependency = "com.openmobilehub.android:auth-api-non-gms:1.0.1-beta"
-            }
-        }
-    }
-    bundle("gms") {
-        storage {
-            gmsService {
-                dependency = "com.openmobilehub.android:storage-api-drive-gms:1.0.7-beta"
-            }
-        }
-        auth {
-            gmsService {
-                dependency = "com.openmobilehub.android:auth-api-gms:1.0.1-beta"
-            }
-        }
-    }
-    bundle("nongms") {
-        storage {
-            nonGmsService {
-                dependency = "com.openmobilehub.android:storage-api-drive-nongms:1.0.8-beta"
-            }
-        }
-        auth {
-            nonGmsService {
-                dependency = "com.openmobilehub.android:auth-api-non-gms:1.0.1-beta"
-            }
-        }
-    }
+    // replace this block with README omhConfig snippet
 }
 
 @Suppress("UnstableApiUsage")
