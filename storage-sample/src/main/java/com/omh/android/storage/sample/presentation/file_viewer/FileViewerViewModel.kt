@@ -89,27 +89,7 @@ class FileViewerViewModel @Inject constructor(
         setState(FileViewerViewState.Loading)
         val parentId = parentIdStack.peek()
 
-        val cancellable = omhStorageClient.listFiles(parentId)
-            .addOnSuccess { data ->
-                val files: List<OmhFile> = data
-                    .files
-                    .sortedWith(
-                        compareBy<OmhFile> { !it.isFolder() }
-                            .thenBy { it.mimeType }
-                            .thenBy { it.name }
-                    )
-
-                setState(FileViewerViewState.Content(files))
-            }
-            .addOnFailure { exception ->
-                errorDialogMessage.postValue(exception.message)
-                toastMessage.postValue(exception.message)
-                exception.printStackTrace()
-
-                setState(FileViewerViewState.Content(emptyList()))
-            }
-            .execute()
-        cancellableCollector.addCancellable(cancellable)
+        // Add here snippet for list files
     }
 
     private fun swapLayoutManagerEvent() {
@@ -152,32 +132,8 @@ class FileViewerViewModel @Inject constructor(
 
             val mimeTypeToSave = file.normalizedMimeType()
 
-            val cancellable = omhStorageClient.downloadFile(file.id, mimeTypeToSave)
-                .addOnSuccess { data ->
-                    val fileToSave = file.copy(
-                        name = file.normalizeFileName(),
-                        mimeType = mimeTypeToSave
-                    )
+            // Add here snippet for download files
 
-                    try {
-                        handleDownloadSuccess(data, fileToSave)
-                        toastMessage.postValue("${file.name} was successfully downloaded")
-                    } catch (exception: Exception) {
-                        exception.printStackTrace()
-                        setState(FileViewerViewState.ShowDownloadExceptionDialog)
-                        errorDialogMessage.postValue(exception.message)
-                    }
-                    refreshFileListEvent()
-                }
-                .addOnFailure { exception ->
-                    errorDialogMessage.postValue(exception.message)
-                    toastMessage.postValue("ERROR: ${file.name} was NOT downloaded")
-                    exception.printStackTrace()
-
-                    refreshFileListEvent()
-                }
-                .execute()
-            cancellableCollector.addCancellable(cancellable)
         } ?: run {
             toastMessage.postValue("The file was NOT downloaded")
             refreshFileListEvent()
@@ -194,47 +150,17 @@ class FileViewerViewModel @Inject constructor(
         }
 
         val filePath = getFile(event.context, event.uri, event.fileName)
-        val cancellable = omhStorageClient.updateFile(filePath, fileId)
-            .addOnSuccess { result ->
-                val resultMessage = if (result.file == null) {
-                    "${event.fileName} was not updated"
-                } else {
-                    "${event.fileName} was successfully updated"
-                }
 
-                toastMessage.postValue(resultMessage)
+        // Add here snippet for update files
 
-                refreshFileListEvent()
-            }
-            .addOnFailure { exception ->
-                errorDialogMessage.postValue(exception.message)
-                toastMessage.postValue("ERROR: ${event.fileName} was not updated")
-                exception.printStackTrace()
-
-                refreshFileListEvent()
-            }
-            .execute()
-
-        cancellableCollector.addCancellable(cancellable)
     }
 
     private fun createFileEvent(event: FileViewerViewEvent.CreateFile) {
         setState(FileViewerViewState.Loading)
         val parentId = parentIdStack.peek()
 
-        val cancellable = omhStorageClient.createFile(event.name, event.mimeType, parentId)
-            .addOnSuccess {
-                refreshFileListEvent()
-            }
-            .addOnFailure { exception ->
-                errorDialogMessage.postValue(exception.message)
-                toastMessage.postValue(exception.message)
-                exception.printStackTrace()
+        // Add here snippet for create files
 
-                refreshFileListEvent()
-            }
-            .execute()
-        cancellableCollector.addCancellable(cancellable)
     }
 
     private fun uploadFile(event: FileViewerViewEvent.UploadFile) {
@@ -243,28 +169,8 @@ class FileViewerViewModel @Inject constructor(
         val parentId = parentIdStack.peek()
         val filePath = getFile(event.context, event.uri, event.fileName)
 
-        val cancellable = omhStorageClient.uploadFile(filePath, parentId)
-            .addOnSuccess { result ->
-                val resultMessage = if (result.file == null) {
-                    "${event.fileName} was NOT uploaded"
-                } else {
-                    "${event.fileName} was successfully uploaded"
-                }
+        // Add here snippet for upload files
 
-                toastMessage.postValue(resultMessage)
-
-                refreshFileListEvent()
-            }
-            .addOnFailure { exception ->
-                errorDialogMessage.postValue(exception.message)
-                toastMessage.postValue("ERROR: ${event.fileName} was NOT uploaded")
-                exception.printStackTrace()
-
-                refreshFileListEvent()
-            }
-            .execute()
-
-        cancellableCollector.addCancellable(cancellable)
     }
 
     private fun getFile(context: Context, uri: Uri, fileName: String): File {
@@ -284,21 +190,8 @@ class FileViewerViewModel @Inject constructor(
 
         val file = event.file
 
-        val cancellable = omhStorageClient.deleteFile(file.id)
-            .addOnSuccess { data ->
-                handleDeleteSuccess(data.isSuccess, file)
+        // Add here snippet for delete files
 
-                refreshFileListEvent()
-            }
-            .addOnFailure { exception ->
-                errorDialogMessage.postValue(exception.message)
-                toastMessage.postValue("ERROR: ${file.name} was NOT deleted")
-                exception.printStackTrace()
-
-                refreshFileListEvent()
-            }
-            .execute()
-        cancellableCollector.addCancellable(cancellable)
     }
 
     private fun handleDeleteSuccess(isSuccessful: Boolean, file: OmhFile) {
