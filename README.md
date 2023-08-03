@@ -199,7 +199,7 @@ and Non-GMS configurations.
    - "gms" variant builds for devices that has GMS (Google Mobile Services).
    - "nongms" variant builds for devices that doesn't have GMS (Google Mobile Services).
 
-5. For get an instance of the OMH Storage client you need an instance of OmhAuthClient. Add the following code to provide the OMH Auth Client.
+5. To obtain an instance of the OMH Storage client, you need an instance of OmhAuthClient.
  
    ```kotlin
    val omhAuthProvider: OmhAuthProvider = OmhAuthProvider.Builder()
@@ -214,7 +214,7 @@ and Non-GMS configurations.
    )
    ```
    
-6. For instantiate the OmhStorageClient add the following code.
+6. To instantiate the OmhStorageClient, add the following code.
    
    ```kotlin
    val omhStorageProvider: OmhStorageProvider = OmhStorageProvider.Builder()
@@ -228,7 +228,7 @@ and Non-GMS configurations.
    )
    ```
 
-*Note*: we'd recommend to provide the auth client and the storage client as a singleton with your preferred dependency injection library as this will be your only gateway to the OMH Auth SDK and OMH Storage SDK; and it doesn't change in runtime at all.
+*Note*: we'd recommend to provide the auth client and the storage client as a singleton with your preferred dependency injection library as this will be your only gateway to the OMH Auth SDK and OMH Storage SDK; and it doesn't change in runtime at all. If you're checking the `starter-code` or the `main` branches you will find this on `SingletonModule` class.
 
 ## Adding Storage to your app
 First and foremost, the main interface that you'll be interacting with is called OmhStorageClient. In contains all your basic storage functionalities: list, create, delete, download, update and upload files.
