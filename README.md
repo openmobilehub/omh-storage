@@ -37,10 +37,10 @@ This section describes how to setup an Android Studio project to use the OMH Sto
 2. Ensure that you are using the [Android Gradle plugin](https://developer.android.com/studio/releases/gradle-plugin) version 7.0 or later in Android Studio.
 
 ## Clone the repository
-To clone the repository and checkout the `starter-code` branch, use the following command in your Terminal:
+To clone the repository and checkout the `code-starter` branch, use the following command in your Terminal:
 
    ```
-   git clone --branch starter-code https://github.com/openmobilehub/omh-storage.git
+   git clone --branch code-starter https://github.com/openmobilehub/omh-storage.git omh-storage-starter-code
    ```
 
 ## Set up your Google Cloud project for applications with Google Services(Google Auth)
