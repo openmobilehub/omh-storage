@@ -79,7 +79,7 @@ To incorporate OMH Storage into your project, you have two options: utilize the 
 ### Add OMH Core plugin
 The subsequent instructions will outline the necessary steps for including the OMH Core Plugin as a Gradle dependency.
 
-1. In your "storage-starter-sample" module-level `build.gradle` under the `plugins` element add the plugin id.
+1. In your `storage-starter-sample` module-level `build.gradle` under the `plugins` element add the plugin id. If you're configuring this step by step on the `starter-code` branch, look for the comment `// Paste below this line the snippet of core plugin` and paste there the plugin id as shown on the next snippet:
 
    ```
    plugins {
