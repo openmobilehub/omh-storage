@@ -377,6 +377,20 @@ If you are configuring this step by step on the `code-starter` branch:
     cancellableCollector.addCancellable(cancellable)
    ```
 
+   To ensure proper resource management and improve the reliability of the code, we recommend adding the necessary code to close the `fileOutputStream` after the `bytes.writeTo(fileOutputStream)` operation.
+
+   **Example Using Kotlin's `use` Function:**
+   ```kotlin
+   try {
+       FileOutputStream(fileToSave).use { fileOutputStream ->
+           bytes.writeTo(fileOutputStream)
+           // File was successfully saved
+       }
+   } catch (e: IOException) {
+       // Handle the exception here
+   }
+   ```
+
    **Note: Make sure to use the full implementation of [`downloadFileEvent`](https://github.com/openmobilehub/omh-storage/blob/release/1.0/storage-sample/src/main/java/com/omh/android/storage/sample/presentation/file_viewer/FileViewerViewModel.kt#L140-L178) for a fully functional sample.**
 
 2. Run the sample app to download files.
