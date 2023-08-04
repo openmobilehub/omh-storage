@@ -24,7 +24,7 @@ android {
 }
 
 dependencies {
-    api("com.openmobilehub.android:storage-api:1.0.3-rc")
+    api("com.openmobilehub.android:storage-api:1.0.4-beta")
 
     // GMS
     implementation(Libs.googlePlayServicesAuth)

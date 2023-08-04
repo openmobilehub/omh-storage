@@ -12,10 +12,10 @@ omhConfig {
     bundle("singleBuild") {
         storage() {
             gmsService {
-                dependency = "com.openmobilehub.android:storage-api-drive-gms:1.0.5-rc"
+                dependency = "com.openmobilehub.android:storage-api-drive-gms:1.0.6-beta"
             }
             nonGmsService {
-                dependency = "com.openmobilehub.android:storage-api-drive-nongms:1.0.4-rc"
+                dependency = "com.openmobilehub.android:storage-api-drive-nongms:1.0.5-beta"
             }
         }
         auth {
@@ -30,7 +30,7 @@ omhConfig {
     bundle("gms") {
         storage {
             gmsService {
-                dependency = "com.openmobilehub.android:storage-api-drive-gms:1.0.5-rc"
+                dependency = "com.openmobilehub.android:storage-api-drive-gms:1.0.6-beta"
             }
         }
         auth {
@@ -42,7 +42,7 @@ omhConfig {
     bundle("nongms") {
         storage {
             nonGmsService {
-                dependency = "com.openmobilehub.android:storage-api-drive-nongms:1.0.4-rc"
+                dependency = "com.openmobilehub.android:storage-api-drive-nongms:1.0.5-beta"
             }
         }
         auth {
