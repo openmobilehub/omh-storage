@@ -238,6 +238,12 @@ You can checkout the branch `code-starter` and copy/paste the following snippets
 ### List files
 For list files, just use the instance you created of the `omhStorageClient` and call method `listFiles` sending as parameter the desired parent id.
 
+If you are configuring this step by step on the `code-starter` branch:
+1. Copy this snippet
+2. Go to the file `FileViewerViewModel`
+3. Search the comment `// Add here snippet for list files`
+4. Paste there the snippet
+
    ```kotlin
     val cancellable = omhStorageClient.listFiles(parentId)
                 .addOnSuccess { result: GetFilesListUseCaseResult ->
@@ -252,14 +258,14 @@ For list files, just use the instance you created of the `omhStorageClient` and 
     cancellableCollector.addCancellable(cancellable)
    ```
 
+### Create files
+For create files, just use the instance you created of the `omhStorageClient` and call method `createFile` sending as parameter the desired name, mime type and parent id.
+
 If you are configuring this step by step on the `code-starter` branch:
 1. Copy this snippet
 2. Go to the file `FileViewerViewModel`
-3. Search the comment `// Add here snippet for list files`
+3. Search the comment `// Add here snippet for create files`
 4. Paste there the snippet
-
-### Create files
-For create files, just use the instance you created of the `omhStorageClient` and call method `createFile` sending as parameter the desired name, mime type and parent id.
 
    ```kotlin
     val cancellable = omhStorageClient.createFile(name, mimeType, parentId)
@@ -275,14 +281,14 @@ For create files, just use the instance you created of the `omhStorageClient` an
     cancellableCollector.addCancellable(cancellable)
    ```
 
+### Delete files
+For delete files, just use the instance you created of the `omhStorageClient` and call method `deleteFile` sending as parameter the id of the file you want to delete.
+
 If you are configuring this step by step on the `code-starter` branch:
 1. Copy this snippet
 2. Go to the file `FileViewerViewModel`
-3. Search the comment `// Add here snippet for create files`
+3. Search the comment `// Add here snippet for delete files`
 4. Paste there the snippet
-
-### Delete files
-For delete files, just use the instance you created of the `omhStorageClient` and call method `deleteFile` sending as parameter the id of the file you want to delete.
 
    ```kotlin
     val cancellable = omhStorageClient.deleteFile(fileId)
@@ -298,14 +304,14 @@ For delete files, just use the instance you created of the `omhStorageClient` an
     cancellableCollector.addCancellable(cancellable)
    ```
 
+### Upload files
+For upload files, just use the instance you created of the `omhStorageClient` and call method `uploadFile` sending as parameter the local path of the file you want to upload and the id of the remote folder where you want to place it (parent id).
+
 If you are configuring this step by step on the `code-starter` branch:
 1. Copy this snippet
 2. Go to the file `FileViewerViewModel`
-3. Search the comment `// Add here snippet for delete files`
+3. Search the comment `// Add here snippet for upload files`
 4. Paste there the snippet
-
-### Upload files
-For upload files, just use the instance you created of the `omhStorageClient` and call method `uploadFile` sending as parameter the local path of the file you want to upload and the id of the remote folder where you want to place it (parent id).
 
    ```kotlin
     val cancellable = omhStorageClient.uploadFile(filePath, parentId)
@@ -321,14 +327,14 @@ For upload files, just use the instance you created of the `omhStorageClient` an
     cancellableCollector.addCancellable(cancellable)
    ```
 
+### Update files
+For update files, just use the instance you created of the `omhStorageClient` and call method `updateFile` sending as parameter the local path of the file you want to update and the id of the remote file you want to replace (file id).
+
 If you are configuring this step by step on the `code-starter` branch:
 1. Copy this snippet
 2. Go to the file `FileViewerViewModel`
-3. Search the comment `// Add here snippet for upload files`
+3. Search the comment `// Add here snippet for update files`
 4. Paste there the snippet
-
-### Update files
-For update files, just use the instance you created of the `omhStorageClient` and call method `updateFile` sending as parameter the local path of the file you want to update and the id of the remote file you want to replace (file id).
 
    ```kotlin
     val cancellable = omhStorageClient.updateFile(filePath, fileId)
@@ -344,14 +350,14 @@ For update files, just use the instance you created of the `omhStorageClient` an
     cancellableCollector.addCancellable(cancellable)
    ```
 
+### Download files
+For download files, just use the instance you created of the `omhStorageClient` and call method `createFile` sending as parameter the id of the file you want to download and the mime type you desire to have locally (once downloaded)
+
 If you are configuring this step by step on the `code-starter` branch:
 1. Copy this snippet
 2. Go to the file `FileViewerViewModel`
-3. Search the comment `// Add here snippet for update files`
+3. Search the comment `// Add here snippet for download files`
 4. Paste there the snippet
-
-### Download files
-For download files, just use the instance you created of the `omhStorageClient` and call method `createFile` sending as parameter the id of the file you want to download and the mime type you desire to have locally (once downloaded)
 
    ```kotlin
     val cancellable = omhStorageClient.downloadFile(id, mimeTypeToSave)
@@ -366,12 +372,6 @@ For download files, just use the instance you created of the `omhStorageClient` 
                 .execute()
     cancellableCollector.addCancellable(cancellable)
    ```
-
-If you are configuring this step by step on the `code-starter` branch:
-1. Copy this snippet
-2. Go to the file `FileViewerViewModel`
-3. Search the comment `// Add here snippet for download files`
-4. Paste there the snippet
 
 # Sample App
 This repository includes a [Storage-sample](/storage-sample) that demonstrates the functionality of the OMH Storage Client Library. 
