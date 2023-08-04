@@ -4,8 +4,8 @@ plugins {
     `android-application`
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android") version "2.44" apply true
-    id("com.openmobilehub.android.omh-core")
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
+    // Paste below this line the snippet of core plugin
 }
 
 omhConfig {
