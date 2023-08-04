@@ -99,48 +99,48 @@ In your `storage-starter-sample` module-level `build.gradle.kts` search the comm
 
    ```
    omhConfig {
-      bundle("singleBuild") {
-          storage() {
-              gmsService {
-                  dependency = "com.openmobilehub.android:storage-api-drive-gms:1.0.5-rc"
-              }
-              nonGmsService {
-                  dependency = "com.openmobilehub.android:storage-api-drive-nongms:1.0.4-rc"
-              }
-          }
-          auth {
-              gmsService {
-                  dependency = "com.openmobilehub.android:auth-api-gms:1.0.0-beta"
-              }
-              nonGmsService {
-                  dependency = "com.openmobilehub.android:auth-api-non-gms:1.0.0-beta"
-              }
-          }
-      }
-      bundle("gms") {
-          storage {
-              gmsService {
-                  dependency = "com.openmobilehub.android:storage-api-drive-gms:1.0.5-rc"
-              }
-          }
-          auth {
-              gmsService {
-                  dependency = "com.openmobilehub.android:auth-api-gms:1.0.0-beta"
-              }
-          }
-      }
-      bundle("nongms") {
-          storage {
-              nonGmsService {
-                  dependency = "com.openmobilehub.android:storage-api-drive-nongms:1.0.4-rc"
-              }
-          }
-          auth {
-              nonGmsService {
-                  dependency = "com.openmobilehub.android:auth-api-non-gms:1.0.0-beta"
-              }
-          }
-      }
+       bundle("singleBuild") {
+           storage() {
+               gmsService {
+                   dependency = "com.openmobilehub.android:storage-api-drive-gms:1.0.6-beta"
+               }
+               nonGmsService {
+                   dependency = "com.openmobilehub.android:storage-api-drive-nongms:1.0.5-beta"
+               }
+           }
+           auth {
+               gmsService {
+                   dependency = "com.openmobilehub.android:auth-api-gms:1.0.0-beta"
+               }
+               nonGmsService {
+                   dependency = "com.openmobilehub.android:auth-api-non-gms:1.0.0-beta"
+               }
+           }
+       }
+       bundle("gms") {
+           storage {
+               gmsService {
+                   dependency = "com.openmobilehub.android:storage-api-drive-gms:1.0.6-beta"
+               }
+           }
+           auth {
+               gmsService {
+                   dependency = "com.openmobilehub.android:auth-api-gms:1.0.0-beta"
+               }
+           }
+       }
+       bundle("nongms") {
+           storage {
+               nonGmsService {
+                   dependency = "com.openmobilehub.android:storage-api-drive-nongms:1.0.5-beta"
+               }
+           }
+           auth {
+               nonGmsService {
+                   dependency = "com.openmobilehub.android:auth-api-non-gms:1.0.0-beta"
+               }
+           }
+       }
    }
    ```
 
