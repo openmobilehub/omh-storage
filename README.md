@@ -52,35 +52,32 @@ To access Google APIs, generate a unique client_id for your app in the Google AP
 3. [Go to the Credentials page](https://console.cloud.google.com/apis/credentials).
 4. On the Credentials page, click on "Create credentials" and choose "OAuth Client ID".
 5. In the "Application Type" option, select "Android".
-6. Set your application package name (Use "com.omh.android.storage.sample" if you are following the
-   starter-code)
+6. Set your application package name (Use "com.omh.android.storage.sample" if you are following the starter-code)
 7. Update the debug/release SHA-1 certificate fingerprint for Android's Client ID.
 
    Note: The debug build is automatically signed with the debug keystore. Obtain the certificate fingerprint from it by following the guidelines in the official Google Developers documentation: ["Using keytool on the certificate"](https://developers.google.com/android/guides/client-auth#using_keytool_on_the_certificate).
-8. In the [OAuth consent screen](https://console.cloud.google.com/apis/credentials/consent) add the
-   test users that you will be using for QA and development. Without this step you won't be able to
-   access the application while it's in testing mode.
+8. In the [OAuth consent screen](https://console.cloud.google.com/apis/credentials/consent) add the test users that you will be using for QA and development. Without this step you won't be able to access the application while it's in testing mode.
 9. You're all set!
 
 ## Add the Client ID to your app
-You should not check your Client ID into your version control system, so it is recommended
-storing it in the `local.properties` file, which is located in the root directory of your project.
-For more information about the `local.properties` file,
-see [Gradle properties](https://developer.android.com/studio/build#properties-files)
-[files](https://developer.android.com/studio/build#properties-files).
+You should not check your Client ID into your version control system, so it is recommended storing it in the `local.properties` file, which is located in the root directory of your project.
+For more information about the `local.properties` file, see [Gradle properties](https://developer.android.com/studio/build#properties-files) and [files](https://developer.android.com/studio/build#properties-files).
 
-1. Open the `local.properties` in your project level directory, and then add the following code.
-   Replace `YOUR_CLIENT_ID` with your API key.
-   `CLIENT_ID=YOUR_CLIENT_ID`
+1. Open the `local.properties` in your project level directory, and then add the following line:
+
+   ```
+   CLIENT_ID = "YOUR_CLIENT_ID"
+   ```
+
+   *Note:* Replace `YOUR_CLIENT_ID` with your API key client id.
+
 2. Save the file and [sync your project with Gradle](https://developer.android.com/studio/build#sync-files).
 
 ## Gradle configuration
-To incorporate OMH Storage into your project, you have two options: utilize the OMH Core Plugin or directly include the OMH Client libraries dependencies. This plugin simplifies the addition of
-Gradle dependencies, allowing you to effortlessly manage and include the necessary dependencies for seamless integration.
+To incorporate OMH Storage into your project, you have two options: utilize the OMH Core Plugin or directly include the OMH Client libraries dependencies. This plugin simplifies the addition of Gradle dependencies, allowing you to effortlessly manage and include the necessary dependencies for seamless integration.
 
 ### Add OMH Core plugin
-The subsequent instructions will outline the necessary steps for including the OMH Core Plugin as a
-Gradle dependency.
+The subsequent instructions will outline the necessary steps for including the OMH Core Plugin as a Gradle dependency.
 
 1. In your "storage-starter-sample" module-level `build.gradle` under the `plugins` element add the plugin id.
 
@@ -146,10 +143,7 @@ In your `storage-starter-sample` module-level `build.gradle.kts` search the comm
 
 _**NOTE: This section covers concepts about the core plugin**_
 
-In your "storage-starter-sample" module-level `build.gradle` file is required to configure
-the `omhConfig`. The `omhConfig` definition is used to extend the existing Android Studio
-variants in the core plugin. For more details `omhConfig`
-see [OMH Core](https://github.com/openmobilehub/omh-core/tree/release/1.0).
+In your "storage-starter-sample" module-level `build.gradle` file is required to configure the `omhConfig`. The `omhConfig` definition is used to extend the existing Android Studio variants in the core plugin. For more details about `omhConfig` see [OMH Core](https://github.com/openmobilehub/omh-core/tree/release/1.0).
 
 #### Basic configuration
 In this step, you will define the OMH Core Plugin bundles to generate multiple build variants with specific suffixes as their names. For example, if your project has `release` and `debug` variants with `singleBuild`, `gms`, and `nonGms` OMH bundles, the following build variants will be generated:
@@ -164,8 +158,7 @@ In this step, you will define the OMH Core Plugin bundles to generate multiple b
       are `com.openmobilehub.android:storage-api-drive-gms:1.0-rc"`
       and `com.openmobilehub.android:storage-api-drive-nongms:1.0-rc`.
 
-**Note:** It's important to observe how a single build encompasses both GMS (Google MobileServices)
-and Non-GMS configurations.
+**Note:** It's important to observe how a single build encompasses both GMS (Google MobileServices) and Non-GMS configurations.
 
 ##### Variant gms
     - Define the `Service`. In this example is storage.
@@ -213,7 +206,9 @@ and Non-GMS configurations.
        context = context
    )
    ```
-   
+
+   *Note:* If you're configuring this step by step on the `starter-code` branch you will find the full implementation on `SingletonModule` class, on function [`providesOmhAuthClient`](https://github.com/openmobilehub/omh-storage/blob/release/1.0/storage-sample/src/main/java/com/omh/android/storage/sample/di/SingletonModule.kt#L36-L52).
+
 6. To instantiate the OmhStorageClient, add the following code.
    
    ```kotlin
@@ -228,7 +223,8 @@ and Non-GMS configurations.
    )
    ```
 
-*Note*: we'd recommend to provide the auth client and the storage client as a singleton with your preferred dependency injection library as this will be your only gateway to the OMH Auth SDK and OMH Storage SDK; and it doesn't change in runtime at all. If you're checking the `starter-code` or the `main` branches you will find this on `SingletonModule` class.
+   *Note*: we'd recommend to provide the auth client and the storage client as a singleton with your preferred dependency injection library as this will be your only gateway to the OMH Auth SDK and OMH Storage SDK; and it doesn't change in runtime at all.
+   If you're configuring this step by step on the `starter-code` branch you will find the full implementation on `SingletonModule` class, on function [`providesOmhStorageClient`](https://github.com/openmobilehub/omh-storage/blob/release/1.0/storage-sample/src/main/java/com/omh/android/storage/sample/di/SingletonModule.kt#L55-L64).
 
 ## Adding Storage to your app
 First and foremost, the main interface that you'll be interacting with is called OmhStorageClient. In contains all your basic storage functionalities: list, create, delete, download, update and upload files.
@@ -256,7 +252,7 @@ If you are configuring this step by step on the `code-starter` branch:
    cancellableCollector.addCancellable(cancellable)
    ```
 
-   **Note: Make sure to use the full implementation of [`refreshFileListEvent`](https://github.com/openmobilehub/omh-storage/blob/release/1.0/storage-sample/src/main/java/com/omh/android/storage/sample/presentation/file_viewer/FileViewerViewModel.kt#L88C1-L110) for a fully functional sample.**
+   **Note: Make sure to use the full implementation of [`refreshFileListEvent`](https://github.com/openmobilehub/omh-storage/blob/release/1.0/storage-sample/src/main/java/com/omh/android/storage/sample/presentation/file_viewer/FileViewerViewModel.kt#L88-L110) for a fully functional sample.**
 
 2. Run the sample app to see the list of files.
 
@@ -264,10 +260,8 @@ If you are configuring this step by step on the `code-starter` branch:
 For create files, just use the instance you created of the `omhStorageClient` and call method `createFile` sending as parameter the desired name, mime type and parent id.
 
 If you are configuring this step by step on the `code-starter` branch:
-1. Copy this snippet
-2. Go to the file `FileViewerViewModel`
-3. Search the comment `// Add here snippet for create files`
-4. Paste there the snippet
+
+1. Go to the `createFileEvent` function in the `FileViewerViewModel` file. Look for the comment `// Add here snippet for create files`, and replace the existing code below this comment with the following snippet:
 
    ```kotlin
     val cancellable = omhStorageClient.createFile(name, mimeType, parentId)
@@ -283,14 +277,16 @@ If you are configuring this step by step on the `code-starter` branch:
     cancellableCollector.addCancellable(cancellable)
    ```
 
+   **Note: Make sure to use the full implementation of [`createFileEvent`](https://github.com/openmobilehub/omh-storage/blob/release/1.0/storage-sample/src/main/java/com/omh/android/storage/sample/presentation/file_viewer/FileViewerViewModel.kt#L213-L227) for a fully functional sample.**
+
+2. Run the sample app to create files.
+
 ### Delete files
 For delete files, just use the instance you created of the `omhStorageClient` and call method `deleteFile` sending as parameter the id of the file you want to delete.
 
 If you are configuring this step by step on the `code-starter` branch:
-1. Copy this snippet
-2. Go to the file `FileViewerViewModel`
-3. Search the comment `// Add here snippet for delete files`
-4. Paste there the snippet
+
+1. Go to the `deleteFileEvent` function in the `FileViewerViewModel` file. Look for the comment `// Add here snippet for delete files`, and replace the existing code below this comment with the following snippet:
 
    ```kotlin
     val cancellable = omhStorageClient.deleteFile(fileId)
@@ -306,14 +302,16 @@ If you are configuring this step by step on the `code-starter` branch:
     cancellableCollector.addCancellable(cancellable)
    ```
 
+   **Note: Make sure to use the full implementation of [`deleteFileEvent`](https://github.com/openmobilehub/omh-storage/blob/release/1.0/storage-sample/src/main/java/com/omh/android/storage/sample/presentation/file_viewer/FileViewerViewModel.kt#L270-L288) for a fully functional sample.**
+
+2. Run the sample app to delete files.
+
 ### Upload files
 For upload files, just use the instance you created of the `omhStorageClient` and call method `uploadFile` sending as parameter the local path of the file you want to upload and the id of the remote folder where you want to place it (parent id).
 
 If you are configuring this step by step on the `code-starter` branch:
-1. Copy this snippet
-2. Go to the file `FileViewerViewModel`
-3. Search the comment `// Add here snippet for upload files`
-4. Paste there the snippet
+
+1. Go to the `uploadFile` function in the `FileViewerViewModel` file. Look for the comment `// Add here snippet for upload files`, and replace the existing code below this comment with the following snippet:
 
    ```kotlin
     val cancellable = omhStorageClient.uploadFile(filePath, parentId)
@@ -329,14 +327,16 @@ If you are configuring this step by step on the `code-starter` branch:
     cancellableCollector.addCancellable(cancellable)
    ```
 
+   **Note: Make sure to use the full implementation of [`uploadFile`](https://github.com/openmobilehub/omh-storage/blob/release/1.0/storage-sample/src/main/java/com/omh/android/storage/sample/presentation/file_viewer/FileViewerViewModel.kt#L229-L256) for a fully functional sample.**
+
+2. Run the sample app to upload files.
+
 ### Update files
 For update files, just use the instance you created of the `omhStorageClient` and call method `updateFile` sending as parameter the local path of the file you want to update and the id of the remote file you want to replace (file id).
 
 If you are configuring this step by step on the `code-starter` branch:
-1. Copy this snippet
-2. Go to the file `FileViewerViewModel`
-3. Search the comment `// Add here snippet for update files`
-4. Paste there the snippet
+
+1. Go to the `updateFileEvent` function in the `FileViewerViewModel` file. Look for the comment `// Add here snippet for update files`, and replace the existing code below this comment with the following snippet:
 
    ```kotlin
     val cancellable = omhStorageClient.updateFile(filePath, fileId)
@@ -352,14 +352,16 @@ If you are configuring this step by step on the `code-starter` branch:
     cancellableCollector.addCancellable(cancellable)
    ```
 
+   **Note: Make sure to use the full implementation of [`updateFileEvent`](https://github.com/openmobilehub/omh-storage/blob/release/1.0/storage-sample/src/main/java/com/omh/android/storage/sample/presentation/file_viewer/FileViewerViewModel.kt#L180-L211) for a fully functional sample.**
+
+2. Run the sample app to update files.
+
 ### Download files
 For download files, just use the instance you created of the `omhStorageClient` and call method `createFile` sending as parameter the id of the file you want to download and the mime type you desire to have locally (once downloaded)
 
 If you are configuring this step by step on the `code-starter` branch:
-1. Copy this snippet
-2. Go to the file `FileViewerViewModel`
-3. Search the comment `// Add here snippet for download files`
-4. Paste there the snippet
+
+1. Go to the `downloadFileEvent` function in the `FileViewerViewModel` file. Look for the comment `// Add here snippet for download files`, and replace the existing code below this comment with the following snippet:
 
    ```kotlin
     val cancellable = omhStorageClient.downloadFile(id, mimeTypeToSave)
@@ -374,6 +376,24 @@ If you are configuring this step by step on the `code-starter` branch:
                 .execute()
     cancellableCollector.addCancellable(cancellable)
    ```
+
+   To ensure proper resource management and improve the reliability of the code, we recommend adding the necessary code to close the `fileOutputStream` after the `bytes.writeTo(fileOutputStream)` operation.
+
+   **Example Using Kotlin's `use` Function:**
+   ```kotlin
+   try {
+       FileOutputStream(fileToSave).use { fileOutputStream ->
+           bytes.writeTo(fileOutputStream)
+           // File was successfully saved
+       }
+   } catch (e: IOException) {
+       // Handle the exception here
+   }
+   ```
+
+   **Note: Make sure to use the full implementation of [`downloadFileEvent`](https://github.com/openmobilehub/omh-storage/blob/release/1.0/storage-sample/src/main/java/com/omh/android/storage/sample/presentation/file_viewer/FileViewerViewModel.kt#L140-L178) for a fully functional sample.**
+
+2. Run the sample app to download files.
 
 # Sample App
 This repository includes a [Storage-sample](/storage-sample) that demonstrates the functionality of the OMH Storage Client Library. 
