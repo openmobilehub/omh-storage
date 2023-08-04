@@ -239,24 +239,26 @@ You can checkout the branch `code-starter` and copy/paste the following snippets
 For list files, just use the instance you created of the `omhStorageClient` and call method `listFiles` sending as parameter the desired parent id.
 
 If you are configuring this step by step on the `code-starter` branch:
-1. Copy this snippet
-2. Go to the file `FileViewerViewModel`
-3. Search the comment `// Add here snippet for list files`
-4. Paste there the snippet
 
+1. Go to the `refreshFileListEvent` function in the `FileViewerViewModel` file. Look for the comment `// Add here snippet for list files`, and replace the existing code below this comment with the following snippet:
+   
    ```kotlin
-    val cancellable = omhStorageClient.listFiles(parentId)
-                .addOnSuccess { result: GetFilesListUseCaseResult ->
-                    // Get the files list
-                    val filesList: List<OmhFile> = result.files
-                    // TODO - Developer: Manage success
-                }
-                .addOnFailure { exception: Exception ->
-                    // TODO - Developer: Manage error
-                }
-                .execute()
-    cancellableCollector.addCancellable(cancellable)
+   val cancellable = omhStorageClient.listFiles(parentId)
+               .addOnSuccess { result: GetFilesListUseCaseResult ->
+                   // Get the files list
+                   val filesList: List<OmhFile> = result.files
+                   // TODO - Developer: Manage success
+               }
+               .addOnFailure { exception: Exception ->
+                   // TODO - Developer: Manage error
+               }
+               .execute()
+   cancellableCollector.addCancellable(cancellable)
    ```
+
+   **Note: Make sure to use the full implementation of [`refreshFileListEvent`](https://github.com/openmobilehub/omh-storage/blob/release/1.0/storage-sample/src/main/java/com/omh/android/storage/sample/presentation/file_viewer/FileViewerViewModel.kt#L88C1-L110) for a fully functional sample.**
+
+2. Run the sample app to see the list of files.
 
 ### Create files
 For create files, just use the instance you created of the `omhStorageClient` and call method `createFile` sending as parameter the desired name, mime type and parent id.
