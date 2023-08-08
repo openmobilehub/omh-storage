@@ -323,7 +323,9 @@ class FileViewerViewModel @Inject constructor(
         val fileToSave = File(downloadFolder, file.getNameWithExtension())
         val fileOutputStream = FileOutputStream(fileToSave)
 
-        bytes.writeTo(fileOutputStream)
+        bytes.use { byteArrayOutputStream ->
+            byteArrayOutputStream.writeTo(fileOutputStream)
+        }
     }
 
     override fun onCleared() {
