@@ -52,7 +52,7 @@ To access Google APIs, generate a unique client_id for your app in the Google AP
 3. [Go to the Credentials page](https://console.cloud.google.com/apis/credentials).
 4. On the Credentials page, click on "Create credentials" and choose "OAuth Client ID".
 5. In the "Application Type" option, select "Android".
-6. Set your application package name (Use "com.omh.android.storage.sample" if you are following the starter-code)
+6. Set your application package name (Use "com.omh.android.storage.sample" if you are following the code-starter)
 7. Update the debug/release SHA-1 certificate fingerprint for Android's Client ID.
 
    Note: The debug build is automatically signed with the debug keystore. Obtain the certificate fingerprint from it by following the guidelines in the official Google Developers documentation: ["Using keytool on the certificate"](https://developers.google.com/android/guides/client-auth#using_keytool_on_the_certificate).
@@ -79,7 +79,7 @@ To incorporate OMH Storage into your project, you have two options: utilize the 
 ### Add OMH Core plugin
 The subsequent instructions will outline the necessary steps for including the OMH Core Plugin as a Gradle dependency.
 
-1. In your `storage-starter-sample` module-level `build.gradle` under the `plugins` element add the plugin id. If you're configuring this step by step on the `starter-code` branch, look for the comment `// Paste below this line the snippet of core plugin` and paste there the plugin id as shown on the next snippet:
+1. In your `storage-starter-sample` module-level `build.gradle` under the `plugins` element add the plugin id. If you're configuring this step by step on the `code-starter` branch, look for the comment `// Paste below this line the snippet of core plugin` and paste there the plugin id as shown on the next snippet:
 
    ```
    plugins {
@@ -207,7 +207,7 @@ In this step, you will define the OMH Core Plugin bundles to generate multiple b
    )
    ```
 
-   *Note:* If you're configuring this step by step on the `starter-code` branch you will find the full implementation on `SingletonModule` class, on function [`providesOmhAuthClient`](https://github.com/openmobilehub/omh-storage/blob/release/1.0/storage-sample/src/main/java/com/omh/android/storage/sample/di/SingletonModule.kt#L36-L52).
+   *Note:* If you're configuring this step by step on the `code-starter` branch you will find the full implementation on `SingletonModule` class, on function [`providesOmhAuthClient`](https://github.com/openmobilehub/omh-storage/blob/release/1.0/storage-sample/src/main/java/com/omh/android/storage/sample/di/SingletonModule.kt#L36-L52).
 
 6. To instantiate the OmhStorageClient, add the following code.
    
@@ -224,7 +224,7 @@ In this step, you will define the OMH Core Plugin bundles to generate multiple b
    ```
 
    *Note*: we'd recommend to provide the auth client and the storage client as a singleton with your preferred dependency injection library as this will be your only gateway to the OMH Auth SDK and OMH Storage SDK; and it doesn't change in runtime at all.
-   If you're configuring this step by step on the `starter-code` branch you will find the full implementation on `SingletonModule` class, on function [`providesOmhStorageClient`](https://github.com/openmobilehub/omh-storage/blob/release/1.0/storage-sample/src/main/java/com/omh/android/storage/sample/di/SingletonModule.kt#L55-L64).
+   If you're configuring this step by step on the `code-starter` branch you will find the full implementation on `SingletonModule` class, on function [`providesOmhStorageClient`](https://github.com/openmobilehub/omh-storage/blob/release/1.0/storage-sample/src/main/java/com/omh/android/storage/sample/di/SingletonModule.kt#L55-L64).
 
 ## Adding Storage to your app
 First and foremost, the main interface that you'll be interacting with is called OmhStorageClient. In contains all your basic storage functionalities: list, create, delete, download, update and upload files.
