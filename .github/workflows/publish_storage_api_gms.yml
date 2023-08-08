@@ -21,6 +21,9 @@ jobs:
           distribution: adopt
           java-version: 11
 
+      - name: Update local properties for secrets
+        run: echo CLIENT_ID="CLIENT_ID_VALUE" > ./local.properties
+
         # Builds the release artifacts of the library
       - name: Release build
         run: ./gradlew :storage-api-drive-gms:assembleRelease
