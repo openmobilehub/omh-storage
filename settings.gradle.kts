@@ -16,4 +16,4 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "omh-storage"
-include(":storage-sample")
+include(":storage-starter-sample")
