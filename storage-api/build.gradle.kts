@@ -1,5 +1,6 @@
 plugins {
     `android-base-lib`
+    id("org.jetbrains.dokka") version "1.8.20"
 }
 
 @Suppress("UnstableApiUsage")
@@ -9,7 +10,6 @@ android {
 
 dependencies {
     implementation(Libs.reflection)
-
 
     // Omh Auth
     api(Libs.omhNonGmsAuthLibrary)
