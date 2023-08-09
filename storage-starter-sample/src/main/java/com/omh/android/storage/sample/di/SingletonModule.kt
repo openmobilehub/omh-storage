@@ -34,21 +34,7 @@ class SingletonModule {
 
     @Provides
     fun providesOmhAuthClient(@ApplicationContext context: Context): OmhAuthClient {
-        return OmhAuthProvider.Builder()
-            .addNonGmsPath(BuildConfig.AUTH_NON_GMS_PATH)
-            .addGmsPath(BuildConfig.AUTH_GMS_PATH)
-            .build()
-            .provideAuthClient(
-                context = context,
-                scopes = listOf(
-                    "openid",
-                    "email",
-                    "profile",
-                    "https://www.googleapis.com/auth/drive",
-                    "https://www.googleapis.com/auth/drive.file"
-                ),
-                clientId = BuildConfig.CLIENT_ID
-            )
+        // Add here snippet for provide auth client
     }
 
     @Provides
@@ -56,10 +42,6 @@ class SingletonModule {
         omhAuthClient: OmhAuthClient,
         @ApplicationContext context: Context
     ): OmhStorageClient {
-        return OmhStorageProvider.Builder()
-            .addGmsPath(BuildConfig.STORAGE_GMS_PATH)
-            .addNonGmsPath(BuildConfig.STORAGE_NON_GMS_PATH)
-            .build()
-            .provideStorageClient(omhAuthClient, context)
+        // Add here snippet for provide storage client
     }
 }
