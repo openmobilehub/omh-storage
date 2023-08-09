@@ -43,7 +43,7 @@ To clone the repository and checkout the `code-starter` branch, use the followin
    git clone --branch code-starter https://github.com/openmobilehub/omh-storage.git omh-storage-starter-code
    ```
 
-## Set up your Google Cloud project for applications with Google Services(Google Auth)
+## Set up your Google Cloud project for applications with Google Services (Google Auth)
 To access Google APIs, generate a unique client_id for your app in the Google API Console, for additional information [see](https://github.com/openmobilehub/omh-auth). Add the client_id to your app's code and complete the required Cloud Console setup steps:
 
 ### Steps
@@ -52,12 +52,16 @@ To access Google APIs, generate a unique client_id for your app in the Google AP
 3. [Go to the Credentials page](https://console.cloud.google.com/apis/credentials).
 4. On the Credentials page, click on "Create credentials" and choose "OAuth Client ID".
 5. In the "Application Type" option, select "Android".
-6. Set your application package name (Use "com.omh.android.storage.sample" if you are following the code-starter)
+6. Set your application package name.
+   
+   *Note:* If you are configuring this for run the sample app or following step by step the `code-starter`branch, use `com.omh.android.storage.sample`.
 7. Update the debug/release SHA-1 certificate fingerprint for Android's Client ID.
 
-   Note: The debug build is automatically signed with the debug keystore. Obtain the certificate fingerprint from it by following the guidelines in the official Google Developers documentation: ["Using keytool on the certificate"](https://developers.google.com/android/guides/client-auth#using_keytool_on_the_certificate).
+   Note: The debug build is automatically signed with the debug keystore. Obtain the certificate fingerprint from it by following the guidelines in the official Google Developers documentation. For more information, here's the link: ["Using keytool on the certificate"](https://developers.google.com/android/guides/client-auth#using_keytool_on_the_certificate).
 8. In the [OAuth consent screen](https://console.cloud.google.com/apis/credentials/consent) add the test users that you will be using for QA and development. Without this step you won't be able to access the application while it's in testing mode.
-9. You're all set!
+9. Go to the [API library](https://console.cloud.google.com/apis/library) section on the project you created
+10. Once there, make sure enable [Google Drive Api](https://console.cloud.google.com/apis/library/drive.googleapis.com)
+11. You're all set!
 
 ## Add the Client ID to your app
 You should not check your Client ID into your version control system, so it is recommended storing it in the `local.properties` file, which is located in the root directory of your project.
