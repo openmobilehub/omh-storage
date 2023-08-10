@@ -29,6 +29,7 @@ import androidx.fragment.app.viewModels
 import com.omh.android.storage.sample.R
 import com.omh.android.storage.sample.databinding.FragmentLoginBinding
 import com.omh.android.storage.sample.presentation.BaseFragment
+import com.omh.android.storage.sample.presentation.util.displayErrorDialog
 import com.omh.android.storage.sample.presentation.util.navigateTo
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -42,21 +43,14 @@ class LoginFragment : BaseFragment<LoginViewModel, LoginViewState, LoginViewEven
     private val loginLauncher: ActivityResultLauncher<Intent> = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result: ActivityResult ->
-        context?.let { context ->
-            try {
-                result.data?.let { intent ->
-                    viewModel.getAccountFromIntent(intent)
-                    navigateTo(R.id.action_login_fragment_to_file_viewer_fragment)
-                }
-            } catch (exception: Exception) {
-                AlertDialog.Builder(context)
-                    .setTitle("An error has occurred.")
-                    .setMessage(exception.message)
-                    .setPositiveButton(android.R.string.ok) { dialog, _ ->
-                        dialog.dismiss()
-                    }
-                    .create()
-                    .show()
+        try {
+            result.data?.let { intent ->
+                viewModel.getAccountFromIntent(intent)
+                navigateTo(R.id.action_login_fragment_to_file_viewer_fragment)
+            }
+        } catch (exception: Exception) {
+            exception.message?.let { message ->
+                displayErrorDialog(message)
             }
         }
     }
