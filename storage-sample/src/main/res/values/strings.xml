@@ -19,4 +19,6 @@
     <string name="text_update">Update</string>
     <string name="text_cancel">Cancel</string>
     <string name="text_sign_out">Sign out</string>
+    <string name="error_dialog_title">Ups! Something went wrong</string>
+    <string name="error_dialog_message">Error:\n\n%s</string>
 </resources>
