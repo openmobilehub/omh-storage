@@ -54,10 +54,16 @@ To access Google APIs, generate a unique client_id for your app in the Google AP
 5. In the "Application Type" option, select "Android".
 6. Set your application package name.
    
-   *Note:* If you are configuring this for run the sample app or following step by step the `code-starter`branch, use `com.omh.android.storage.sample`.
-7. Update the debug/release SHA-1 certificate fingerprint for Android's Client ID.
+   **Note:** If you are running the sample app or following the steps in the `code-starter` branch, use `com.omh.android.storage.sample`.
 
-   Note: The debug build is automatically signed with the debug keystore. Obtain the certificate fingerprint from it by following the guidelines in the official Google Developers documentation. For more information, here's the link: ["Using keytool on the certificate"](https://developers.google.com/android/guides/client-auth#using_keytool_on_the_certificate).
+7. Update the Android Client ID's debug/release SHA-1 certificate fingerprint by running the following command in your terminal:
+ 
+   ```bash
+    keytool -list -v -alias androiddebugkey -keystore ~/.android/debug.keystore
+   ```
+ 
+   **Note:** Use `android` as the default password. For instructions on other operating systems, refer to [these guidelines](https://developers.google.com/android/guides/client-auth#using_keytool_on_the_certificate).
+
 8. In the [OAuth consent screen](https://console.cloud.google.com/apis/credentials/consent) add the test users that you will be using for QA and development. Without this step you won't be able to access the application while it's in testing mode.
 9. Go to the [API library](https://console.cloud.google.com/apis/library) section on the project you created
 10. Once there, make sure enable [Google Drive Api](https://console.cloud.google.com/apis/library/drive.googleapis.com)
@@ -415,13 +421,16 @@ If you are configuring this step by step on the `code-starter` branch:
 
 2. Run the sample app to download files.
 
-# Sample App
-This repository includes a [Storage-sample](/storage-sample) that demonstrates the functionality of the OMH Storage Client Library. 
-By cloning the repo and executing the app, you can explore the various features offered by the library. 
-However, if you prefer a step-by-step approach to learn the SDK from scratch, we recommend following the detailed Getting Started guide provided in this repository.
-The guide will walk you through the implementation process and help you integrate the OMH Storage Client Library into your projects effectively.
+# Sample App: All-Feature Demonstration
+This repository also contains a [Storage-sample](/storage-sample), which demonstrates all the functionalities of the OMH Storage Client Library. To get started, follow these steps:
 
-**Note: Before running the sample application, make sure to follow the steps in Setup your Google Cloud project for application with Google Services to configure your Google Cloud project.**
+1. Clone the repository to your local machine.
+2. Set up your Google Cloud project. You can refer to the [instructions](#set-up-your-google-cloud-project-for-applications-with-google-services-google-auth) for guidance.
+3. Add the client id to your app using the instructions provided [here](https://github.com/openmobilehub/omh-storage#set-up-your-google-cloud-project-for-applications-with-google-services-google-auth).
+4. Set the variant to `debugSingleBuild`
+5. Run the `storage-sample` on your device
+
+However, if you prefer a more structured approach to learn the client library from scratch, it's recommended to begin with the [Getting Started section](#getting-started).
 
 # Documentation
 See example and check the full documentation and add custom implementation at our [Wiki](https://github.com/openmobilehub/omh-storage/wiki).
