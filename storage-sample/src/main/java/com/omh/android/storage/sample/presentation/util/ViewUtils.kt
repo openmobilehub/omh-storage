@@ -16,11 +16,15 @@
 
 package com.omh.android.storage.sample.presentation.util
 
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.Toast
 import androidx.annotation.IdRes
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
+import com.omh.android.storage.sample.R
+import com.omh.android.storage.sample.databinding.ErrorDialogViewBinding
 
 fun View.displayToast(message: String?, duration: Int = Toast.LENGTH_LONG) {
     Toast.makeText(this.context, message, duration).show()
@@ -33,3 +37,30 @@ fun Fragment.displayToast(message: String?, duration: Int = Toast.LENGTH_LONG) {
 fun Fragment.navigateTo(@IdRes resId: Int) = NavHostFragment
     .findNavController(this)
     .navigate(resId)
+
+fun View.displayErrorDialog(message: String, layoutInflater: LayoutInflater) {
+    context?.let { context ->
+        val errorDialogView = ErrorDialogViewBinding.inflate(layoutInflater)
+        errorDialogView.textError.text = String.format(
+            context.getString(R.string.error_dialog_message),
+            message
+        )
+
+        val errorDialogBuilder = AlertDialog.Builder(context)
+            .setTitle(context.getString(R.string.error_dialog_title))
+            .setPositiveButton(context.getString(R.string.error_dialog_ok)) { dialog, _ ->
+                dialog.dismiss()
+            }
+
+        val errorDialog = errorDialogBuilder.create().apply {
+            setCancelable(false)
+            setView(errorDialogView.root)
+        }
+
+        errorDialog.show()
+    }
+}
+
+fun Fragment.displayErrorDialog(message: String) {
+    view?.displayErrorDialog(message, layoutInflater)
+}

@@ -101,8 +101,11 @@ class FileViewerViewModel @Inject constructor(
 
                 setState(FileViewerViewState.Content(files))
             }
-            .addOnFailure { e ->
-                toastMessage.postValue(e.message)
+            .addOnFailure { exception ->
+                errorDialogMessage.postValue(exception.message)
+                toastMessage.postValue(exception.message)
+                exception.printStackTrace()
+
                 setState(FileViewerViewState.Content(emptyList()))
             }
             .execute()
@@ -162,11 +165,15 @@ class FileViewerViewModel @Inject constructor(
                     } catch (exception: Exception) {
                         exception.printStackTrace()
                         setState(FileViewerViewState.ShowDownloadExceptionDialog)
+                        errorDialogMessage.postValue(exception.message)
                     }
                     refreshFileListEvent()
                 }
-                .addOnFailure {
+                .addOnFailure { exception ->
+                    errorDialogMessage.postValue(exception.message)
                     toastMessage.postValue("ERROR: ${file.name} was NOT downloaded")
+                    exception.printStackTrace()
+
                     refreshFileListEvent()
                 }
                 .execute()
@@ -199,9 +206,10 @@ class FileViewerViewModel @Inject constructor(
 
                 refreshFileListEvent()
             }
-            .addOnFailure { e ->
+            .addOnFailure { exception ->
+                errorDialogMessage.postValue(exception.message)
                 toastMessage.postValue("ERROR: ${event.fileName} was not updated")
-                e.printStackTrace()
+                exception.printStackTrace()
 
                 refreshFileListEvent()
             }
@@ -218,8 +226,11 @@ class FileViewerViewModel @Inject constructor(
             .addOnSuccess {
                 refreshFileListEvent()
             }
-            .addOnFailure { e ->
-                toastMessage.postValue(e.message)
+            .addOnFailure { exception ->
+                errorDialogMessage.postValue(exception.message)
+                toastMessage.postValue(exception.message)
+                exception.printStackTrace()
+
                 refreshFileListEvent()
             }
             .execute()
@@ -244,9 +255,10 @@ class FileViewerViewModel @Inject constructor(
 
                 refreshFileListEvent()
             }
-            .addOnFailure { e ->
+            .addOnFailure { exception ->
+                errorDialogMessage.postValue(exception.message)
                 toastMessage.postValue("ERROR: ${event.fileName} was NOT uploaded")
-                e.printStackTrace()
+                exception.printStackTrace()
 
                 refreshFileListEvent()
             }
@@ -278,8 +290,10 @@ class FileViewerViewModel @Inject constructor(
 
                 refreshFileListEvent()
             }
-            .addOnFailure {
+            .addOnFailure { exception ->
+                errorDialogMessage.postValue(exception.message)
                 toastMessage.postValue("ERROR: ${file.name} was NOT deleted")
+                exception.printStackTrace()
 
                 refreshFileListEvent()
             }

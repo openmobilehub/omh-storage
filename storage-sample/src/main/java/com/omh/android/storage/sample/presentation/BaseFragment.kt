@@ -20,6 +20,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
+import com.omh.android.storage.sample.presentation.util.displayErrorDialog
 import com.omh.android.storage.sample.presentation.util.displayToast
 import com.omh.android.storage.sample.util.LOG_MESSAGE_STATE
 import com.omh.android.storage.sample.util.TAG_VIEW_UPDATE
@@ -43,6 +44,12 @@ abstract class BaseFragment<ViewModel : BaseViewModel<State, Event>, State : Vie
 
         viewModel.toastMessage.observe(viewLifecycleOwner) { message ->
             displayToast(message)
+        }
+
+        viewModel.errorDialogMessage.observe(viewLifecycleOwner) { message ->
+            message?.let {
+                displayErrorDialog(message)
+            }
         }
     }
 
