@@ -48,7 +48,7 @@ fun View.displayErrorDialog(message: String, layoutInflater: LayoutInflater) {
 
         val errorDialogBuilder = AlertDialog.Builder(context)
             .setTitle(context.getString(R.string.error_dialog_title))
-            .setPositiveButton(context.getString(R.string.text_accept)) { dialog, _ ->
+            .setPositiveButton(context.getString(R.string.error_dialog_ok)) { dialog, _ ->
                 dialog.dismiss()
             }
 
