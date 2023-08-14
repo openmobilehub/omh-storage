@@ -9,8 +9,8 @@
 [![Publish Storage API Google Drive Implementation](https://github.com/openmobilehub/omh-storage/actions/workflows/publish_storage_api_gms.yml/badge.svg)](https://github.com/openmobilehub/omh-storage/actions/workflows/publish_storage_api_gms.yml)
 [![Publish Storage API NonGMS Implementation](https://github.com/openmobilehub/omh-storage/actions/workflows/publish_storage_api_ngms.yml/badge.svg)](https://github.com/openmobilehub/omh-storage/actions/workflows/publish_storage_api_ngms.yml)
 
-
-# OMH Storage Client Library
+# `code-starter` Branch - OMH Storage Client Library
+This branch contains the basic starting codebase for the OMH Storage Client Library. If you are new to the library we recommend using the [`Getting Started Guide`](#getting-started) in the main branch's `README.md` file to learn how to incorporate the client library into your project.
 
 ## Overview
 OMH Storage is an Android client library that makes it easy to integrate storage on both Google Mobile Services (GMS) and non-GMS devices. It eliminates the need for separate codebases for different Android builds.
