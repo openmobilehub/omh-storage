@@ -262,7 +262,7 @@ If you are configuring this step by step on the `code-starter` branch:
    cancellableCollector.addCancellable(cancellable)
    ```
 
-   **Note: Make sure to use the full implementation of [`refreshFileListEvent`](https://github.com/openmobilehub/omh-storage/blob/release/1.0/storage-sample/src/main/java/com/omh/android/storage/sample/presentation/file_viewer/FileViewerViewModel.kt#L88-L110) for a fully functional sample.**
+   **Note: Make sure to use the full implementation of [`refreshFileListEvent`](https://github.com/openmobilehub/omh-storage/blob/release/1.0/storage-sample/src/main/java/com/omh/android/storage/sample/presentation/file_viewer/FileViewerViewModel.kt#L88-L113) for a fully functional sample.**
 
 2. Run the sample app to see the list of files.
 
@@ -287,7 +287,7 @@ If you are configuring this step by step on the `code-starter` branch:
     cancellableCollector.addCancellable(cancellable)
    ```
 
-   **Note: Make sure to use the full implementation of [`createFileEvent`](https://github.com/openmobilehub/omh-storage/blob/release/1.0/storage-sample/src/main/java/com/omh/android/storage/sample/presentation/file_viewer/FileViewerViewModel.kt#L213-L227) for a fully functional sample.**
+   **Note: Make sure to use the full implementation of [`createFileEvent`](https://github.com/openmobilehub/omh-storage/blob/release/1.0/storage-sample/src/main/java/com/omh/android/storage/sample/presentation/file_viewer/FileViewerViewModel.kt#L221-L238) for a fully functional sample.**
 
 2. Run the sample app to create files.
 
@@ -312,7 +312,7 @@ If you are configuring this step by step on the `code-starter` branch:
     cancellableCollector.addCancellable(cancellable)
    ```
 
-   **Note: Make sure to use the full implementation of [`deleteFileEvent`](https://github.com/openmobilehub/omh-storage/blob/release/1.0/storage-sample/src/main/java/com/omh/android/storage/sample/presentation/file_viewer/FileViewerViewModel.kt#L270-L288) for a fully functional sample.**
+   **Note: Make sure to use the full implementation of [`deleteFileEvent`](https://github.com/openmobilehub/omh-storage/blob/release/1.0/storage-sample/src/main/java/com/omh/android/storage/sample/presentation/file_viewer/FileViewerViewModel.kt#L282-L302) for a fully functional sample.**
 
 2. Run the sample app to delete files.
 
@@ -337,7 +337,7 @@ If you are configuring this step by step on the `code-starter` branch:
     cancellableCollector.addCancellable(cancellable)
    ```
 
-   **Note: Make sure to use the full implementation of [`uploadFile`](https://github.com/openmobilehub/omh-storage/blob/release/1.0/storage-sample/src/main/java/com/omh/android/storage/sample/presentation/file_viewer/FileViewerViewModel.kt#L229-L256) for a fully functional sample.**
+   **Note: Make sure to use the full implementation of [`uploadFile`](https://github.com/openmobilehub/omh-storage/blob/release/1.0/storage-sample/src/main/java/com/omh/android/storage/sample/presentation/file_viewer/FileViewerViewModel.kt#L240-L268) for a fully functional sample.**
 
 2. Run the sample app to upload files.
 
@@ -362,7 +362,7 @@ If you are configuring this step by step on the `code-starter` branch:
     cancellableCollector.addCancellable(cancellable)
    ```
 
-   **Note: Make sure to use the full implementation of [`updateFileEvent`](https://github.com/openmobilehub/omh-storage/blob/release/1.0/storage-sample/src/main/java/com/omh/android/storage/sample/presentation/file_viewer/FileViewerViewModel.kt#L180-L211) for a fully functional sample.**
+   **Note: Make sure to use the full implementation of [`updateFileEvent`](https://github.com/openmobilehub/omh-storage/blob/release/1.0/storage-sample/src/main/java/com/omh/android/storage/sample/presentation/file_viewer/FileViewerViewModel.kt#L187-L219) for a fully functional sample.**
 
 2. Run the sample app to update files.
 
@@ -387,7 +387,7 @@ If you are configuring this step by step on the `code-starter` branch:
     cancellableCollector.addCancellable(cancellable)
    ```
 
-   **Note: Make sure to use the full implementation of [`downloadFileEvent`](https://github.com/openmobilehub/omh-storage/blob/release/1.0/storage-sample/src/main/java/com/omh/android/storage/sample/presentation/file_viewer/FileViewerViewModel.kt#L140-L178) for a fully functional sample.**
+   **Note: Make sure to use the full implementation of [`downloadFileEvent`](https://github.com/openmobilehub/omh-storage/blob/release/1.0/storage-sample/src/main/java/com/omh/android/storage/sample/presentation/file_viewer/FileViewerViewModel.kt#L143-L185) for a fully functional sample.**
 
 2. Run the sample app to download files.
 
