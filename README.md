@@ -112,7 +112,7 @@ In your `storage-starter-sample` module-level `build.gradle.kts` search the comm
                    dependency = "com.openmobilehub.android:storage-api-drive-gms:1.0.6-beta"
                }
                nonGmsService {
-                   dependency = "com.openmobilehub.android:storage-api-drive-nongms:1.0.5-beta"
+                   dependency = "com.openmobilehub.android:storage-api-drive-nongms:1.0.6-beta"
                }
            }
            auth {
@@ -139,7 +139,7 @@ In your `storage-starter-sample` module-level `build.gradle.kts` search the comm
        bundle("nongms") {
            storage {
                nonGmsService {
-                   dependency = "com.openmobilehub.android:storage-api-drive-nongms:1.0.5-beta"
+                   dependency = "com.openmobilehub.android:storage-api-drive-nongms:1.0.6-beta"
                }
            }
            auth {
