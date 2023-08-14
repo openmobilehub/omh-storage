@@ -202,61 +202,29 @@ In this step, you will define the OMH Core Plugin bundles to generate multiple b
    - "gms" variant builds for devices that has GMS (Google Mobile Services).
    - "nongms" variant builds for devices that doesn't have GMS (Google Mobile Services).
 
-5. To obtain an instance of the OMH Storage client, you need an instance of OmhAuthClient.
- 
-   ```kotlin
-   val omhAuthProvider: OmhAuthProvider = OmhAuthProvider.Builder()
-       .addNonGmsPath(BuildConfig.AUTH_NON_GMS_PATH)
-       .addGmsPath(BuildConfig.AUTH_GMS_PATH)
-       .build()
-   
-   val omhAuthClient: OmhAuthClient = omhAuthProvider.provideAuthClient(
-       scopes = listOf("openid", "email", "profile"),
-       clientId = BuildConfig.CLIENT_ID,
-       context = context
-   )
-   ```
-
-   *Note:* If you're configuring this step by step on the `code-starter` branch you will find the full implementation on `SingletonModule` class, on function [`providesOmhAuthClient`](https://github.com/openmobilehub/omh-storage/blob/release/1.0/storage-sample/src/main/java/com/omh/android/storage/sample/di/SingletonModule.kt#L36-L52).
-
-   Also, if you're configuring this step by step on the `code-starter` branch you can go to the `providesOmhAuthClient` function in the `SingletonMOdule` file. Look for the comment `// Add here snippet for provide auth client`, and replace the existing code below this comment with the following snippet:
+5. Go to the `providesOmhAuthClient` function in the `SingletonModule` file. Look for the comment `// Add here snippet for provide auth client`, and replace the existing code below this comment with the following snippet:
 
    ```kotlin
    return OmhAuthProvider.Builder()
-            .addNonGmsPath(BuildConfig.AUTH_NON_GMS_PATH)
-            .addGmsPath(BuildConfig.AUTH_GMS_PATH)
-            .build()
-            .provideAuthClient(
-                context = context,
-                scopes = listOf(
-                    "openid",
-                    "email",
-                    "profile",
-                    "https://www.googleapis.com/auth/drive",
-                    "https://www.googleapis.com/auth/drive.file"
-                ),
-                clientId = BuildConfig.CLIENT_ID
-            )
+         .addNonGmsPath(BuildConfig.AUTH_NON_GMS_PATH)
+         .addGmsPath(BuildConfig.AUTH_GMS_PATH)
+         .build()
+         .provideAuthClient(
+             context = context,
+             scopes = listOf(
+                 "openid",
+                 "email",
+                 "profile",
+                 "https://www.googleapis.com/auth/drive",
+                 "https://www.googleapis.com/auth/drive.file"
+             ),
+             clientId = BuildConfig.CLIENT_ID
+         )
    ```
 
-6. To instantiate the OmhStorageClient, add the following code.
-   
-   ```kotlin
-   val omhStorageProvider: OmhStorageProvider = OmhStorageProvider.Builder()
-       .addNonGmsPath(BuildConfig.STORAGE_NON_GMS_PATH)
-       .addGmsPath(BuildConfig.STORAGE_GMS_PATH)
-       .build()
-   
-   val omhStorageClient: OmhStorageClient = omhStorageProvider.provideStorageClient(
-       authClient = omhAuthClient,
-       context = context
-   )
-   ```
+   **Note: Make sure to use the full implementation of [`providesOmhAuthClient`](https://github.com/openmobilehub/omh-storage/blob/release/1.0/storage-sample/src/main/java/com/omh/android/storage/sample/di/SingletonModule.kt#L36-L52) for a fully functional sample.**
 
-   *Note*: we'd recommend to provide the auth client and the storage client as a singleton with your preferred dependency injection library as this will be your only gateway to the OMH Auth SDK and OMH Storage SDK; and it doesn't change in runtime at all.
-   If you're configuring this step by step on the `code-starter` branch you will find the full implementation on `SingletonModule` class, on function [`providesOmhStorageClient`](https://github.com/openmobilehub/omh-storage/blob/release/1.0/storage-sample/src/main/java/com/omh/android/storage/sample/di/SingletonModule.kt#L55-L64).
-
-   Also, if you're configuring this step by step on the `code-starter` branch you can go to the `providesOmhStorageClient` function in the `SingletonMOdule` file. Look for the comment `// Add here snippet for provide storage client`, and replace the existing code below this comment with the following snippet:
+6. Go to the `providesOmhStorageClient` function in the `SingletonMOdule` file. Look for the comment `// Add here snippet for provide storage client`, and replace the existing code below this comment with the following snippet:
 
    ```kotlin
    return OmhStorageProvider.Builder()
@@ -265,6 +233,8 @@ In this step, you will define the OMH Core Plugin bundles to generate multiple b
             .build()
             .provideStorageClient(omhAuthClient, context)
    ```
+
+   **Note: Make sure to use the full implementation of [`providesOmhStorageClient`](https://github.com/openmobilehub/omh-storage/blob/release/1.0/storage-sample/src/main/java/com/omh/android/storage/sample/di/SingletonModule.kt#L55-L64) for a fully functional sample.**
 
 ## Adding Storage to your app
 First and foremost, the main interface that you'll be interacting with is called OmhStorageClient. In contains all your basic storage functionalities: list, create, delete, download, update and upload files.
