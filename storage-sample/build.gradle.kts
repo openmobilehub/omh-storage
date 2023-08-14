@@ -15,7 +15,7 @@ omhConfig {
                 dependency = "com.openmobilehub.android:storage-api-drive-gms:1.0.6-beta"
             }
             nonGmsService {
-                dependency = "com.openmobilehub.android:storage-api-drive-nongms:1.0.5-beta"
+                dependency = "com.openmobilehub.android:storage-api-drive-nongms:1.0.6-beta"
             }
         }
         auth {
@@ -42,7 +42,7 @@ omhConfig {
     bundle("nongms") {
         storage {
             nonGmsService {
-                dependency = "com.openmobilehub.android:storage-api-drive-nongms:1.0.5-beta"
+                dependency = "com.openmobilehub.android:storage-api-drive-nongms:1.0.6-beta"
             }
         }
         auth {
