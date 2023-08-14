@@ -39,6 +39,7 @@ import org.json.JSONObject
 import retrofit2.HttpException
 import java.io.ByteArrayOutputStream
 import java.io.File
+import java.lang.Exception
 
 internal class NonGmsFileRemoteDataSourceImpl(private val retrofitImpl: GoogleRetrofitImpl) :
     OmhFileRemoteDataSource {
@@ -52,6 +53,7 @@ internal class NonGmsFileRemoteDataSourceImpl(private val retrofitImpl: GoogleRe
         private val JSON_MIME_TYPE = "application/json".toMediaTypeOrNull()
     }
 
+    @SuppressWarnings("TooGenericExceptionThrown")
     override fun getFilesList(parentId: String): List<OmhFile> {
         val response = retrofitImpl
             .getGoogleStorageApiService()
@@ -63,7 +65,7 @@ internal class NonGmsFileRemoteDataSourceImpl(private val retrofitImpl: GoogleRe
         return if (response.isSuccessful) {
             response.body()?.toFileList().orEmpty()
         } else {
-            emptyList()
+            throw Exception(response.message())
         }
     }
 
