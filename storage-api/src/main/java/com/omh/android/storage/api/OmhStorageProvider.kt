@@ -27,7 +27,7 @@ import kotlin.reflect.full.createInstance
 
 class OmhStorageProvider private constructor(
     private val gmsPath: String?,
-    private val nonGsmPath: String?
+    private val nonGmsPath: String?
 ) {
 
     class Builder {
@@ -59,7 +59,7 @@ class OmhStorageProvider private constructor(
         fun build(): OmhStorageProvider = OmhStorageProvider(gmsPath, nonGmsPath)
     }
 
-    private val isSingleBuild = gmsPath != null && nonGsmPath != null
+    private val isSingleBuild = gmsPath != null && nonGmsPath != null
 
     @SuppressWarnings("SwallowedException")
     fun provideStorageClient(authClient: OmhAuthClient, context: Context): OmhStorageClient {
@@ -75,7 +75,7 @@ class OmhStorageProvider private constructor(
     private fun getOmhStorageFactory(context: Context): OmhStorageFactory = when {
         isSingleBuild -> reflectSingleBuild(context)
         gmsPath != null -> getFactoryImplementation(gmsPath)
-        nonGsmPath != null -> getFactoryImplementation(nonGsmPath)
+        nonGmsPath != null -> getFactoryImplementation(nonGmsPath)
         else -> throw OmhStorageException.ApiException(OmhAuthStatusCodes.DEVELOPER_ERROR)
     }
 
@@ -83,7 +83,7 @@ class OmhStorageProvider private constructor(
         val path = if (hasGoogleServices(context)) {
             gmsPath!!
         } else {
-            nonGsmPath!!
+            nonGmsPath!!
         }
         return getFactoryImplementation(path)
     }
