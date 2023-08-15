@@ -51,6 +51,10 @@ internal class NonGmsFileRemoteDataSourceImpl(private val retrofitImpl: GoogleRe
         private const val MEDIA = "media"
 
         private val JSON_MIME_TYPE = "application/json".toMediaTypeOrNull()
+
+        private const val KEY_ERROR = "error"
+        private const val KEY_MESSAGE = "message"
+        private const val HTTP_ERROR_MESSAGE = "HTTP Error, code %s\n\n%s"
     }
 
     @SuppressWarnings("TooGenericExceptionThrown")
@@ -65,7 +69,14 @@ internal class NonGmsFileRemoteDataSourceImpl(private val retrofitImpl: GoogleRe
         return if (response.isSuccessful) {
             response.body()?.toFileList().orEmpty()
         } else {
-            throw Exception(response.message())
+            val jsonError = JSONObject(response.errorBody()?.string().orEmpty())
+            val errorMessage = jsonError.getJSONObject(KEY_ERROR).getString(KEY_MESSAGE)
+            throw Exception(
+                HTTP_ERROR_MESSAGE.format(
+                    response.code().toString(),
+                    errorMessage
+                )
+            )
         }
     }
 
