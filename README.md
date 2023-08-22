@@ -23,7 +23,7 @@ For instance, the following screenshots showcase multiple devices with Android, 
 
 | Non-GMS</br>Huawei Nova 9 SE | GMS</br>Moto g(6) Plus | Non-GMS Device</br>Moto g(6) Plus |
 |------------------------------|------------------------|-----------------------------------|
-| <img src="https://github.com/openmobilehub/omh-storage/assets/124717244/4de1a1c7-1f51-492c-bfc7-53e475d06b32"> | <img src="https://github.com/openmobilehub/omh-storage/assets/124717244/6aa26b0b-87a9-42dc-a3b8-27a3a3ff04b5"> | <img src="https://github.com/openmobilehub/omh-storage/assets/124717244/66d371c3-728b-4d0f-baf6-b4ebd77a058d"> |
+| <img src="images/omh-storage-huawei-9se.gif"> | <img src="images/omh-storage-gms-motog6-plus.gif"> | <img src="images/omh-storage-non-gms-motog6-plus.gif"> |
  
 </div>
 
