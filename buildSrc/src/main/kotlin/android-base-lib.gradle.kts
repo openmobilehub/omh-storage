@@ -51,13 +51,8 @@ dependencies {
 
 val androidSourcesJar by tasks.registering(Jar::class) {
     archiveClassifier.set("sources")
-    if (project.plugins.findPlugin("com.android.library") != null) {
-        from("android.sourceSets.main.java.srcDirs")
-        from("android.sourceSets.main.kotlin.srcDirs")
-    } else {
-        from("sourceSets.main.java.srcDirs")
-        from("sourceSets.main.kotlin.srcDirs")
-    }
+    from("src/main/java")
+    from("src/main/kotlin")
 }
 
 artifacts {
