@@ -39,7 +39,7 @@ object Versions {
     const val mockk = "1.13.4"
 
     // Auth
-    const val omhAuth = "1.0.0-beta"
+    const val omhAuth = "1.0.1-beta"
 
     // Play services
     const val googlePlayBase = "18.2.0"
