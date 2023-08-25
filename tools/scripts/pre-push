@@ -1,0 +1,26 @@
+#!/bin/bash
+
+banner_echo() {
+  echo "-------------------------------------------"
+  echo -e "$*"
+  echo "-------------------------------------------"
+}
+
+# Colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+NC='\033[0m'
+
+echo "Running git pre-commit hook .."
+
+./gradlew assembleDebug detekt jacocoCoverageVerification --parallel --continue
+
+RESULT=$?
+
+if [[ $RESULT -ne 0 ]]; then
+  banner_echo "${RED} Pre push validation failed. If its code stytle issue please run ./gradlew detekt -PautoCorrect=true. ${NC}"
+  exit 1
+else
+  banner_echo "${GREEN} Everything is ok. Push has been done. ${NC}"
+  exit 0
+fi
